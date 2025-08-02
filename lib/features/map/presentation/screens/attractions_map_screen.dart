@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AttractionsMapScreen extends StatelessWidget {
   const AttractionsMapScreen({super.key});
@@ -31,14 +33,29 @@ class AttractionsMapScreen extends StatelessWidget {
                 width: 80,
                 height: 80,
                 point: attraction['location'],
-                child: Column(
-                  children: [
-                    const Icon(Icons.location_on, size: 36, color: Colors.red),
-                    Text(
-                      attraction['name'],
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    final lat = attraction['location'].latitude;
+                    final lng = attraction['location'].longitude;
+                    final label = Uri.encodeComponent(attraction['name']);
+                    final url = Uri.parse(
+                      "https://www.google.com/maps/search/?api=1&query=$lat,$lng($label)",
+                    );
+                    launchUrl(url, mode: LaunchMode.externalApplication);
+                  },
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        size: 36,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        attraction['name'],
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }).toList(),
