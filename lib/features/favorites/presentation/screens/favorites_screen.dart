@@ -1,3 +1,4 @@
+import 'package:ceylon/features/favorites/presentation/screens/bookmarks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,33 +17,51 @@ class FavoritesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("❤️ My Favorites")),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: ref.snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return const Center(child: CircularProgressIndicator());
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty)
-            return const Center(child: Text("No favorites yet"));
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const BookmarksScreen()),
+                );
+              },
+              child: const Text("📂 View Bookmarked Trips & Attractions"),
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: ref.snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return const Center(child: CircularProgressIndicator());
+                final docs = snapshot.data!.docs;
+                if (docs.isEmpty)
+                  return const Center(child: Text("No favorites yet"));
 
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (_, index) {
-              final data = docs[index].data() as Map<String, dynamic>;
-              return Card(
-                child: ListTile(
-                  leading: Image.network(
-                    data['photo'],
-                    width: 60,
-                    fit: BoxFit.cover,
-                  ),
-                  title: Text(data['name']),
-                  subtitle: Text(data['desc']),
-                ),
-              );
-            },
-          );
-        },
+                return ListView.builder(
+                  itemCount: docs.length,
+                  itemBuilder: (_, index) {
+                    final data = docs[index].data() as Map<String, dynamic>;
+                    return Card(
+                      child: ListTile(
+                        leading: Image.network(
+                          data['photo'],
+                          width: 60,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(data['name']),
+                        subtitle: Text(data['desc']),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
