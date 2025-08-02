@@ -1,3 +1,4 @@
+import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class BusinessDashboardScreen extends StatelessWidget {
@@ -5,6 +6,22 @@ class BusinessDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text("💼 Business Dashboard")));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Business Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: const Center(child: Text("💼 Business Dashboard")),
+    );
   }
 }
