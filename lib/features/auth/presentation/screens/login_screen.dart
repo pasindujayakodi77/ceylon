@@ -67,6 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       : const Text("Login"),
                 ),
                 const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.login),
+                  label: const Text("Sign in with Google"),
+                  onPressed: () {
+                    context.read<AuthBloc>().add(GoogleSignInRequested());
+                  },
+                ),
+                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     Navigator.push(

@@ -40,6 +40,7 @@ dependencies:
 
   # Additional dependencies
   firebase_auth: ^4.17.5
+  google_sign_in: ^6.2.1
   cloud_firestore: ^4.17.5
   shared_preferences: ^2.2.3
   flutter_bloc: ^8.1.3

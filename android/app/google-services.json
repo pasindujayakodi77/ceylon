@@ -12,7 +12,12 @@
           "package_name": "com.example.ceylon"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "738407142329-ch87cqd1q02b6utlltlrq5mnb13aupoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD4YMlMM53vD-DWKNEsT5mFEHFJh0Pv6s0"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738407142329-ch87cqd1q02b6utlltlrq5mnb13aupoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
