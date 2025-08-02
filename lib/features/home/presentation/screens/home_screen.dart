@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
+
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
+import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.dart';
 
 class TouristHomeScreen extends StatelessWidget {
   const TouristHomeScreen({super.key});
@@ -25,6 +27,16 @@ class TouristHomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              child: const Text("❤️ View Favorites"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const FavoritesScreen()),
                 );
               },
             ),

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -76,17 +78,67 @@ class AttractionsMapScreen extends StatelessWidget {
   }
 }
 
-class _AttractionDetails extends StatelessWidget {
+class _AttractionDetails extends StatefulWidget {
   final Map<String, dynamic> attraction;
   const _AttractionDetails({required this.attraction});
 
   @override
+  State<_AttractionDetails> createState() => _AttractionDetailsState();
+}
+
+class _AttractionDetailsState extends State<_AttractionDetails> {
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFavorite();
+  }
+
+  Future<void> _checkFavorite() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('favorites')
+        .doc(widget.attraction['name']) // name as ID
+        .get();
+
+    setState(() => _isFavorite = doc.exists);
+  }
+
+  Future<void> _toggleFavorite() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final favRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('favorites')
+        .doc(widget.attraction['name']);
+
+    if (_isFavorite) {
+      await favRef.delete();
+    } else {
+      await favRef.set({
+        'name': widget.attraction['name'],
+        'desc': widget.attraction['desc'],
+        'photo': widget.attraction['photo'],
+        'location': {
+          'lat': widget.attraction['location'].latitude,
+          'lng': widget.attraction['location'].longitude,
+        },
+        'saved_at': FieldValue.serverTimestamp(),
+      });
+    }
+
+    setState(() => _isFavorite = !_isFavorite);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final lat = attraction['location'].latitude;
-    final lng = attraction['location'].longitude;
-    final name = Uri.encodeComponent(attraction['name']);
+    final loc = widget.attraction['location'];
+    final name = Uri.encodeComponent(widget.attraction['name']);
     final directionUrl = Uri.parse(
-      "https://www.google.com/maps/search/?api=1&query=$lat,$lng($name)",
+      "https://www.google.com/maps/search/?api=1&query=${loc.latitude},${loc.longitude}($name)",
     );
 
     return Padding(
@@ -95,19 +147,31 @@ class _AttractionDetails extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            attraction['name'],
+            widget.attraction['name'],
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          Image.network(attraction['photo'], height: 160, fit: BoxFit.cover),
+          Image.network(
+            widget.attraction['photo'],
+            height: 160,
+            fit: BoxFit.cover,
+          ),
           const SizedBox(height: 12),
-          Text(attraction['desc'], textAlign: TextAlign.center),
+          Text(widget.attraction['desc'], textAlign: TextAlign.center),
           const SizedBox(height: 20),
           ElevatedButton.icon(
             icon: const Icon(Icons.directions),
             label: const Text("Get Directions"),
             onPressed: () =>
                 launchUrl(directionUrl, mode: LaunchMode.externalApplication),
+          ),
+          const SizedBox(height: 8),
+          TextButton.icon(
+            icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border),
+            label: Text(
+              _isFavorite ? "Remove from Favorites" : "Save to Favorites",
+            ),
+            onPressed: _toggleFavorite,
           ),
         ],
       ),
