@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738407142329",
+    "project_id": "ceylon-fb5b6",
+    "storage_bucket": "ceylon-fb5b6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738407142329:android:3ccadca72e2a7ff49d5c68",
+        "android_client_info": {
+          "package_name": "com.example.ceylon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4YMlMM53vD-DWKNEsT5mFEHFJh0Pv6s0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
