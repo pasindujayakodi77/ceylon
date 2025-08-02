@@ -10,9 +10,21 @@ class AttractionsMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> attractions = [
-      {'name': 'Sigiriya Rock', 'location': LatLng(7.9570, 80.7603)},
-      {'name': 'Temple of the Tooth', 'location': LatLng(7.2936, 80.6417)},
-      {'name': 'Galle Fort', 'location': LatLng(6.0261, 80.2170)},
+      {
+        'name': 'Sigiriya Rock',
+        'location': LatLng(7.9570, 80.7603),
+        'photo':
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Sigiriya_rock.jpg/800px-Sigiriya_rock.jpg',
+        'desc': 'Ancient rock fortress with murals and lion stairs.',
+      },
+      {
+        'name': 'Temple of the Tooth',
+        'location': LatLng(7.2936, 80.6417),
+        'photo':
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Temple_of_the_Tooth.jpg/800px-Temple_of_the_Tooth.jpg',
+        'desc':
+            'Sacred Buddhist site housing the relic of the tooth of Buddha.',
+      },
     ];
 
     return Scaffold(
@@ -35,13 +47,11 @@ class AttractionsMapScreen extends StatelessWidget {
                 point: attraction['location'],
                 child: GestureDetector(
                   onTap: () {
-                    final lat = attraction['location'].latitude;
-                    final lng = attraction['location'].longitude;
-                    final label = Uri.encodeComponent(attraction['name']);
-                    final url = Uri.parse(
-                      "https://www.google.com/maps/search/?api=1&query=$lat,$lng($label)",
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) =>
+                          _AttractionDetails(attraction: attraction),
                     );
-                    launchUrl(url, mode: LaunchMode.externalApplication);
                   },
                   child: Column(
                     children: [
@@ -59,6 +69,45 @@ class AttractionsMapScreen extends StatelessWidget {
                 ),
               );
             }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AttractionDetails extends StatelessWidget {
+  final Map<String, dynamic> attraction;
+  const _AttractionDetails({required this.attraction});
+
+  @override
+  Widget build(BuildContext context) {
+    final lat = attraction['location'].latitude;
+    final lng = attraction['location'].longitude;
+    final name = Uri.encodeComponent(attraction['name']);
+    final directionUrl = Uri.parse(
+      "https://www.google.com/maps/search/?api=1&query=$lat,$lng($name)",
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            attraction['name'],
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          Image.network(attraction['photo'], height: 160, fit: BoxFit.cover),
+          const SizedBox(height: 12),
+          Text(attraction['desc'], textAlign: TextAlign.center),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.directions),
+            label: const Text("Get Directions"),
+            onPressed: () =>
+                launchUrl(directionUrl, mode: LaunchMode.externalApplication),
           ),
         ],
       ),
