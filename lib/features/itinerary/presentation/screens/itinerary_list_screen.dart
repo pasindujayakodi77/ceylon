@@ -1,4 +1,5 @@
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_builder_screen.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,23 @@ class ItineraryListScreen extends StatelessWidget {
               final data = docs[index].data() as Map<String, dynamic>;
               final title = data['title'];
               final days = List<String>.from(data['days']);
+
+              final tripText = StringBuffer()
+                ..writeln("🗓 *$title* — ${days.length} day(s)")
+                ..writeln("")
+                ..writeln("My CEYLON Itinerary:")
+                ..writeln(days.map((d) => "• $d").join('\n'));
+
               return Card(
                 child: ListTile(
                   title: Text(title ?? "Untitled"),
                   subtitle: Text("${days.length} day(s)"),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.share),
+                    onPressed: () {
+                      Share.share(tripText.toString());
+                    },
+                  ),
                 ),
               );
             },

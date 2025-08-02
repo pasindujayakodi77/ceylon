@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -166,6 +167,19 @@ class _AttractionDetailsState extends State<_AttractionDetails> {
                 launchUrl(directionUrl, mode: LaunchMode.externalApplication),
           ),
           const SizedBox(height: 8),
+          TextButton.icon(
+            icon: const Icon(Icons.share),
+            label: const Text("Share Place"),
+            onPressed: () {
+              final msg =
+                  """
+📍 ${widget.attraction['name']}
+${widget.attraction['desc']}
+\nhttps://www.google.com/maps?q=${widget.attraction['location'].latitude},${widget.attraction['location'].longitude}
+""";
+              Share.share(msg);
+            },
+          ),
           TextButton.icon(
             icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border),
             label: Text(
