@@ -1,8 +1,10 @@
+import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/auth_repository.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
+
 import '../bloc/auth_state.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -45,8 +47,14 @@ class _SignupScreenState extends State<SignupScreen> {
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text("✅ Account created")));
-            Navigator.pop(context); // Go back to login
+            ).showSnackBar(const SnackBar(content: Text("✅ Login Successful")));
+
+            Future.delayed(const Duration(milliseconds: 500), () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const RoleRouter()),
+              );
+            });
           }
         },
         builder: (context, state) {
