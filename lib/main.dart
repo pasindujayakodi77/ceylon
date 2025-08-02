@@ -25,6 +25,7 @@ void main() async {
       create: (_) => AuthBloc(authRepo: authRepo),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        routes: {'/home': (_) => const HomeScreen()},
         home: seenOnboarding
             ? (isSignedIn ? const HomeScreen() : const LoginScreen())
             : const OnboardingScreen(),

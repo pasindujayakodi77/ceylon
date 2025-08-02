@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "738407142329-bv6rrc3198feqqasvjaujj8qon6ufddh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ceylon",
+            "certificate_hash": "f3d4832b509258a9491db7750bfce5beb636a0af"
+          }
+        },
+        {
           "client_id": "738407142329-ch87cqd1q02b6utlltlrq5mnb13aupoc.apps.googleusercontent.com",
           "client_type": 3
         }

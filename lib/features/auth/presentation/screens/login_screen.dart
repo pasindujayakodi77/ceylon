@@ -1,3 +1,4 @@
+import 'package:ceylon/features/auth/presentation/screens/phone_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/auth_repository.dart';
@@ -83,6 +84,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                   child: const Text("Don't have an account? Sign up"),
+                ),
+                TextButton(
+                  child: const Text("Login with Phone"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const PhoneLoginScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
