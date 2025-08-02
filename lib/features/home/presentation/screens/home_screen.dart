@@ -1,3 +1,4 @@
+import 'package:ceylon/features/map/presentation/screens/attractions_map_screen.dart';
 import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,6 +39,18 @@ class TouristHomeScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AttractionsMapScreen(),
+                  ),
+                );
+              },
+              child: const Text("\uD83D\uDCCD View Attractions Map"),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
