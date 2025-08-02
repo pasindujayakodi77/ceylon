@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+//import 'package:ceylon/core/theme/theme.dart'; // we'll create this later
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +16,9 @@ class CeylonApp extends StatelessWidget {
     return MaterialApp(
       title: 'CEYLON',
       debugShowCheckedModeBanner: false,
+      //theme: CeylonTheme.light, // optional if not using themes yet
       home: const Scaffold(
-        body: Center(child: Text('🧭 Welcome to CEYLON App')),
+        body: Center(child: Text('🧭 CEYLON App Firebase Ready')),
       ),
     );
   }
