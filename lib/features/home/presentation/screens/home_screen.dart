@@ -1,7 +1,9 @@
 import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
+import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
 
 class TouristHomeScreen extends StatelessWidget {
   const TouristHomeScreen({super.key});
@@ -22,6 +24,18 @@ class TouristHomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              child: const Text("📅 My Trips"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ItineraryListScreen(),
+                  ),
                 );
               },
             ),
