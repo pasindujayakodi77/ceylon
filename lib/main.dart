@@ -1,4 +1,5 @@
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
+import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,8 @@ import 'features/home/presentation/screens/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  await FCMService.init();
 
   final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('onboarding_seen') ?? false;
