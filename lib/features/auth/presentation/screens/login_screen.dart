@@ -1,3 +1,4 @@
+import 'package:ceylon/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:ceylon/features/auth/presentation/screens/phone_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,6 +60,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _password,
                   obscureText: true,
                   decoration: const InputDecoration(labelText: 'Password'),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ForgotPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text("Forgot password?"),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
