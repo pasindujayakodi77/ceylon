@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:ceylon/core/theme/theme.dart'; // we'll create this later
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'features/auth/presentation/screens/onboarding_screen.dart';
+import 'features/auth/presentation/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const CeylonApp());
+  final prefs = await SharedPreferences.getInstance();
+  final seen = prefs.getBool('onboarding_seen') ?? false;
+  runApp(CeylonApp(seenOnboarding: seen));
 }
 
 class CeylonApp extends StatelessWidget {
-  const CeylonApp({super.key});
+  final bool seenOnboarding;
+  const CeylonApp({super.key, required this.seenOnboarding});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CEYLON',
       debugShowCheckedModeBanner: false,
-      //theme: CeylonTheme.light, // optional if not using themes yet
-      home: const Scaffold(
-        body: Center(child: Text('🧭 CEYLON App Firebase Ready')),
-      ),
+      home: seenOnboarding ? const LoginScreen() : const OnboardingScreen(),
     );
   }
 }
