@@ -4,26 +4,26 @@ import '../../data/auth_repository.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
-import 'signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
-  void _signIn() {
-    context.read<AuthBloc>().add(SignInRequested(_email.text, _password.text));
+  void _signUp() {
+    context.read<AuthBloc>().add(SignUpRequested(_email.text, _password.text));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Sign Up")),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
@@ -34,7 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text("✅ Login Successful")));
+            ).showSnackBar(const SnackBar(content: Text("✅ Account created")));
+            Navigator.pop(context); // Go back to login
           }
         },
         builder: (context, state) {
@@ -42,12 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(24),
             child: ListView(
               children: [
-                const SizedBox(height: 100),
-                const Text(
-                  "Welcome to CEYLON",
-                  style: TextStyle(fontSize: 24),
-                  textAlign: TextAlign.center,
-                ),
                 const SizedBox(height: 40),
                 TextField(
                   controller: _email,
@@ -61,20 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: _signIn,
+                  onPressed: _signUp,
                   child: state is AuthLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Login"),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const SignupScreen()),
-                    );
-                  },
-                  child: const Text("Don't have an account? Sign up"),
+                      : const Text("Create Account"),
                 ),
               ],
             ),
