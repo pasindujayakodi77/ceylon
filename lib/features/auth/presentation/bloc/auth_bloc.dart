@@ -36,6 +36,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await authRepo.signUpWithEmail(
           event.email,
           event.password,
+          event.role,
+          event.name,
+          event.country,
         );
         emit(AuthSuccess(user!));
       } catch (e) {

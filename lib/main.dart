@@ -1,3 +1,4 @@
+import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,18 +17,18 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('onboarding_seen') ?? false;
+  final isSignedIn = FirebaseAuth.instance.currentUser != null;
 
   final authRepo = AuthRepository();
-  final isSignedIn = FirebaseAuth.instance.currentUser != null;
 
   runApp(
     BlocProvider(
       create: (_) => AuthBloc(authRepo: authRepo),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        routes: {'/home': (_) => const HomeScreen()},
+        routes: {'/home': (_) => const TouristHomeScreen()},
         home: seenOnboarding
-            ? (isSignedIn ? const HomeScreen() : const LoginScreen())
+            ? (isSignedIn ? const RoleRouter() : const LoginScreen())
             : const OnboardingScreen(),
       ),
     ),

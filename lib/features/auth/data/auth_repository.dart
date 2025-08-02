@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -16,12 +17,29 @@ class AuthRepository {
     return userCredential.user;
   }
 
-  Future<User?> signUpWithEmail(String email, String password) async {
+  Future<User?> signUpWithEmail(
+    String email,
+    String password,
+    String role,
+    String name,
+    String country,
+  ) async {
     final userCredential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-    return userCredential.user;
+
+    final user = userCredential.user;
+
+    await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+      'email': email,
+      'role': role,
+      'name': name,
+      'country': country,
+      'created_at': FieldValue.serverTimestamp(),
+    });
+
+    return user;
   }
 
   Future<void> signOut() async {
