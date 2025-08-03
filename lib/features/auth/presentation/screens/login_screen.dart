@@ -7,7 +7,10 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import 'signup_screen.dart';
-import 'package:ceylon/generated/app_localizations.dart';
+import 'package:ceylon/l10n/app_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ceylon/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,20 +38,25 @@ class _LoginScreenState extends State<LoginScreen> {
             ).showSnackBar(SnackBar(content: Text("❌ ${state.message}")));
           }
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  "✅ ${AppLocalizations.of(context)!.login} Successful",
-                ),
-              ),
-            );
-
-            Future.delayed(const Duration(milliseconds: 500), () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const RoleRouter()),
+            () async {
+              final uid = FirebaseAuth.instance.currentUser!.uid;
+              final doc = await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .get();
+              final data = doc.data();
+              final langCode = data?['language'] ?? 'en';
+              MyApp.setLocale(context, Locale(langCode));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("✅ Login Successful")),
               );
-            });
+              Future.delayed(const Duration(milliseconds: 500), () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const RoleRouter()),
+                );
+              });
+            }();
           }
         },
         builder: (context, state) {

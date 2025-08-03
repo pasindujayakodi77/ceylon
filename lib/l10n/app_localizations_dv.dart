@@ -79,4 +79,13 @@ class AppLocalizationsDv extends AppLocalizations {
 
   @override
   String get flutterGenL10n => 'flutter gen-l10n';
+
+  @override
+  String get homeScreenTitle => '🏡 Home Screen — Logged In';
+
+  @override
+  String get viewFavorites => '❤️ View Favorites';
+
+  @override
+  String get hello => 'Hello';
 }

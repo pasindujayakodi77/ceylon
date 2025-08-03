@@ -115,9 +115,24 @@
     "description": "Button to save an item as favorite.",
     "type": "text"
   },
-  "flutterGenL10n": "flutter gen-l10n"
-  ,"@flutterGenL10n": {
+  "flutterGenL10n": "flutter gen-l10n",
+  "@flutterGenL10n": {
     "description": "Technical string for flutter localization generation.",
+    "type": "text"
+  },
+  "homeScreenTitle": "🏡 Home Screen — Logged In",
+  "@homeScreenTitle": {
+    "description": "Title for the home screen when the user is logged in.",
+    "type": "text"
+  },
+  "viewFavorites": "❤️ View Favorites",
+  "@viewFavorites": {
+    "description": "Button label to view favorites.",
+    "type": "text"
+  },
+  "hello": "Hello",
+  "@hello": {
+    "description": "A greeting message.",
     "type": "text"
   }
 }

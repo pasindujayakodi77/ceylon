@@ -3,7 +3,7 @@ import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:ceylon/generated/app_localizations.dart';
+import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
@@ -19,7 +19,7 @@ class TouristHomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("🏡 Home Screen — Logged In"),
+            Text(AppLocalizations.of(context)!.homeScreenTitle),
             const SizedBox(height: 24),
             // Profile IconButton
             IconButton(
@@ -33,7 +33,7 @@ class TouristHomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             TextButton(
-              child: const Text("❤️ View Favorites"),
+              child: Text(AppLocalizations.of(context)!.viewFavorites),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -43,7 +43,7 @@ class TouristHomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              child: const Text("📅 My Trips"),
+              child: Text(AppLocalizations.of(context)!.myTrips),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -63,7 +63,7 @@ class TouristHomeScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text("\uD83D\uDCCD View Attractions Map"),
+              child: Text(AppLocalizations.of(context)!.viewAttractionsMap),
             ),
             const SizedBox(height: 16),
             ElevatedButton(

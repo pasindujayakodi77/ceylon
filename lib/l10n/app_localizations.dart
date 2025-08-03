@@ -105,149 +105,167 @@ abstract class AppLocalizations {
     Locale('ru')
   ];
 
-  /// No description provided for @appTitle.
+  /// The title of the application, shown in the app bar and launcher.
   ///
   /// In en, this message translates to:
   /// **'CEYLON'**
   String get appTitle;
 
-  /// No description provided for @login.
+  /// Label for the login button or screen.
   ///
   /// In en, this message translates to:
   /// **'Login'**
   String get login;
 
-  /// No description provided for @signup.
+  /// Label for the signup button or screen.
   ///
   /// In en, this message translates to:
   /// **'Sign Up'**
   String get signup;
 
-  /// No description provided for @email.
+  /// Label for the email input field.
   ///
   /// In en, this message translates to:
   /// **'Email'**
   String get email;
 
-  /// No description provided for @password.
+  /// Label for the password input field.
   ///
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
 
-  /// No description provided for @forgotPassword.
+  /// Link or button for forgotten password recovery.
   ///
   /// In en, this message translates to:
   /// **'Forgot Password?'**
   String get forgotPassword;
 
-  /// No description provided for @createAccount.
+  /// Button or link to create a new account.
   ///
   /// In en, this message translates to:
   /// **'Create Account'**
   String get createAccount;
 
-  /// No description provided for @name.
+  /// Label for the name input field.
   ///
   /// In en, this message translates to:
   /// **'Full Name'**
   String get name;
 
-  /// No description provided for @country.
+  /// Label for the country input field or selector.
   ///
   /// In en, this message translates to:
   /// **'Country'**
   String get country;
 
-  /// No description provided for @saveChanges.
+  /// Button to save changes made by the user.
   ///
   /// In en, this message translates to:
   /// **'Save Changes'**
   String get saveChanges;
 
-  /// No description provided for @logout.
+  /// Button or action to log out the user.
   ///
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
 
-  /// No description provided for @myProfile.
+  /// Label for the user's profile section.
   ///
   /// In en, this message translates to:
   /// **'My Profile'**
   String get myProfile;
 
-  /// No description provided for @favorites.
+  /// Label for the favorites section or button.
   ///
   /// In en, this message translates to:
   /// **'Favorites'**
   String get favorites;
 
-  /// No description provided for @noFavoritesYet.
+  /// Message shown when the user has no favorites yet.
   ///
   /// In en, this message translates to:
   /// **'No favorites yet'**
   String get noFavoritesYet;
 
-  /// No description provided for @tripTitle.
+  /// Label for the trip title field.
   ///
   /// In en, this message translates to:
   /// **'Trip Title'**
   String get tripTitle;
 
-  /// No description provided for @addDay.
+  /// Button to add a new day to the itinerary.
   ///
   /// In en, this message translates to:
   /// **'Add Day'**
   String get addDay;
 
-  /// No description provided for @saveItinerary.
+  /// Button to save the itinerary.
   ///
   /// In en, this message translates to:
   /// **'Save Itinerary'**
   String get saveItinerary;
 
-  /// No description provided for @myTrips.
+  /// Label for the user's trips section.
   ///
   /// In en, this message translates to:
   /// **'My Trips'**
   String get myTrips;
 
-  /// No description provided for @viewAttractionsMap.
+  /// Button to view the attractions map.
   ///
   /// In en, this message translates to:
   /// **'View Attractions Map'**
   String get viewAttractionsMap;
 
-  /// No description provided for @share.
+  /// Button to share content.
   ///
   /// In en, this message translates to:
   /// **'Share'**
   String get share;
 
-  /// No description provided for @getDirections.
+  /// Button to get directions.
   ///
   /// In en, this message translates to:
   /// **'Get Directions'**
   String get getDirections;
 
-  /// No description provided for @removeFavorite.
+  /// Button to remove an item from favorites.
   ///
   /// In en, this message translates to:
   /// **'Remove from Favorites'**
   String get removeFavorite;
 
-  /// No description provided for @saveFavorite.
+  /// Button to save an item as favorite.
   ///
   /// In en, this message translates to:
   /// **'Save to Favorites'**
   String get saveFavorite;
 
-  /// No description provided for @flutterGenL10n.
+  /// Technical string for flutter localization generation.
   ///
   /// In en, this message translates to:
   /// **'flutter gen-l10n'**
   String get flutterGenL10n;
+
+  /// Title for the home screen when the user is logged in.
+  ///
+  /// In en, this message translates to:
+  /// **'🏡 Home Screen — Logged In'**
+  String get homeScreenTitle;
+
+  /// Button label to view favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'❤️ View Favorites'**
+  String get viewFavorites;
+
+  /// A greeting message.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello'**
+  String get hello;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

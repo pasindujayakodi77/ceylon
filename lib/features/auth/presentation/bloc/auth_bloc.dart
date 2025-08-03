@@ -39,6 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           event.role,
           event.name,
           event.country,
+          event.language,
         );
         emit(AuthSuccess(user!));
       } catch (e) {

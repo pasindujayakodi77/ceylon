@@ -13,6 +13,7 @@ class SignUpRequested extends AuthEvent {
   final String role;
   final String name;
   final String country;
+  final String language;
 
   SignUpRequested(
     this.email,
@@ -20,6 +21,7 @@ class SignUpRequested extends AuthEvent {
     this.role,
     this.name,
     this.country,
+    this.language,
   );
 }
 

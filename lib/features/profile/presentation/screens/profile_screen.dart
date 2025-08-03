@@ -1,7 +1,8 @@
+import 'package:ceylon/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:ceylon/generated/app_localizations.dart';
+import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _email = '';
   String _role = '';
   bool _loading = true;
+  String _selectedLang = 'en';
 
   Future<void> _loadProfile() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -31,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _country.text = data['country'] ?? '';
       _email = data['email'] ?? '';
       _role = data['role'] ?? '';
+      _selectedLang = data['language'] ?? 'en';
     }
 
     setState(() => _loading = false);
@@ -41,7 +44,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await FirebaseFirestore.instance.collection('users').doc(uid).update({
       'name': _name.text,
       'country': _country.text,
+      'language': _selectedLang,
     });
+
+    // Update app locale
+    MyApp.setLocale(context, Locale(_selectedLang));
 
     ScaffoldMessenger.of(
       context,
@@ -74,6 +81,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextField(
               controller: _country,
               decoration: const InputDecoration(labelText: 'Country'),
+            ),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              value: _selectedLang,
+              decoration: const InputDecoration(
+                labelText: 'Preferred Language',
+              ),
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text("English")),
+                DropdownMenuItem(value: 'hi', child: Text("हिंदी")),
+                DropdownMenuItem(value: 'dv', child: Text("ދިވެހި")),
+                DropdownMenuItem(value: 'ru', child: Text("Русский")),
+                DropdownMenuItem(value: 'de', child: Text("Deutsch")),
+                DropdownMenuItem(value: 'fr', child: Text("Français")),
+                DropdownMenuItem(value: 'nl', child: Text("Nederlands")),
+              ],
+              onChanged: (val) => setState(() => _selectedLang = val!),
             ),
             const SizedBox(height: 16),
             Text("Email: $_email"),

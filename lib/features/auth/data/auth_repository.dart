@@ -23,6 +23,7 @@ class AuthRepository {
     String role,
     String name,
     String country,
+    String language,
   ) async {
     final userCredential = await _auth.createUserWithEmailAndPassword(
       email: email,
@@ -36,6 +37,7 @@ class AuthRepository {
       'role': role,
       'name': name,
       'country': country,
+      'language': language,
       'created_at': FieldValue.serverTimestamp(),
     });
 

@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
+import 'package:ceylon/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
-import 'package:ceylon/generated/app_localizations.dart';
+import 'package:ceylon/l10n/app_localizations.dart';
 import '../bloc/auth_state.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   String _selectedRole = 'tourist'; // default
+  String _selectedLang = 'en';
 
   void _signUp() {
     // Use context.read<AuthBloc>() to access the bloc and add the event
@@ -29,6 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _selectedRole,
         _name.text,
         _country.text,
+        _selectedLang,
       ),
     );
   }
@@ -45,16 +50,25 @@ class _SignupScreenState extends State<SignupScreen> {
             ).showSnackBar(SnackBar(content: Text("❌ ${state.message}")));
           }
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("✅ Login Successful")));
-
-            Future.delayed(const Duration(milliseconds: 500), () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const RoleRouter()),
+            () async {
+              final uid = FirebaseAuth.instance.currentUser!.uid;
+              final doc = await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .get();
+              final data = doc.data();
+              final langCode = data?['language'] ?? 'en';
+              MyApp.setLocale(context, Locale(langCode));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("✅ Account Created")),
               );
-            });
+              Future.delayed(const Duration(milliseconds: 400), () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const RoleRouter()),
+                );
+              });
+            }();
           }
         },
         builder: (context, state) {
@@ -73,6 +87,23 @@ class _SignupScreenState extends State<SignupScreen> {
                 TextField(
                   controller: _country,
                   decoration: const InputDecoration(labelText: 'Country'),
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  value: _selectedLang,
+                  decoration: const InputDecoration(
+                    labelText: 'Preferred Language',
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'en', child: Text("English")),
+                    DropdownMenuItem(value: 'hi', child: Text("हिंदी")),
+                    DropdownMenuItem(value: 'dv', child: Text("ދިވެހި")),
+                    DropdownMenuItem(value: 'ru', child: Text("Русский")),
+                    DropdownMenuItem(value: 'de', child: Text("Deutsch")),
+                    DropdownMenuItem(value: 'fr', child: Text("Français")),
+                    DropdownMenuItem(value: 'nl', child: Text("Nederlands")),
+                  ],
+                  onChanged: (val) => setState(() => _selectedLang = val!),
                 ),
                 const SizedBox(height: 16),
                 TextField(
