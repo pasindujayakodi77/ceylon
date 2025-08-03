@@ -1,121 +1,127 @@
+
 {
-  "@@locale": "en",
-  "appTitle": "CEYLON",
+  "@@locale": "ru",
+  "appTitle": "Цейлон",
   "@appTitle": {
     "description": "The title of the application, shown in the app bar and launcher.",
     "type": "text"
   },
-  "login": "Login",
+  "login": "Войти",
   "@login": {
     "description": "Label for the login button or screen.",
     "type": "text"
   },
-  "signup": "Sign Up",
+  "signup": "Зарегистрироваться",
   "@signup": {
     "description": "Label for the signup button or screen.",
     "type": "text"
   },
-  "email": "Email",
-  "@email": {
-    "description": "Label for the email input field.",
-    "type": "text"
-  },
-  "password": "Password",
-  "@password": {
-    "description": "Label for the password input field.",
-    "type": "text"
-  },
-  "forgotPassword": "Forgot Password?",
-  "@forgotPassword": {
-    "description": "Link or button for forgotten password recovery.",
-    "type": "text"
-  },
-  "createAccount": "Create Account",
-  "@createAccount": {
-    "description": "Button or link to create a new account.",
-    "type": "text"
-  },
-  "name": "Full Name",
-  "@name": {
-    "description": "Label for the name input field.",
-    "type": "text"
-  },
-  "country": "Country",
-  "@country": {
-    "description": "Label for the country input field or selector.",
-    "type": "text"
-  },
-  "saveChanges": "Save Changes",
-  "@saveChanges": {
-    "description": "Button to save changes made by the user.",
-    "type": "text"
-  },
-  "logout": "Logout",
-  "@logout": {
-    "description": "Button or action to log out the user.",
-    "type": "text"
-  },
-  "myProfile": "My Profile",
-  "@myProfile": {
-    "description": "Label for the user's profile section.",
-    "type": "text"
-  },
-  "favorites": "Favorites",
-  "@favorites": {
-    "description": "Label for the favorites section or button.",
-    "type": "text"
-  },
-  "noFavoritesYet": "No favorites yet",
+  "noFavoritesYet": "Нет избранного",
   "@noFavoritesYet": {
     "description": "Message shown when the user has no favorites yet.",
     "type": "text"
   },
-  "tripTitle": "Trip Title",
+  "email": "Электронная почта",
+  "@email": {
+    "description": "Label for the email input field.",
+    "type": "text"
+  },
+  "password": "Пароль",
+  "@password": {
+    "description": "Label for the password input field.",
+    "type": "text"
+  },
+  "forgotPassword": "Забыли пароль?",
+  "@forgotPassword": {
+    "description": "Link or button for forgotten password recovery.",
+    "type": "text"
+  },
+  "createAccount": "Создать аккаунт",
+  "@createAccount": {
+    "description": "Button or link to create a new account.",
+    "type": "text"
+  },
+  "name": "Полное имя",
+  "@name": {
+    "description": "Label for the name input field.",
+    "type": "text"
+  },
+  "country": "Страна",
+  "@country": {
+    "description": "Label for the country input field or selector.",
+    "type": "text"
+  },
+  "saveChanges": "Сохранить изменения",
+  "@saveChanges": {
+    "description": "Button to save changes made by the user.",
+    "type": "text"
+  },
+  "logout": "Выйти",
+  "@logout": {
+    "description": "Button or action to log out the user.",
+    "type": "text"
+  },
+  "myProfile": "Мой профиль",
+  "@myProfile": {
+    "description": "Label for the user's profile section.",
+    "type": "text"
+  },
+  "favorites": "Избранное",
+  "@favorites": {
+    "description": "Label for the favorites section or button.",
+    "type": "text"
+  },
+  "noFavorites": "Нет избранного",
+  "@noFavorites": {
+    "description": "Message shown when there are no favorites.",
+    "type": "text"
+  },
+  "tripTitle": "Название поездки",
   "@tripTitle": {
     "description": "Label for the trip title field.",
     "type": "text"
   },
-  "addDay": "Add Day",
+  "addDay": "Добавить день",
   "@addDay": {
     "description": "Button to add a new day to the itinerary.",
     "type": "text"
   },
-  "saveItinerary": "Save Itinerary",
+  "saveItinerary": "Сохранить маршрут",
   "@saveItinerary": {
     "description": "Button to save the itinerary.",
     "type": "text"
   },
-  "myTrips": "My Trips",
+  "myTrips": "Мои поездки",
   "@myTrips": {
     "description": "Label for the user's trips section.",
     "type": "text"
   },
-  "viewAttractionsMap": "View Attractions Map",
+  "viewAttractionsMap": "Посмотреть карту достопримечательностей",
   "@viewAttractionsMap": {
     "description": "Button to view the attractions map.",
     "type": "text"
   },
-  "share": "Share",
+  "share": "Поделиться",
   "@share": {
     "description": "Button to share content.",
     "type": "text"
   },
-  "getDirections": "Get Directions",
+  "getDirections": "Получить маршрут",
   "@getDirections": {
     "description": "Button to get directions.",
     "type": "text"
   },
-  "removeFavorite": "Remove from Favorites",
+  "removeFavorite": "Удалить из избранного",
   "@removeFavorite": {
     "description": "Button to remove an item from favorites.",
     "type": "text"
   },
-  "saveFavorite": "Save to Favorites",
-  "@saveFavorite": {
+  "saveFavorite": "Добавить в избранное"
+  ,"@saveFavorite": {
     "description": "Button to save an item as favorite.",
     "type": "text"
-  },
-  "flutterGenL10n": "flutter gen-l10n"
+  }
+  ,"flutterGenL10n": "flutter gen-l10n"
   ,"@flutterGenL10n": {
     "description": "Technical string for flutter localization generation.",
     "type": "text"

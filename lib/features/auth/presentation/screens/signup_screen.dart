@@ -1,10 +1,9 @@
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/auth_repository.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
-
+import 'package:ceylon/generated/app_localizations.dart';
 import '../bloc/auth_state.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -22,6 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   String _selectedRole = 'tourist'; // default
 
   void _signUp() {
+    // Use context.read<AuthBloc>() to access the bloc and add the event
     context.read<AuthBloc>().add(
       SignUpRequested(
         _email.text,
@@ -65,7 +65,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 40),
                 TextField(
                   controller: _name,
-                  decoration: const InputDecoration(labelText: 'Full Name'),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.name,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -75,13 +77,17 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 16),
                 TextField(
                   controller: _email,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _password,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.password,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
@@ -101,7 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: _signUp,
                   child: state is AuthLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Create Account"),
+                      : Text(AppLocalizations.of(context)!.createAccount),
                 ),
               ],
             ),

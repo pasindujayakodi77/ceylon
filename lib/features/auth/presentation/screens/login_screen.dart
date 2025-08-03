@@ -7,6 +7,7 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import 'signup_screen.dart';
+import 'package:ceylon/generated/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,9 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ).showSnackBar(SnackBar(content: Text("❌ ${state.message}")));
           }
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("✅ Login Successful")));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "✅ ${AppLocalizations.of(context)!.login} Successful",
+                ),
+              ),
+            );
 
             Future.delayed(const Duration(milliseconds: 500), () {
               Navigator.pushReplacement(
@@ -79,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
-                    child: const Text("Forgot password?"),
+                    child: Text(AppLocalizations.of(context)!.forgotPassword),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -87,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _signIn,
                   child: state is AuthLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Login"),
+                      : Text(AppLocalizations.of(context)!.login),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
@@ -105,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const SignupScreen()),
                     );
                   },
-                  child: const Text("Don't have an account? Sign up"),
+                  child: Text(AppLocalizations.of(context)!.signup),
                 ),
                 // ... Phone login option removed ...
               ],

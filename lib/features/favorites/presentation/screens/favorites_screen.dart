@@ -1,6 +1,8 @@
 import 'package:ceylon/features/favorites/presentation/screens/bookmarks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:ceylon/generated/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -16,7 +18,7 @@ class FavoritesScreen extends StatelessWidget {
         .orderBy('saved_at', descending: true);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("❤️ My Favorites")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.favorites)),
       body: Column(
         children: [
           Padding(
@@ -39,7 +41,9 @@ class FavoritesScreen extends StatelessWidget {
                   return const Center(child: CircularProgressIndicator());
                 final docs = snapshot.data!.docs;
                 if (docs.isEmpty)
-                  return const Center(child: Text("No favorites yet"));
+                  return Center(
+                    child: Text(AppLocalizations.of(context)!.noFavoritesYet),
+                  );
 
                 return ListView.builder(
                   itemCount: docs.length,

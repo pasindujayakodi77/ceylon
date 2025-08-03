@@ -3,6 +3,7 @@ import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:ceylon/generated/app_localizations.dart';
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
@@ -73,7 +74,7 @@ class TouristHomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const LoginScreen()),
                 );
               },
-              child: const Text("Logout"),
+              child: Text(AppLocalizations.of(context)!.logout),
             ),
           ],
         ),

@@ -1,116 +1,122 @@
+
 {
-  "@@locale": "en",
-  "appTitle": "CEYLON",
+  "@@locale": "de",
+  "appTitle": "Ceylon",
   "@appTitle": {
     "description": "The title of the application, shown in the app bar and launcher.",
     "type": "text"
   },
-  "login": "Login",
+  "login": "Anmelden",
   "@login": {
     "description": "Label for the login button or screen.",
     "type": "text"
   },
-  "signup": "Sign Up",
+  "signup": "Registrieren",
   "@signup": {
     "description": "Label for the signup button or screen.",
     "type": "text"
   },
-  "email": "Email",
-  "@email": {
-    "description": "Label for the email input field.",
-    "type": "text"
-  },
-  "password": "Password",
-  "@password": {
-    "description": "Label for the password input field.",
-    "type": "text"
-  },
-  "forgotPassword": "Forgot Password?",
-  "@forgotPassword": {
-    "description": "Link or button for forgotten password recovery.",
-    "type": "text"
-  },
-  "createAccount": "Create Account",
-  "@createAccount": {
-    "description": "Button or link to create a new account.",
-    "type": "text"
-  },
-  "name": "Full Name",
-  "@name": {
-    "description": "Label for the name input field.",
-    "type": "text"
-  },
-  "country": "Country",
-  "@country": {
-    "description": "Label for the country input field or selector.",
-    "type": "text"
-  },
-  "saveChanges": "Save Changes",
-  "@saveChanges": {
-    "description": "Button to save changes made by the user.",
-    "type": "text"
-  },
-  "logout": "Logout",
-  "@logout": {
-    "description": "Button or action to log out the user.",
-    "type": "text"
-  },
-  "myProfile": "My Profile",
-  "@myProfile": {
-    "description": "Label for the user's profile section.",
-    "type": "text"
-  },
-  "favorites": "Favorites",
-  "@favorites": {
-    "description": "Label for the favorites section or button.",
-    "type": "text"
-  },
-  "noFavoritesYet": "No favorites yet",
+  "noFavoritesYet": "Noch keine Favoriten",
   "@noFavoritesYet": {
     "description": "Message shown when the user has no favorites yet.",
     "type": "text"
   },
-  "tripTitle": "Trip Title",
+  "email": "E-Mail",
+  "@email": {
+    "description": "Label for the email input field.",
+    "type": "text"
+  },
+  "password": "Passwort",
+  "@password": {
+    "description": "Label for the password input field.",
+    "type": "text"
+  },
+  "forgotPassword": "Passwort vergessen?",
+  "@forgotPassword": {
+    "description": "Link or button for forgotten password recovery.",
+    "type": "text"
+  },
+  "createAccount": "Konto erstellen",
+  "@createAccount": {
+    "description": "Button or link to create a new account.",
+    "type": "text"
+  },
+  "name": "Vollständiger Name",
+  "@name": {
+    "description": "Label for the name input field.",
+    "type": "text"
+  },
+  "country": "Land",
+  "@country": {
+    "description": "Label for the country input field or selector.",
+    "type": "text"
+  },
+  "saveChanges": "Änderungen speichern",
+  "@saveChanges": {
+    "description": "Button to save changes made by the user.",
+    "type": "text"
+  },
+  "logout": "Abmelden",
+  "@logout": {
+    "description": "Button or action to log out the user.",
+    "type": "text"
+  },
+  "myProfile": "Mein Profil",
+  "@myProfile": {
+    "description": "Label for the user's profile section.",
+    "type": "text"
+  },
+  "favorites": "Favoriten",
+  "@favorites": {
+    "description": "Label for the favorites section or button.",
+    "type": "text"
+  },
+  "noFavorites": "Keine Favoriten vorhanden",
+  "@noFavorites": {
+    "description": "Message shown when there are no favorites.",
+    "type": "text"
+  },
+  "tripTitle": "Reisetitel",
   "@tripTitle": {
     "description": "Label for the trip title field.",
     "type": "text"
   },
-  "addDay": "Add Day",
+  "addDay": "Tag hinzufügen",
   "@addDay": {
     "description": "Button to add a new day to the itinerary.",
     "type": "text"
   },
-  "saveItinerary": "Save Itinerary",
+  "saveItinerary": "Reiseplan speichern",
   "@saveItinerary": {
     "description": "Button to save the itinerary.",
     "type": "text"
   },
-  "myTrips": "My Trips",
+  "myTrips": "Meine Reisen",
   "@myTrips": {
     "description": "Label for the user's trips section.",
     "type": "text"
   },
-  "viewAttractionsMap": "View Attractions Map",
+  "viewAttractionsMap": "Sehenswürdigkeiten anzeigen",
   "@viewAttractionsMap": {
     "description": "Button to view the attractions map.",
     "type": "text"
   },
-  "share": "Share",
+  "share": "Teilen",
   "@share": {
     "description": "Button to share content.",
     "type": "text"
   },
-  "getDirections": "Get Directions",
+  "getDirections": "Route anzeigen",
   "@getDirections": {
     "description": "Button to get directions.",
     "type": "text"
   },
-  "removeFavorite": "Remove from Favorites",
+  "removeFavorite": "Aus Favoriten entfernen",
   "@removeFavorite": {
     "description": "Button to remove an item from favorites.",
     "type": "text"
   },
-  "saveFavorite": "Save to Favorites",
+  "saveFavorite": "Zu Favoriten hinzufügen",
   "@saveFavorite": {
     "description": "Button to save an item as favorite.",
     "type": "text"

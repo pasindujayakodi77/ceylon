@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:ceylon/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -59,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("My Profile")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.myProfile)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -79,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _saveProfile,
-              child: const Text("Save Changes"),
+              child: Text(AppLocalizations.of(context)!.saveChanges),
             ),
           ],
         ),
