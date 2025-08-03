@@ -1,6 +1,8 @@
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +32,22 @@ void main() async {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {'/home': (_) => const TouristHomeScreen()},
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('hi'),
+          Locale('dv'),
+          Locale('ru'),
+          Locale('de'),
+          Locale('fr'),
+          Locale('nl'),
+        ],
+        locale: Locale('en'), // Default
         home: seenOnboarding
             ? (isSignedIn ? const RoleRouter() : const LoginScreen())
             : const OnboardingScreen(),
