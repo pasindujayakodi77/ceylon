@@ -57,7 +57,42 @@ class FavoritesScreen extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                         title: Text(data['name']),
-                        subtitle: Text(data['desc']),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data['desc']),
+                            StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('places')
+                                  .doc(data['name'])
+                                  .collection('reviews')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData ||
+                                    snapshot.data!.docs.isEmpty) {
+                                  return const Text(
+                                    "⭐ No ratings yet",
+                                    style: TextStyle(fontSize: 12),
+                                  );
+                                }
+                                final docs = snapshot.data!.docs;
+                                final ratings = docs
+                                    .map((doc) => (doc['rating'] as num))
+                                    .toList();
+                                final avgRating =
+                                    ratings.reduce((a, b) => a + b) /
+                                    ratings.length;
+                                return Text(
+                                  "⭐ ${avgRating.toStringAsFixed(1)} (${docs.length})",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.amber,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
