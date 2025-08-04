@@ -1,4 +1,5 @@
 import 'package:ceylon/main.dart';
+import 'package:ceylon/features/reviews/presentation/screens/my_reviews_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -102,6 +103,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 16),
             Text("Email: $_email"),
             Text("Role: $_role"),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MyReviewsScreen()),
+                );
+              },
+              child: const Text("✏️ View My Reviews"),
+            ),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _saveProfile,
