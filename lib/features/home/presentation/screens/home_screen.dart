@@ -9,6 +9,7 @@ import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
 import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.dart';
+import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_screen.dart';
 
 class TouristHomeScreen extends StatelessWidget {
   const TouristHomeScreen({super.key});
@@ -64,6 +65,19 @@ class TouristHomeScreen extends StatelessWidget {
               );
             },
             child: Text(AppLocalizations.of(context)!.viewAttractionsMap),
+          ),
+          const SizedBox(height: 16),
+          TextButton.icon(
+            icon: const Icon(Icons.currency_exchange),
+            label: const Text('Currency & Tipping'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const CurrencyAndTipsScreen(),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 16),
           // Carousel Section

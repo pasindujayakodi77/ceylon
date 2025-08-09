@@ -1,0 +1,124 @@
+{
+  "countries": {
+    "LK": {
+      "name": "Sri Lanka",
+      "currency": "LKR",
+      "general": "Tipping is appreciated but not mandatory.",
+      "services": {
+        "restaurant": "5–10% if service charge not included.",
+        "cafe": "Round up or 5%.",
+        "hotel": "Porter LKR 200–500 per bag; housekeeping LKR 300–600/night.",
+        "tuktuk_taxi": "Round up or add ~LKR 100.",
+        "guide": "LKR 1,500–3,000 for half-day; LKR 3,000–6,000 for full day."
+      }
+    },
+    "US": {
+      "name": "United States",
+      "currency": "USD",
+      "general": "Tipping is customary; many workers rely on tips.",
+      "services": {
+        "restaurant": "18–20% of bill before tax.",
+        "cafe": "1–2 USD in jar or ~15%.",
+        "hotel": "Porter $2–$5 per bag; housekeeping $3–$5/night.",
+        "tuktuk_taxi": "Taxis/Rideshare 10–15%.",
+        "guide": "$10–$20 per person for day tours."
+      }
+    },
+    "GB": {
+      "name": "United Kingdom",
+      "currency": "GBP",
+      "general": "Service charge may be included; otherwise tip modestly.",
+      "services": {
+        "restaurant": "10–12.5% if service not included.",
+        "cafe": "Round up or small coins.",
+        "hotel": "Porter £1–£2 per bag; housekeeping £2–£5/night.",
+        "tuktuk_taxi": "Black cab: round up or ~10%.",
+        "guide": "£5–£10 per person for day tours."
+      }
+    },
+    "AU": {
+      "name": "Australia",
+      "currency": "AUD",
+      "general": "Not expected, appreciated for great service.",
+      "services": {
+        "restaurant": "0–10% (optional).",
+        "cafe": "Loose change or round up.",
+        "hotel": "Porter A$2–A$3 per bag.",
+        "tuktuk_taxi": "Round up fare.",
+        "guide": "A$10–A$20 per person for day tours."
+      }
+    },
+    "IN": {
+      "name": "India",
+      "currency": "INR",
+      "general": "Small tips common; some bills include service charge.",
+      "services": {
+        "restaurant": "5–10% if service charge not included.",
+        "cafe": "Round up.",
+        "hotel": "Porter ₹50–₹100 per bag; housekeeping ₹100–₹200/night.",
+        "tuktuk_taxi": "Round up or ₹20–₹50.",
+        "guide": "₹300–₹800 per person per day."
+      }
+    },
+    "MV": {
+      "name": "Maldives",
+      "currency": "MVR",
+      "general": "Service charge often included; small tips appreciated.",
+      "services": {
+        "restaurant": "5–10% if service not included.",
+        "cafe": "Round up.",
+        "hotel": "Porter MVR 20–50 per bag.",
+        "tuktuk_taxi": "Resort transport usually includes service.",
+        "guide": "MVR 50–150 per person."
+      }
+    },
+    "RU": {
+      "name": "Russia",
+      "currency": "RUB",
+      "general": "Modest tipping is common in cities.",
+      "services": {
+        "restaurant": "5–10% if service not included.",
+        "cafe": "Round up.",
+        "hotel": "Porter ₽100–200 per bag.",
+        "tuktuk_taxi": "Round up fare.",
+        "guide": "₽300–₽700 per person."
+      }
+    },
+    "DE": {
+      "name": "Germany",
+      "currency": "EUR",
+      "general": "Tip directly to the server; small % customary.",
+      "services": {
+        "restaurant": "5–10%.",
+        "cafe": "Round up or €1–€2.",
+        "hotel": "Porter €1–€2 per bag; housekeeping €1–€3/night.",
+        "tuktuk_taxi": "Round up or ~10%.",
+        "guide": "€5–€10 per person."
+      }
+    },
+    "FR": {
+      "name": "France",
+      "currency": "EUR",
+      "general": "Service compris on many bills; small tip appreciated.",
+      "services": {
+        "restaurant": "0–10% if service not included.",
+        "cafe": "Leave coins.",
+        "hotel": "Porter €1–€2 per bag.",
+        "tuktuk_taxi": "Round up.",
+        "guide": "€5–€10 per person."
+      }
+    },
+    "NL": {
+      "name": "Netherlands",
+      "currency": "EUR",
+      "general": "Service included; round up for good service.",
+      "services": {
+        "restaurant": "0–10% (round up common).",
+        "cafe": "Leave coins.",
+        "hotel": "Porter €1–€2 per bag.",
+        "tuktuk_taxi": "Round up.",
+        "guide": "€5–€10 per person."
+      }
+    }
+  }
+}
