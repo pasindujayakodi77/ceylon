@@ -11,6 +11,8 @@ import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_sc
 import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_screen.dart';
 
+import 'package:ceylon/features/holidays/presentation/screens/holiday_calendar_screen.dart';
+
 class TouristHomeScreen extends StatelessWidget {
   const TouristHomeScreen({super.key});
 
@@ -75,6 +77,19 @@ class TouristHomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => const CurrencyAndTipsScreen(),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          TextButton.icon(
+            icon: const Icon(Icons.event_available),
+            label: const Text('Public Holiday Calendar'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const HolidayCalendarScreen(),
                 ),
               );
             },

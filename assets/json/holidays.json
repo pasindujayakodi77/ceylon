@@ -1,0 +1,114 @@
+{
+  "schema": "v1",
+  "countries": {
+    "LK": {
+      "name": "Sri Lanka",
+      "holidays": [
+        {"date": "2025-01-14", "name": "Tamil Thai Pongal Day", "type": "cultural"},
+        {"date": "2025-02-04", "name": "Independence Day", "type": "public"},
+        {"date": "2025-04-13", "name": "Sinhala & Tamil New Year (Eve)", "type": "cultural"},
+        {"date": "2025-04-14", "name": "Sinhala & Tamil New Year", "type": "public"},
+        {"date": "2025-05-12", "name": "Vesak (Poya)", "type": "religious"},
+        {"date": "2025-10-02", "name": "Milad‑un‑Nabi (Mawlid)", "type": "religious"},
+        {"date": "2025-12-25", "name": "Christmas Day", "type": "public"}
+      ]
+    },
+    "US": {
+      "name": "United States",
+      "holidays": [
+        {"date": "2025-01-01", "name": "New Year’s Day", "type": "public"},
+        {"date": "2025-01-20", "name": "Martin Luther King Jr. Day", "type": "public"},
+        {"date": "2025-07-04", "name": "Independence Day", "type": "public"},
+        {"date": "2025-11-27", "name": "Thanksgiving Day", "type": "public"},
+        {"date": "2025-12-25", "name": "Christmas Day", "type": "public"}
+      ]
+    },
+    "GB": {
+      "name": "United Kingdom",
+      "holidays": [
+        {"date": "2025-01-01", "name": "New Year’s Day", "type": "public"},
+        {"date": "2025-04-18", "name": "Good Friday", "type": "religious"},
+        {"date": "2025-04-21", "name": "Easter Monday", "type": "religious"},
+        {"date": "2025-05-05", "name": "Early May Bank Holiday", "type": "public"},
+        {"date": "2025-12-25", "name": "Christmas Day", "type": "public"},
+        {"date": "2025-12-26", "name": "Boxing Day", "type": "public"}
+      ]
+    },
+    "AU": {
+      "name": "Australia",
+      "holidays": [
+        {"date": "2025-01-01", "name": "New Year’s Day", "type": "public"},
+        {"date": "2025-01-27", "name": "Australia Day (Observed)", "type": "public"},
+        {"date": "2025-04-25", "name": "ANZAC Day", "type": "public"},
+        {"date": "2025-12-25", "name": "Christmas Day", "type": "public"},
+        {"date": "2025-12-26", "name": "Boxing Day", "type": "public"}
+      ]
+    },
+    "IN": {
+      "name": "India",
+      "holidays": [
+        {"date": "2025-01-26", "name": "Republic Day", "type": "public"},
+        {"date": "2025-03-14", "name": "Holi", "type": "cultural"},
+        {"date": "2025-08-15", "name": "Independence Day", "type": "public"},
+        {"date": "2025-10-20", "name": "Diwali (Deepavali)", "type": "cultural"},
+        {"date": "2025-12-25", "name": "Christmas Day", "type": "public"}
+      ]
+    },
+    "MV": {
+      "name": "Maldives",
+      "holidays": [
+        {"date": "2025-01-01", "name": "New Year’s Day", "type": "public"},
+        {"date": "2025-03-31", "name": "First of Ramadan", "type": "religious"},
+        {"date": "2025-05-01", "name": "Labor Day", "type": "public"},
+        {"date": "2025-05-31", "name": "Eid al‑Adha", "type": "religious"},
+        {"date": "2025-07-26", "name": "Independence Day", "type": "public"}
+      ]
+    },
+    "RU": {
+      "name": "Russia",
+      "holidays": [
+        {"date": "2025-01-01", "name": "New Year Holidays", "type": "public"},
+        {"date": "2025-01-07", "name": "Orthodox Christmas Day", "type": "religious"},
+        {"date": "2025-02-23", "name": "Defender of the Fatherland Day", "type": "public"},
+        {"date": "2025-05-09", "name": "Victory Day", "type": "public"},
+        {"date": "2025-12-31", "name": "New Year’s Eve", "type": "observance"}
+      ]
+    },
+    "DE": {
+      "name": "Germany",
+      "holidays": [
+        {"date": "2025-01-01", "name": "Neujahr", "type": "public"},
+        {"date": "2025-04-18", "name": "Karfreitag (Good Friday)", "type": "religious"},
+        {"date": "2025-04-21", "name": "Ostermontag (Easter Monday)", "type": "religious"},
+        {"date": "2025-10-03", "name": "German Unity Day", "type": "public"},
+        {"date": "2025-12-25", "name": "Weihnachtstag", "type": "public"}
+      ]
+    },
+    "FR": {
+      "name": "France",
+      "holidays": [
+        {"date": "2025-01-01", "name": "Jour de l’An", "type": "public"},
+        {"date": "2025-04-21", "name": "Lundi de Pâques", "type": "religious"},
+        {"date": "2025-05-01", "name": "Fête du Travail", "type": "public"},
+        {"date": "2025-07-14", "name": "Fête Nationale (Bastille Day)", "type": "public"},
+        {"date": "2025-12-25", "name": "Noël", "type": "public"}
+      ]
+    },
+    "NL": {
+      "name": "Netherlands",
+      "holidays": [
+        {"date": "2025-01-01", "name": "Nieuwjaarsdag", "type": "public"},
+        {"date": "2025-04-27", "name": "King’s Day", "type": "public"},
+        {"date": "2025-05-29", "name": "Ascension Day", "type": "religious"},
+        {"date": "2025-12-25", "name": "Eerste Kerstdag", "type": "public"},
+        {"date": "2025-12-26", "name": "Tweede Kerstdag", "type": "public"}
+      ]
+    }
+  },
+  "types": {
+    "public": {"label": "Public", "color": "#1976D2"},
+    "religious": {"label": "Religious", "color": "#7B1FA2"},
+    "cultural": {"label": "Cultural", "color": "#2E7D32"},
+    "observance": {"label": "Observance", "color": "#F57C00"}
+  }
+}
