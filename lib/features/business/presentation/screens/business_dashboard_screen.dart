@@ -1,3 +1,4 @@
+import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,18 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    TextButton.icon(
+                      icon: const Icon(Icons.reviews),
+                      label: const Text('Respond to Reviews'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const BusinessReviewsScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     TextButton.icon(
                       icon: const Icon(Icons.insights),
                       label: const Text('View Analytics'),
