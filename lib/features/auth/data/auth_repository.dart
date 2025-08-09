@@ -57,12 +57,11 @@ class AuthRepository {
         return userCredential.user;
       } else {
         // Android/iOS flow
-        final googleUser = await GoogleSignIn().signIn();
-        if (googleUser == null) return null;
-
+        final googleSignIn = GoogleSignIn.instance;
+        await googleSignIn.initialize();
+        final googleUser = await googleSignIn.authenticate();
         final googleAuth = await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
         final userCredential = await _auth.signInWithCredential(credential);

@@ -18,7 +18,7 @@ class _AttractionsMapScreenState extends State<AttractionsMapScreen> {
 
   // Highlight state
   LatLng? _selectedLoc;
-  Map<String, dynamic>? _selectedPlace;
+  // Removed unused _selectedPlace field
   Timer? _clearTimer;
 
   // Recent selections (most recent first)
@@ -79,7 +79,6 @@ class _AttractionsMapScreenState extends State<AttractionsMapScreen> {
 
     setState(() {
       _selectedLoc = target;
-      _selectedPlace = place;
     });
 
     _addToRecent(place);
@@ -220,13 +219,13 @@ class _AttractionsMapScreenState extends State<AttractionsMapScreen> {
               return FlutterMap(
                 mapController: _mapController,
                 options: MapOptions(
-                  center: places.isNotEmpty
+                  initialCenter: places.isNotEmpty
                       ? LatLng(
                           (places.first['lat'] as num).toDouble(),
                           (places.first['lng'] as num).toDouble(),
                         )
                       : const LatLng(7.8731, 80.7718),
-                  zoom: 7.5,
+                  initialZoom: 7.5,
                 ),
                 children: [
                   TileLayer(
