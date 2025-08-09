@@ -1,8 +1,10 @@
+import 'package:ceylon/features/business/data/business_analytics_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ceylon/core/booking/booking_utils.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BookingButtons extends StatelessWidget {
+  final String businessId; // New required parameter for analytics
   final String? phone; // WhatsApp number (E.164 like +9477..., or any digits)
   final String? bookingFormUrl; // Google Form or any URL
   final String title; // Business or Event name
@@ -11,6 +13,7 @@ class BookingButtons extends StatelessWidget {
 
   const BookingButtons({
     super.key,
+    required this.businessId, // Added required parameter
     required this.phone,
     required this.bookingFormUrl,
     required this.title,
@@ -50,7 +53,11 @@ class BookingButtons extends StatelessWidget {
                   phone: phone!.trim(),
                   message: _defaultMessage(),
                 );
-                if (!ok && context.mounted) {
+                if (ok) {
+                  await BusinessAnalyticsService.instance.recordBookingWhatsApp(
+                    businessId,
+                  );
+                } else if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Could not open WhatsApp.')),
                   );
@@ -67,7 +74,11 @@ class BookingButtons extends StatelessWidget {
               onPressed: () async {
                 final uri = buildFormUri(bookingFormUrl!.trim());
                 final ok = await openUri(uri);
-                if (!ok && context.mounted) {
+                if (ok) {
+                  await BusinessAnalyticsService.instance.recordBookingForm(
+                    businessId,
+                  );
+                } else if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Could not open form.')),
                   );

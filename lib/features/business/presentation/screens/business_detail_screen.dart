@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ceylon/core/booking/widgets/booking_buttons.dart';
 import 'package:ceylon/features/events/presentation/widgets/published_events_carousel.dart';
 import 'package:ceylon/features/business/data/business_analytics_service.dart';
+import 'package:ceylon/features/business/presentation/widgets/business_feedback_sheet.dart';
 
 class BusinessDetailScreen extends StatefulWidget {
   final String businessId;
@@ -177,6 +178,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
 
                 // Booking buttons
                 BookingButtons(
+                  businessId: widget.businessId, // Added required parameter
                   phone: (phone != null && phone.trim().isNotEmpty)
                       ? phone
                       : null,
@@ -185,6 +187,21 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
                       : null,
                   title: name,
                   contextNote: 'Inquiry from CEYLON app',
+                ),
+
+                const SizedBox(height: 16),
+                TextButton.icon(
+                  icon: const Icon(Icons.feedback_outlined),
+                  label: const Text('Send feedback to this business'),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) =>
+                          BusinessFeedbackSheet(businessId: widget.businessId),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 16),
