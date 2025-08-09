@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
 import '../screens/business_analytics_screen.dart';
+import '../screens/business_events_screen.dart';
 
 class BusinessDashboardScreen extends StatefulWidget {
   const BusinessDashboardScreen({super.key});
@@ -142,6 +143,19 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => const BusinessAnalyticsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    TextButton.icon(
+                      icon: const Icon(Icons.event_available),
+                      label: const Text('Manage Events'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const BusinessEventsScreen(),
                           ),
                         );
                       },
