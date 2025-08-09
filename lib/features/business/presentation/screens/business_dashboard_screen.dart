@@ -1,4 +1,5 @@
 import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,11 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
   bool _loading = false;
   String? _businessId;
 
+  // Promotion controls
+  bool _promoted = false;
+  final _promotedWeightCtrl = TextEditingController(text: '10');
+  DateTime? _promotedUntil;
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +65,9 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
       _photoCtrl.text = data['photo'] ?? '';
       _phoneCtrl.text = data['phone'] ?? '';
       _categoryCtrl.text = data['category'] ?? '';
+      _promoted = (data['promoted'] as bool?) ?? false;
+      _promotedWeightCtrl.text = (data['promotedWeight']?.toString() ?? '10');
+      _promotedUntil = (data['promotedUntil'] as Timestamp?)?.toDate();
     }
     setState(() {});
   }
@@ -76,6 +85,13 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
       'phone': _phoneCtrl.text.trim(),
       'category': _categoryCtrl.text.trim(),
       'updated_at': FieldValue.serverTimestamp(),
+      'promoted': _promoted,
+      'promotedWeight': int.tryParse(
+        _promotedWeightCtrl.text.trim(),
+      )?.clamp(1, 100),
+      'promotedUntil': _promotedUntil == null
+          ? null
+          : Timestamp.fromDate(_promotedUntil!),
     };
 
     if (_businessId == null) {
@@ -203,6 +219,68 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                     TextFormField(
                       controller: _categoryCtrl,
                       decoration: const InputDecoration(labelText: 'Category'),
+                    ),
+                    const SizedBox(height: 20),
+                    SwitchListTile(
+                      title: const Text('Promote on Home Carousel'),
+                      subtitle: const Text(
+                        'Show this business on Tourist Home',
+                      ),
+                      value: _promoted,
+                      onChanged: (v) => setState(() => _promoted = v),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _promotedWeightCtrl,
+                            decoration: const InputDecoration(
+                              labelText: 'Promotion Priority (1–100)',
+                              helperText: 'Higher shows earlier',
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            icon: const Icon(Icons.event),
+                            label: Text(
+                              _promotedUntil == null
+                                  ? 'Set End Date'
+                                  : 'Ends: ${DateFormat('yyyy-MM-dd HH:mm').format(_promotedUntil!)}',
+                            ),
+                            onPressed: () async {
+                              final now = DateTime.now();
+                              final d = await showDatePicker(
+                                context: context,
+                                initialDate:
+                                    _promotedUntil ??
+                                    now.add(const Duration(days: 7)),
+                                firstDate: now,
+                                lastDate: now.add(const Duration(days: 365)),
+                              );
+                              if (d == null) return;
+                              final t = await showTimePicker(
+                                context: context,
+                                initialTime: const TimeOfDay(
+                                  hour: 12,
+                                  minute: 0,
+                                ),
+                              );
+                              setState(() {
+                                _promotedUntil = DateTime(
+                                  d.year,
+                                  d.month,
+                                  d.day,
+                                  t?.hour ?? 0,
+                                  t?.minute ?? 0,
+                                );
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
