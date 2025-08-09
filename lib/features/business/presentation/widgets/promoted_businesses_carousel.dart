@@ -1,3 +1,4 @@
+import 'package:ceylon/core/booking/widgets/verified_badge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -91,6 +92,7 @@ class PromotedBusinessesCarousel extends StatelessWidget {
             avgRating: (data['avg_rating'] as num?)?.toDouble(),
             reviewCount: (data['review_count'] as num?)?.toInt() ?? 0,
             description: (data['description'] ?? '') as String,
+            verified: (data['verified'] as bool?) ?? false,
           );
         }).toList();
 
@@ -137,6 +139,7 @@ class _BusinessCard extends StatelessWidget {
   final double? avgRating;
   final int reviewCount;
   final String description;
+  final bool verified;
 
   const _BusinessCard({
     required this.businessId,
@@ -146,6 +149,7 @@ class _BusinessCard extends StatelessWidget {
     required this.avgRating,
     required this.reviewCount,
     required this.description,
+    required this.verified,
   });
 
   @override
@@ -158,59 +162,70 @@ class _BusinessCard extends StatelessWidget {
       child: Card(
         elevation: 3,
         clipBehavior: Clip.antiAlias,
-        child: Column(
+        child: Stack(
           children: [
-            if (photo.isNotEmpty)
-              AspectRatio(
-                aspectRatio: 16 / 9,
-                child: Image.network(photo, fit: BoxFit.cover),
-              )
-            else
-              const AspectRatio(
-                aspectRatio: 16 / 9,
-                child: ColoredBox(
-                  color: Color(0xFFEFEFEF),
-                  child: Center(child: Icon(Icons.store, size: 48)),
-                ),
-              ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+            Column(
+              children: [
+                if (photo.isNotEmpty)
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Image.network(photo, fit: BoxFit.cover),
+                  )
+                else
+                  const AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: ColoredBox(
+                      color: Color(0xFFEFEFEF),
+                      child: Center(child: Icon(Icons.store, size: 48)),
+                    ),
                   ),
-                  const SizedBox(height: 4),
-                  Row(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (avgRating != null)
-                        Text(
-                          "⭐ ${avgRating!.toStringAsFixed(1)} ($reviewCount)",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      const SizedBox(width: 8),
-                      Chip(
-                        label: Text(category),
-                        visualDensity: VisualDensity.compact,
-                        backgroundColor: Colors.blue.shade50,
+                      Text(
+                        name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          if (avgRating != null)
+                            Text(
+                              "⭐ ${avgRating!.toStringAsFixed(1)} ($reviewCount)",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.amber,
+                              ),
+                            ),
+                          const SizedBox(width: 8),
+                          Chip(
+                            label: Text(category),
+                            visualDensity: VisualDensity.compact,
+                            backgroundColor: Colors.blue.shade50,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(height: 1.2),
+                      ),
+                      const SizedBox(height: 4),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(height: 1.2),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+            if (verified)
+              Positioned(
+                left: 8,
+                top: 8,
+                child: VerifiedBadge(size: 16, businessId: businessId),
+              ),
           ],
         ),
       ),

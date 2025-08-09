@@ -3,6 +3,7 @@ import 'package:ceylon/features/business/presentation/screens/business_events_sc
 import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
+import 'package:ceylon/features/business/presentation/widgets/request_verification_sheet.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -381,6 +382,43 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                       ],
                     ),
 
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        if (_businessId != null)
+                          FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                            future: FirebaseFirestore.instance
+                                .collection('businesses')
+                                .doc(_businessId!)
+                                .get(),
+                            builder: (context, snap) {
+                              final isVerified =
+                                  (snap.data?.data()?['verified'] as bool?) ??
+                                  false;
+                              return isVerified
+                                  ? const VerifiedStatusPill(verified: true)
+                                  : const VerifiedStatusPill(verified: false);
+                            },
+                          ),
+                        const Spacer(),
+                        if (_businessId != null)
+                          OutlinedButton.icon(
+                            icon: const Icon(Icons.verified_user_outlined),
+                            label: const Text('Request Verification'),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => RequestVerificationSheet(
+                                  businessId: _businessId!,
+                                ),
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
                       onPressed: _saveBusiness,
@@ -391,6 +429,43 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                 ),
               ),
             ),
+    );
+  }
+}
+
+class VerifiedStatusPill extends StatelessWidget {
+  final bool verified;
+  const VerifiedStatusPill({super.key, required this.verified});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: verified ? const Color(0xFFE3F2FD) : Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: verified ? const Color(0xFF90CAF9) : Colors.grey.shade400,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            verified ? Icons.verified : Icons.help_outline,
+            size: 16,
+            color: verified ? const Color(0xFF1E88E5) : Colors.grey,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            verified ? 'Verified' : 'Not verified',
+            style: TextStyle(
+              color: verified ? const Color(0xFF1565C0) : Colors.grey.shade700,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

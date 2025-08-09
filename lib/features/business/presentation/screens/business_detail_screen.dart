@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ceylon/core/booking/widgets/booking_buttons.dart';
+import 'package:ceylon/core/booking/widgets/verified_badge.dart';
 import 'package:ceylon/features/events/presentation/widgets/published_events_carousel.dart';
 import 'package:ceylon/features/business/data/business_analytics_service.dart';
 import 'package:ceylon/features/business/presentation/widgets/business_feedback_sheet.dart';
@@ -150,23 +151,29 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 8),
+                    VerifiedBadge(businessId: widget.businessId),
                   ],
                 ),
                 const SizedBox(height: 6),
-                Row(
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Chip(
                       label: Text(category),
                       backgroundColor: Colors.blue.shade50,
                       visualDensity: VisualDensity.compact,
                     ),
-                    const SizedBox(width: 8),
                     if (avg != null)
                       Chip(
                         label: Text('⭐ ${avg.toStringAsFixed(1)} ($count)'),
                         backgroundColor: Colors.amber.shade50,
                         visualDensity: VisualDensity.compact,
                       ),
+                    if ((data['verified'] as bool?) == true)
+                      VerifiedBadge(businessId: widget.businessId),
                   ],
                 ),
                 const SizedBox(height: 12),
