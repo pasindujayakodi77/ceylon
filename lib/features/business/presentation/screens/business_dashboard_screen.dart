@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
+import '../screens/business_analytics_screen.dart';
 
 class BusinessDashboardScreen extends StatefulWidget {
   const BusinessDashboardScreen({super.key});
@@ -133,6 +134,19 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    TextButton.icon(
+                      icon: const Icon(Icons.insights),
+                      label: const Text('View Analytics'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const BusinessAnalyticsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 12),
                     TextFormField(
                       controller: _nameCtrl,
                       decoration: const InputDecoration(
