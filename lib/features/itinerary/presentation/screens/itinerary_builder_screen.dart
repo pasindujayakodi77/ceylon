@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/trip_templates/presentation/screens/trip_templates_screen.dart';
+import 'package:ceylon/features/trip_templates/presentation/screens/template_qr_import_screen.dart';
 
 class ItineraryBuilderScreen extends StatefulWidget {
   const ItineraryBuilderScreen({super.key});
@@ -69,6 +71,35 @@ class _ItineraryBuilderScreenState extends State<ItineraryBuilderScreen> {
                       ),
                     );
                   }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton.icon(
+                        icon: const Icon(Icons.library_books),
+                        label: const Text('Trip Templates'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const TripTemplatesScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      TextButton.icon(
+                        icon: const Icon(Icons.qr_code_scanner),
+                        label: const Text('Import from QR'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const TemplateQrImportScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                   TextButton.icon(
                     onPressed: _addDayField,
                     icon: const Icon(Icons.add),
