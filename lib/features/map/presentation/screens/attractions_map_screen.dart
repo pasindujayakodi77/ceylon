@@ -6,6 +6,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AttractionsMapScreen extends StatefulWidget {
   const AttractionsMapScreen({super.key});
@@ -702,22 +704,50 @@ class _PlaceSheetState extends State<_PlaceSheet>
     }
   }
 
-  void _toggleFavorite() {
+  Future<void> _toggleFavorite() async {
     HapticFeedback.lightImpact();
     setState(() {
       _isFavorite = !_isFavorite;
     });
 
-    // Add your favorite logic here
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _isFavorite ? 'Added to favorites!' : 'Removed from favorites!',
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    final favRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('favorites')
+        .doc(widget.pin.name);
+
+    if (_isFavorite) {
+      // Add to favorites
+      await favRef.set({
+        'name': widget.pin.name,
+        'photo': widget.pin.photo ?? '',
+        'desc': widget.pin.description ?? '',
+        'city': widget.pin.city ?? '',
+        'category': widget.pin.category ?? '',
+        'lat': widget.pin.lat,
+        'lng': widget.pin.lng,
+        'saved_at': FieldValue.serverTimestamp(),
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Added to favorites!'),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.fixed,
         ),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.fixed, // Fixed instead of floating
-      ),
-    );
+      );
+    } else {
+      // Remove from favorites
+      await favRef.delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Removed from favorites!'),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.fixed,
+        ),
+      );
+    }
   }
 
   @override
