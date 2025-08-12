@@ -6,7 +6,10 @@
     "location": "Sigiriya, Central Province",
     "category": "Historic",
     "images": [
-      "https://source.unsplash.com/featured/800x500/?Sigiriya%20Rock%20Fortress,sri%20lanka"
+      "https://source.unsplash.com/featured/800x500/?Sigiriya%20Rock%20Fortress,sri%20lanka",
+      "https://source.unsplash.com/featured/800x500/?Sigiriya%20Lion%20Rock,sri%20lanka",
+      "https://source.unsplash.com/featured/800x500/?Sigiriya%20Fortress%20View,sri%20lanka",
+      "https://source.unsplash.com/featured/800x500/?Sigiriya%20Ancient%20City,sri%20lanka"
     ],
     "latitude": 7.9569,
     "longitude": 80.7599,
@@ -21,7 +24,9 @@
     "location": "Dambulla, Central Province",
     "category": "Temple",
     "images": [
-      "https://source.unsplash.com/featured/800x500/?Dambulla%20Cave%20Temple,sri%20lanka"
+      "https://source.unsplash.com/featured/800x500/?Dambulla%20Cave%20Temple,sri%20lanka",
+      "https://source.unsplash.com/featured/800x500/?Dambulla%20Golden%20Temple,sri%20lanka",
+      "https://source.unsplash.com/featured/800x500/?Dambulla%20Buddha%20Statues,sri%20lanka"
     ],
     "latitude": 7.8538,
     "longitude": 80.6490,
@@ -36,7 +41,9 @@
     "location": "Kandy, Central Province",
     "category": "Temple",
     "images": [
-      "https://source.unsplash.com/featured/800x500/?Temple%20of%20the%20Sacred%20Tooth%20Relic,Kandy"
+      "https://source.unsplash.com/featured/800x500/?Temple%20of%20the%20Sacred%20Tooth%20Relic,Kandy",
+      "https://source.unsplash.com/featured/800x500/?Kandy%20Temple%20Interior,sri%20lanka",
+      "https://source.unsplash.com/featured/800x500/?Kandy%20Buddhist%20Temple,sri%20lanka"
     ],
     "latitude": 7.2945,
     "longitude": 80.6410,

@@ -309,14 +309,11 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                           attraction: _selectedAttraction!,
                           onTap: () {
                             // Navigate to attraction details
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => AttractionDetailsScreen(
-                            //       attraction: _selectedAttraction!,
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.pushNamed(
+                              context,
+                              '/place-details',
+                              arguments: _selectedAttraction,
+                            );
                           },
                         ),
                         const SizedBox(height: CeylonTokens.spacing8),
