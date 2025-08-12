@@ -53,14 +53,8 @@ class BookmarksScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             tabs: const [
-              Tab(
-                icon: Icon(Icons.map_outlined),
-                text: "Itineraries",
-              ),
-              Tab(
-                icon: Icon(Icons.favorite_outline),
-                text: "Favorites",
-              ),
+              Tab(icon: Icon(Icons.map_outlined), text: "Itineraries"),
+              Tab(icon: Icon(Icons.favorite_outline), text: "Favorites"),
             ],
           ),
         ),
@@ -88,14 +82,12 @@ class _FavoritesList extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
-            child: CircularProgressIndicator(
-              color: theme.colorScheme.primary,
-            ),
+            child: CircularProgressIndicator(color: theme.colorScheme.primary),
           );
         }
-        
+
         final docs = snapshot.data!.docs;
-        
+
         if (docs.isEmpty) {
           return Center(
             child: Column(
@@ -130,7 +122,10 @@ class _FavoritesList extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                   ),
                 ),
               ],
@@ -171,15 +166,15 @@ class _FavoritesList extends StatelessWidget {
                             height: 120,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => 
-                              Container(
-                                height: 120,
-                                color: Colors.grey.shade300,
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  color: Colors.grey.shade600,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                                  height: 120,
+                                  color: Colors.grey.shade300,
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    color: Colors.grey.shade600,
+                                  ),
                                 ),
-                              ),
                           ),
                           Positioned(
                             top: 8,
@@ -225,7 +220,9 @@ class _FavoritesList extends StatelessWidget {
                             Text(
                               data['desc'],
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.7,
+                                ),
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -259,14 +256,12 @@ class _ItineraryList extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
-            child: CircularProgressIndicator(
-              color: theme.colorScheme.primary,
-            ),
+            child: CircularProgressIndicator(color: theme.colorScheme.primary),
           );
         }
-        
+
         final docs = snapshot.data!.docs;
-        
+
         if (docs.isEmpty) {
           return Center(
             child: Column(
@@ -303,7 +298,10 @@ class _ItineraryList extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                   ),
                 ),
               ],
@@ -320,7 +318,7 @@ class _ItineraryList extends StatelessWidget {
               final data = docs[index].data() as Map<String, dynamic>;
               final days = data['days'] as List?;
               final createdAt = data['created_at'] as Timestamp?;
-              
+
               return Card(
                 elevation: 2,
                 shadowColor: Colors.black.withOpacity(0.1),
@@ -342,7 +340,9 @@ class _ItineraryList extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withOpacity(0.1),
+                                color: theme.colorScheme.primary.withOpacity(
+                                  0.1,
+                                ),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -357,15 +357,15 @@ class _ItineraryList extends StatelessWidget {
                                 children: [
                                   Text(
                                     data['title'] ?? "Untitled Trip",
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     "${days?.length ?? 0} day${days != null && days.length > 1 ? 's' : ''} itinerary",
                                     style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.7),
                                     ),
                                   ),
                                 ],
@@ -380,7 +380,9 @@ class _ItineraryList extends StatelessWidget {
                           Text(
                             "Trip Highlights",
                             style: theme.textTheme.titleSmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.7),
+                              color: theme.colorScheme.onSurface.withOpacity(
+                                0.7,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -389,20 +391,23 @@ class _ItineraryList extends StatelessWidget {
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemCount: days.length > 3 ? 3 : days.length,
-                              separatorBuilder: (_, __) => const SizedBox(width: 8),
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 8),
                               itemBuilder: (context, dayIndex) {
                                 final day = days[dayIndex];
                                 final places = day['places'] as List?;
                                 if (places == null || places.isEmpty) {
                                   return Chip(
                                     label: Text("Day ${dayIndex + 1}"),
-                                    backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                                    backgroundColor: theme.colorScheme.primary
+                                        .withOpacity(0.1),
                                   );
                                 }
                                 final firstPlace = places.first;
                                 return Chip(
                                   label: Text(firstPlace['name'] ?? "Location"),
-                                  backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                                  backgroundColor: theme.colorScheme.primary
+                                      .withOpacity(0.1),
                                   avatar: const CircleAvatar(
                                     backgroundColor: Colors.transparent,
                                     child: Icon(Icons.place, size: 16),
@@ -417,7 +422,9 @@ class _ItineraryList extends StatelessWidget {
                           Text(
                             "Created: ${dateFormat.format(createdAt.toDate())}",
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                              color: theme.colorScheme.onSurface.withOpacity(
+                                0.5,
+                              ),
                             ),
                           ),
                         ],

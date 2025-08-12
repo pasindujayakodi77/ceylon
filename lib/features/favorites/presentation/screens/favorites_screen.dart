@@ -16,9 +16,9 @@ class FavoritesScreen extends StatelessWidget {
         .doc(uid)
         .collection('favorites')
         .orderBy('saved_at', descending: true);
-    
+
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -32,21 +32,31 @@ class FavoritesScreen extends StatelessWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.bookmark_outlined, color: theme.colorScheme.primary),
+            icon: Icon(
+              Icons.bookmark_outlined,
+              color: theme.colorScheme.primary,
+            ),
             onPressed: () {
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => 
-                    const BookmarksScreen(),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1.0, 0.0);
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOut;
-                    
-                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                    return SlideTransition(position: animation.drive(tween), child: child);
-                  },
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const BookmarksScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(1.0, 0.0);
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+
+                        var tween = Tween(
+                          begin: begin,
+                          end: end,
+                        ).chain(CurveTween(curve: curve));
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
                 ),
               );
             },
@@ -62,7 +72,10 @@ class FavoritesScreen extends StatelessWidget {
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: theme.colorScheme.primary.withOpacity(0.2), width: 1),
+                side: BorderSide(
+                  color: theme.colorScheme.primary.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
@@ -70,16 +83,23 @@ class FavoritesScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => 
-                        const BookmarksScreen(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(1.0, 0.0);
-                        const end = Offset.zero;
-                        const curve = Curves.easeInOut;
-                        
-                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                        return SlideTransition(position: animation.drive(tween), child: child);
-                      },
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const BookmarksScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1.0, 0.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
+
+                            var tween = Tween(
+                              begin: begin,
+                              end: end,
+                            ).chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
                     ),
                   );
                 },
@@ -124,9 +144,9 @@ class FavoritesScreen extends StatelessWidget {
                     ),
                   );
                 }
-                
+
                 final docs = snapshot.data!.docs;
-                
+
                 if (docs.isEmpty) {
                   return Center(
                     child: Column(
@@ -163,9 +183,12 @@ class FavoritesScreen extends StatelessWidget {
                     itemBuilder: (_, index) {
                       final data = docs[index].data() as Map<String, dynamic>;
                       final String docId = docs[index].id;
-                      
+
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 4.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 6.0,
+                          horizontal: 4.0,
+                        ),
                         child: Card(
                           elevation: 2,
                           shadowColor: Colors.black.withOpacity(0.1),
@@ -184,7 +207,9 @@ class FavoritesScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   margin: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).size.height - 100,
+                                    bottom:
+                                        MediaQuery.of(context).size.height -
+                                        100,
                                     left: 20,
                                     right: 20,
                                   ),
@@ -202,17 +227,22 @@ class FavoritesScreen extends StatelessWidget {
                                     height: 150,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) => 
-                                      Container(
-                                        height: 150,
-                                        color: Colors.grey.shade300,
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.image_not_supported_outlined,
-                                            color: Colors.grey.shade600,
+                                    errorBuilder:
+                                        (
+                                          context,
+                                          error,
+                                          stackTrace,
+                                        ) => Container(
+                                          height: 150,
+                                          color: Colors.grey.shade300,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons
+                                                  .image_not_supported_outlined,
+                                              color: Colors.grey.shade600,
+                                            ),
                                           ),
                                         ),
-                                      ),
                                     loadingBuilder: (context, child, loadingProgress) {
                                       if (loadingProgress == null) return child;
                                       return Container(
@@ -220,9 +250,14 @@ class FavoritesScreen extends StatelessWidget {
                                         color: Colors.grey.shade100,
                                         child: Center(
                                           child: CircularProgressIndicator(
-                                            value: loadingProgress.expectedTotalBytes != null
-                                                ? loadingProgress.cumulativeBytesLoaded / 
-                                                  loadingProgress.expectedTotalBytes!
+                                            value:
+                                                loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
                                                 : null,
                                             color: theme.colorScheme.primary,
                                           ),
@@ -234,17 +269,20 @@ class FavoritesScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                             child: Text(
                                               data['name'],
-                                              style: theme.textTheme.titleMedium?.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              style: theme.textTheme.titleMedium
+                                                  ?.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -262,11 +300,16 @@ class FavoritesScreen extends StatelessWidget {
                                                   .collection('favorites')
                                                   .doc(docId)
                                                   .delete();
-                                                  
-                                              ScaffoldMessenger.of(context).showSnackBar(
+
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
                                                 SnackBar(
-                                                  content: Text('Removed from favorites'),
-                                                  behavior: SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    'Removed from favorites',
+                                                  ),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
                                                   action: SnackBarAction(
                                                     label: 'UNDO',
                                                     onPressed: () {
@@ -274,14 +317,20 @@ class FavoritesScreen extends StatelessWidget {
                                                       FirebaseFirestore.instance
                                                           .collection('users')
                                                           .doc(uid)
-                                                          .collection('favorites')
+                                                          .collection(
+                                                            'favorites',
+                                                          )
                                                           .doc(docId)
                                                           .set({
-                                                        'name': data['name'],
-                                                        'desc': data['desc'],
-                                                        'photo': data['photo'],
-                                                        'saved_at': FieldValue.serverTimestamp(),
-                                                      });
+                                                            'name':
+                                                                data['name'],
+                                                            'desc':
+                                                                data['desc'],
+                                                            'photo':
+                                                                data['photo'],
+                                                            'saved_at':
+                                                                FieldValue.serverTimestamp(),
+                                                          });
                                                     },
                                                   ),
                                                 ),
@@ -296,9 +345,11 @@ class FavoritesScreen extends StatelessWidget {
                                       const SizedBox(height: 8),
                                       Text(
                                         data['desc'],
-                                        style: theme.textTheme.bodyMedium?.copyWith(
-                                          color: theme.colorScheme.onSurface.withOpacity(0.7),
-                                        ),
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                              color: theme.colorScheme.onSurface
+                                                  .withOpacity(0.7),
+                                            ),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -322,22 +373,30 @@ class FavoritesScreen extends StatelessWidget {
                                                 const SizedBox(width: 4),
                                                 Text(
                                                   "No ratings yet",
-                                                  style: theme.textTheme.bodySmall?.copyWith(
-                                                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                                                  ),
+                                                  style: theme
+                                                      .textTheme
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                        color: theme
+                                                            .colorScheme
+                                                            .onSurface
+                                                            .withOpacity(0.6),
+                                                      ),
                                                 ),
                                               ],
                                             );
                                           }
-                                          
+
                                           final docs = snapshot.data!.docs;
                                           final ratings = docs
-                                              .map((doc) => (doc['rating'] as num))
+                                              .map(
+                                                (doc) => (doc['rating'] as num),
+                                              )
                                               .toList();
                                           final avgRating =
                                               ratings.reduce((a, b) => a + b) /
                                               ratings.length;
-                                              
+
                                           return Row(
                                             children: [
                                               Icon(
@@ -348,10 +407,13 @@ class FavoritesScreen extends StatelessWidget {
                                               const SizedBox(width: 4),
                                               Text(
                                                 "${avgRating.toStringAsFixed(1)} (${docs.length})",
-                                                style: theme.textTheme.bodySmall?.copyWith(
-                                                  color: Colors.amber.shade800,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                style: theme.textTheme.bodySmall
+                                                    ?.copyWith(
+                                                      color:
+                                                          Colors.amber.shade800,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                               ),
                                             ],
                                           );
