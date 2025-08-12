@@ -40,12 +40,14 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
 
   final _categories = [
     'All',
-    'Beach',
-    'Historic',
-    'Mountain',
-    'Park',
-    'Temple',
+    'History',
     'Wildlife',
+    'Nature',
+    'Religious',
+    'Beach',
+    'Waterfall',
+    'Hiking',
+    'Culture',
   ];
 
   // Sri Lanka centered map coordinates
@@ -207,9 +209,7 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                             'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                         userAgentPackageName: 'com.ceylon.app',
                       ),
-                      MarkerClusterLayer(
-                        mapController: _mapController,
-                        mapCamera: _mapController.camera,
+                      MarkerClusterLayerWidget(
                         options: MarkerClusterLayerOptions(
                           maxClusterRadius: 45,
                           size: const Size(40, 40),
@@ -401,6 +401,7 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
         point: LatLng(attraction.latitude, attraction.longitude),
         width: 40,
         height: 40,
+        alignment: Alignment.center,
         child: GestureDetector(
           onTap: () => _onMarkerTap(attraction),
           child: AnimatedContainer(

@@ -8,12 +8,15 @@ class AttractionRepository {
     try {
       // Load the JSON file from assets
       final jsonString = await rootBundle.loadString(
-        'assets/json/attractions_mock.json',
+        'assets/json/attractions_seed.json',
       );
-      final List<dynamic> jsonData = json.decode(jsonString);
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+      // Get the items array from the root object
+      final List<dynamic> items = jsonData['items'] ?? [];
 
       // Convert JSON to Attraction objects
-      return jsonData.map((json) => Attraction.fromJson(json)).toList();
+      return items.map((json) => Attraction.fromJson(json)).toList();
     } catch (e) {
       print('Error loading attractions: $e');
       return [];
@@ -37,11 +40,42 @@ class AttractionRepository {
           ) ||
           attraction.location.toLowerCase().contains(searchQuery.toLowerCase());
 
-      // Filter by category
-      final matchesCategory =
-          category == null ||
-          category.isEmpty ||
-          attraction.category == category;
+      // Filter by category - map UI categories to data categories
+      bool matchesCategory = true;
+      if (category != null && category.isNotEmpty && category != 'All') {
+        final dataCategory = attraction.category.toLowerCase();
+        switch (category.toLowerCase()) {
+          case 'history':
+            matchesCategory = dataCategory == 'history';
+            break;
+          case 'wildlife':
+            matchesCategory = dataCategory == 'wildlife';
+            break;
+          case 'nature':
+            matchesCategory =
+                dataCategory == 'nature' || dataCategory == 'garden';
+            break;
+          case 'religious':
+            matchesCategory = dataCategory == 'religious';
+            break;
+          case 'beach':
+            matchesCategory =
+                dataCategory == 'beach' || dataCategory == 'relax';
+            break;
+          case 'waterfall':
+            matchesCategory = dataCategory == 'waterfall';
+            break;
+          case 'hiking':
+            matchesCategory = dataCategory == 'hike' || dataCategory == 'view';
+            break;
+          case 'culture':
+            matchesCategory =
+                dataCategory == 'culture' || dataCategory == 'train';
+            break;
+          default:
+            matchesCategory = true;
+        }
+      }
 
       return matchesSearch && matchesCategory;
     }).toList();

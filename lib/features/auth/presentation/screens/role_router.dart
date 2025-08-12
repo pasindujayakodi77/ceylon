@@ -1,5 +1,5 @@
 import 'package:ceylon/features/business/presentation/screens/business_dashboard_screen.dart';
-import 'package:ceylon/features/home/presentation/screens/home_screen.dart';
+import 'package:ceylon/features/home/presentation/screens/home_screen_new.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

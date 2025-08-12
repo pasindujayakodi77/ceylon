@@ -57,18 +57,45 @@ class Attraction {
   }
 
   factory Attraction.fromJson(Map<String, dynamic> json) {
+    // Handle location field - can be string (city) or map with coordinates
+    final locationData = json['location'];
+    double lat = 0.0;
+    double lng = 0.0;
+    String locationString = '';
+
+    if (locationData is Map<String, dynamic>) {
+      lat = (locationData['lat'] as num?)?.toDouble() ?? 0.0;
+      lng = (locationData['lng'] as num?)?.toDouble() ?? 0.0;
+      locationString = json['city'] as String? ?? '';
+    } else {
+      locationString = locationData as String? ?? json['city'] as String? ?? '';
+      lat = (json['latitude'] as num?)?.toDouble() ?? 0.0;
+      lng = (json['longitude'] as num?)?.toDouble() ?? 0.0;
+    }
+
+    // Handle images - can be 'photo' (single) or 'images' (array)
+    List<String> imagesList = [];
+    if (json['images'] != null) {
+      imagesList = (json['images'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList();
+    } else if (json['photo'] != null) {
+      imagesList = [json['photo'] as String];
+    }
+
     return Attraction(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
-      location: json['location'] as String,
+      location: locationString,
       category: json['category'] as String,
-      images: (json['images'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      latitude: json['latitude'] as double,
-      longitude: json['longitude'] as double,
-      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      images: imagesList,
+      latitude: lat,
+      longitude: lng,
+      rating:
+          (json['rating'] as num?)?.toDouble() ??
+          (json['avg_rating'] as num?)?.toDouble() ??
+          0.0,
       tags: json['tags'] != null
           ? (json['tags'] as List<dynamic>).map((e) => e as String).toList()
           : [],

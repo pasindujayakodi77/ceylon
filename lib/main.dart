@@ -1,6 +1,7 @@
 import 'package:ceylon/core/navigation/app_router.dart';
 import 'package:ceylon/design_system/app_theme.dart';
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
+import 'package:ceylon/features/home/presentation/screens/home_screen_new.dart';
 import 'package:ceylon/features/itinerary/data/itinerary_repository.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ import 'features/auth/data/auth_repository.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
 import 'features/auth/presentation/screens/onboarding_screen.dart';
-import 'features/home/presentation/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

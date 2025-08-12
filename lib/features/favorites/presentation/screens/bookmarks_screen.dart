@@ -394,25 +394,68 @@ class _ItineraryList extends StatelessWidget {
                               separatorBuilder: (_, __) =>
                                   const SizedBox(width: 8),
                               itemBuilder: (context, dayIndex) {
-                                final day = days[dayIndex];
-                                final places = day['places'] as List?;
-                                if (places == null || places.isEmpty) {
+                                if (dayIndex >= days.length)
+                                  return const SizedBox.shrink();
+
+                                try {
+                                  final day = days[dayIndex];
+
+                                  // Handle different data structures
+                                  List<dynamic>? places;
+                                  String dayName = "Day ${dayIndex + 1}";
+
+                                  if (day is Map<String, dynamic>) {
+                                    // New format with structured day objects
+                                    places = day['places'] as List?;
+                                    dayName =
+                                        day['day_name'] as String? ??
+                                        day['dayName'] as String? ??
+                                        "Day ${dayIndex + 1}";
+                                  } else if (day is List) {
+                                    // Legacy format where day is directly a list of places
+                                    places = day;
+                                  } else if (day is String) {
+                                    // Very legacy format where day is just text
+                                    return Chip(
+                                      label: Text(dayName),
+                                      backgroundColor: theme.colorScheme.primary
+                                          .withOpacity(0.1),
+                                    );
+                                  }
+
+                                  if (places == null || places.isEmpty) {
+                                    return Chip(
+                                      label: Text(dayName),
+                                      backgroundColor: theme.colorScheme.primary
+                                          .withOpacity(0.1),
+                                    );
+                                  }
+
+                                  final firstPlace = places.first;
+                                  String placeName = "Location";
+
+                                  if (firstPlace is Map<String, dynamic>) {
+                                    placeName =
+                                        firstPlace['name'] as String? ??
+                                        firstPlace['title'] as String? ??
+                                        "Location";
+                                  } else if (firstPlace is String) {
+                                    placeName = firstPlace;
+                                  }
+
+                                  return Chip(
+                                    label: Text(placeName),
+                                    backgroundColor: theme.colorScheme.primary
+                                        .withOpacity(0.1),
+                                  );
+                                } catch (e) {
+                                  // Fallback for any unexpected data structure
                                   return Chip(
                                     label: Text("Day ${dayIndex + 1}"),
                                     backgroundColor: theme.colorScheme.primary
                                         .withOpacity(0.1),
                                   );
                                 }
-                                final firstPlace = places.first;
-                                return Chip(
-                                  label: Text(firstPlace['name'] ?? "Location"),
-                                  backgroundColor: theme.colorScheme.primary
-                                      .withOpacity(0.1),
-                                  avatar: const CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    child: Icon(Icons.place, size: 16),
-                                  ),
-                                );
                               },
                             ),
                           ),

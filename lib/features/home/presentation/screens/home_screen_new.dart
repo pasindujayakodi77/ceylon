@@ -4,8 +4,8 @@ import 'package:ceylon/features/home/presentation/widgets/feature_card.dart';
 import 'package:ceylon/features/home/presentation/widgets/highlight_card.dart';
 import 'package:ceylon/features/home/presentation/widgets/section_header.dart';
 import 'package:ceylon/features/home/presentation/widgets/weather_widget.dart';
-import 'package:ceylon/features/map/presentation/screens/attractions_map_screen.dart';
 import 'package:ceylon/features/business/presentation/widgets/promoted_businesses_carousel.dart';
+import 'package:ceylon/features/map/presentation/screens/attractions_map_screen_new.dart';
 import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
 import 'package:ceylon/features/journal/presentation/screens/trip_journal_screen.dart';
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
@@ -157,7 +157,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const AttractionsMapScreen(),
+                          builder: (_) => const AttractionsMapScreenNew(),
                         ),
                       );
                     },
@@ -322,7 +322,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) =>
-                                        const AttractionsMapScreen(),
+                                        const AttractionsMapScreenNew(),
                                   ),
                                 );
                               },
