@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens.dart';
 
 /// A custom app bar component with two variants: large and medium.
-/// 
+///
 /// The large variant is typically used for detail screens with a more prominent title.
 /// The medium variant is used for list screens and provides a balanced appearance.
 class CeylonAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -99,14 +99,15 @@ class CeylonAppBar extends StatelessWidget implements PreferredSizeWidget {
     final textTheme = theme.textTheme;
 
     // Determine title style based on app bar size
-    final effectiveTitleStyle = titleTextStyle ?? 
-        (isLarge 
+    final effectiveTitleStyle =
+        titleTextStyle ??
+        (isLarge
             ? textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)
             : textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600));
 
     return AppBar(
       title: Padding(
-        padding: isLarge 
+        padding: isLarge
             ? const EdgeInsets.only(bottom: CeylonTokens.spacing16)
             : EdgeInsets.zero,
         child: Text(title),

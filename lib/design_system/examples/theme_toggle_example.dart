@@ -70,7 +70,7 @@ class ThemeToggle extends StatelessWidget {
   Future<void> _saveThemeMode(ThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
     String themeModeString;
-    
+
     switch (mode) {
       case ThemeMode.light:
         themeModeString = 'light';
@@ -81,7 +81,7 @@ class ThemeToggle extends StatelessWidget {
       default:
         themeModeString = 'system';
     }
-    
+
     await prefs.setString('theme_mode', themeModeString);
   }
 }

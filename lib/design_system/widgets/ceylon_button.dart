@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens.dart';
 
 /// A button component that follows the Ceylon design system.
-/// 
+///
 /// Provides three variants:
 /// - primary: FilledButton for primary actions
 /// - secondary: OutlinedButton for secondary actions
@@ -26,7 +26,7 @@ class CeylonButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final OutlinedBorder? shape;
-  
+
   const CeylonButton({
     super.key,
     required this.label,
@@ -170,22 +170,28 @@ class CeylonButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveMinimumSize = minimumSize ?? 
-        Size(isFullWidth ? double.infinity : 0, minHeight ?? CeylonTokens.minTapArea);
-        
-    final effectivePadding = padding ?? 
-        const EdgeInsets.symmetric(
-          horizontal: CeylonTokens.spacing20, 
-          vertical: CeylonTokens.spacing16
+    final effectiveMinimumSize =
+        minimumSize ??
+        Size(
+          isFullWidth ? double.infinity : 0,
+          minHeight ?? CeylonTokens.minTapArea,
         );
-    
+
+    final effectivePadding =
+        padding ??
+        const EdgeInsets.symmetric(
+          horizontal: CeylonTokens.spacing20,
+          vertical: CeylonTokens.spacing16,
+        );
+
     final effectiveIconSize = iconSize ?? 18.0;
-    
-    final effectiveShape = shape ?? 
+
+    final effectiveShape =
+        shape ??
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
         );
-        
+
     // Button content - same for all variants
     Widget buttonChild = Row(
       mainAxisSize: isFullWidth ? MainAxisSize.max : MainAxisSize.min,
@@ -214,7 +220,7 @@ class CeylonButton extends StatelessWidget {
         ],
       ],
     );
-    
+
     // Use the appropriate button variant
     switch (variant) {
       case ButtonVariant.primary:
@@ -231,7 +237,7 @@ class CeylonButton extends StatelessWidget {
           ),
           child: buttonChild,
         );
-      
+
       case ButtonVariant.secondary:
         return OutlinedButton(
           onPressed: isLoading ? null : onPressed,
@@ -246,7 +252,7 @@ class CeylonButton extends StatelessWidget {
           ),
           child: buttonChild,
         );
-        
+
       case ButtonVariant.tertiary:
         return TextButton(
           onPressed: isLoading ? null : onPressed,
@@ -269,10 +275,10 @@ class CeylonButton extends StatelessWidget {
 enum ButtonVariant {
   /// Primary action (FilledButton)
   primary,
-  
+
   /// Secondary action (OutlinedButton)
   secondary,
-  
+
   /// Tertiary action (TextButton)
   tertiary,
 }

@@ -20,10 +20,10 @@ class CeylonTokens {
   static const double radiusSmall = 6.0;
   static const double radiusMedium = 12.0;
   static const double radiusLarge = 20.0;
-  
+
   // Default radius for cards and buttons
   static const double defaultRadius = radiusMedium;
-  
+
   // Spacing scale (4-point system)
   static const double spacing4 = 4.0;
   static const double spacing8 = 8.0;
@@ -32,20 +32,26 @@ class CeylonTokens {
   static const double spacing20 = 20.0;
   static const double spacing24 = 24.0;
   static const double spacing32 = 32.0;
-  
+
   // Animation durations
   static const Duration animationFast = Duration(milliseconds: 200);
   static const Duration animationNormal = Duration(milliseconds: 250);
   static const Duration animationSlow = Duration(milliseconds: 300);
-  
-  // Accessibility 
+
+  // Accessibility
   static const double minTapArea = 48.0; // Minimum tap area in pixels
-  
+
   // Common border radius shapes
-  static final BorderRadius borderRadiusSmall = BorderRadius.circular(radiusSmall);
-  static final BorderRadius borderRadiusMedium = BorderRadius.circular(radiusMedium);
-  static final BorderRadius borderRadiusLarge = BorderRadius.circular(radiusLarge);
-  
+  static final BorderRadius borderRadiusSmall = BorderRadius.circular(
+    radiusSmall,
+  );
+  static final BorderRadius borderRadiusMedium = BorderRadius.circular(
+    radiusMedium,
+  );
+  static final BorderRadius borderRadiusLarge = BorderRadius.circular(
+    radiusLarge,
+  );
+
   // Commonly used shadows
   static final List<BoxShadow> shadowSmall = [
     BoxShadow(
@@ -54,7 +60,7 @@ class CeylonTokens {
       offset: const Offset(0, 1),
     ),
   ];
-  
+
   static final List<BoxShadow> shadowMedium = [
     BoxShadow(
       color: Colors.black.withOpacity(0.08),
@@ -62,7 +68,7 @@ class CeylonTokens {
       offset: const Offset(0, 2),
     ),
   ];
-  
+
   static final List<BoxShadow> shadowLarge = [
     BoxShadow(
       color: Colors.black.withOpacity(0.12),

@@ -18,7 +18,7 @@ class EmptyState extends StatelessWidget {
   final double? iconSize;
   final Color? iconColor;
   final EdgeInsetsGeometry padding;
-  
+
   const EmptyState({
     super.key,
     required this.icon,
@@ -30,12 +30,12 @@ class EmptyState extends StatelessWidget {
     this.iconColor,
     this.padding = const EdgeInsets.all(CeylonTokens.spacing32),
   });
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Padding(
       padding: padding,
       child: Center(
@@ -44,16 +44,21 @@ class EmptyState extends StatelessWidget {
           children: [
             // Icon with subtle animation
             Icon(
-              icon,
-              size: iconSize,
-              color: iconColor ?? colorScheme.primary.withOpacity(0.7),
-            )
-            .animate()
-            .fade(duration: CeylonTokens.animationNormal)
-            .slideY(begin: -0.2, end: 0, duration: CeylonTokens.animationNormal, curve: Curves.easeOutQuad),
-            
+                  icon,
+                  size: iconSize,
+                  color: iconColor ?? colorScheme.primary.withOpacity(0.7),
+                )
+                .animate()
+                .fade(duration: CeylonTokens.animationNormal)
+                .slideY(
+                  begin: -0.2,
+                  end: 0,
+                  duration: CeylonTokens.animationNormal,
+                  curve: Curves.easeOutQuad,
+                ),
+
             SizedBox(height: CeylonTokens.spacing20),
-            
+
             // Title
             Text(
               title,
@@ -62,15 +67,13 @@ class EmptyState extends StatelessWidget {
                 color: colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
-            )
-            .animate()
-            .fade(
-              duration: CeylonTokens.animationNormal, 
+            ).animate().fade(
+              duration: CeylonTokens.animationNormal,
               delay: const Duration(milliseconds: 100),
             ),
-            
+
             SizedBox(height: CeylonTokens.spacing12),
-            
+
             // Message
             Text(
               message,
@@ -78,13 +81,11 @@ class EmptyState extends StatelessWidget {
                 color: colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
-            )
-            .animate()
-            .fade(
+            ).animate().fade(
               duration: CeylonTokens.animationNormal,
               delay: const Duration(milliseconds: 200),
             ),
-            
+
             // Optional action button
             if (actionLabel != null && onAction != null) ...[
               SizedBox(height: CeylonTokens.spacing24),
@@ -92,9 +93,7 @@ class EmptyState extends StatelessWidget {
                 label: actionLabel!,
                 onPressed: onAction,
                 leadingIcon: Icons.add_rounded,
-              )
-              .animate()
-              .fade(
+              ).animate().fade(
                 duration: CeylonTokens.animationNormal,
                 delay: const Duration(milliseconds: 300),
               ),

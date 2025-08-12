@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // Access theme manager for light/dark mode
     final themeManager = Provider.of<ThemeManager>(context);
-    
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {'/home': (_) => const TouristHomeScreen()},
@@ -96,12 +96,12 @@ class _MyAppState extends State<MyApp> {
         //Locale('dv'),
       ],
       locale: _locale,
-      
+
       // Apply Material 3 themes
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeManager.themeMode,
-      
+
       home: widget.home,
     );
   }
@@ -111,7 +111,7 @@ class _MyAppState extends State<MyApp> {
 Future<void> saveThemeMode(ThemeMode mode) async {
   final prefs = await SharedPreferences.getInstance();
   String themeModeString;
-  
+
   switch (mode) {
     case ThemeMode.light:
       themeModeString = 'light';
@@ -122,6 +122,6 @@ Future<void> saveThemeMode(ThemeMode mode) async {
     default:
       themeModeString = 'system';
   }
-  
+
   await prefs.setString('theme_mode', themeModeString);
 }

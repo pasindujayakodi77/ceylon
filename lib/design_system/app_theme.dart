@@ -6,12 +6,12 @@ import 'tokens.dart';
 /// Custom theme extension to provide additional design tokens
 class CeylonThemeExtension extends ThemeExtension<CeylonThemeExtension> {
   final BorderRadius borderRadiusSmall;
-  final BorderRadius borderRadiusMedium; 
+  final BorderRadius borderRadiusMedium;
   final BorderRadius borderRadiusLarge;
   final List<BoxShadow> shadowSmall;
   final List<BoxShadow> shadowMedium;
   final List<BoxShadow> shadowLarge;
-  
+
   CeylonThemeExtension({
     required this.borderRadiusSmall,
     required this.borderRadiusMedium,
@@ -42,13 +42,15 @@ class CeylonThemeExtension extends ThemeExtension<CeylonThemeExtension> {
 
   @override
   ThemeExtension<CeylonThemeExtension> lerp(
-      covariant ThemeExtension<CeylonThemeExtension>? other, double t) {
+    covariant ThemeExtension<CeylonThemeExtension>? other,
+    double t,
+  ) {
     if (other is! CeylonThemeExtension) {
       return this;
     }
     return this;
   }
-  
+
   /// Get the extension from the current theme
   static CeylonThemeExtension of(BuildContext context) {
     return Theme.of(context).extension<CeylonThemeExtension>()!;
@@ -62,7 +64,7 @@ class AppTheme {
 
   // Private constructor to prevent instantiation
   AppTheme._();
-  
+
   /// Light theme data
   static ThemeData get lightTheme {
     final ColorScheme colorScheme = ColorScheme.fromSeed(
@@ -71,10 +73,8 @@ class AppTheme {
       background: CeylonTokens.lightBackground,
       surface: CeylonTokens.lightSurface,
     );
-    
-    return _baseTheme(colorScheme).copyWith(
-      brightness: Brightness.light,
-    );
+
+    return _baseTheme(colorScheme).copyWith(brightness: Brightness.light);
   }
 
   /// Dark theme data
@@ -85,22 +85,20 @@ class AppTheme {
       background: CeylonTokens.darkBackground,
       surface: CeylonTokens.darkSurface,
     );
-    
-    return _baseTheme(colorScheme).copyWith(
-      brightness: Brightness.dark,
-    );
+
+    return _baseTheme(colorScheme).copyWith(brightness: Brightness.dark);
   }
 
   /// Base theme configuration common to both light and dark themes
   static ThemeData _baseTheme(ColorScheme colorScheme) {
     final TextTheme textTheme = _buildTextTheme();
-    
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
       textTheme: textTheme,
       fontFamily: GoogleFonts.inter().fontFamily,
-      
+
       // Card theme
       cardTheme: CardThemeData(
         elevation: 0,
@@ -110,7 +108,7 @@ class AppTheme {
         clipBehavior: Clip.antiAlias,
         margin: EdgeInsets.zero,
       ),
-      
+
       // Elevated button theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -125,7 +123,7 @@ class AppTheme {
           minimumSize: const Size(0, CeylonTokens.minTapArea),
         ),
       ),
-      
+
       // Filled button theme (primary actions)
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
@@ -140,7 +138,7 @@ class AppTheme {
           minimumSize: const Size(0, CeylonTokens.minTapArea),
         ),
       ),
-      
+
       // Outlined button theme
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
@@ -155,7 +153,7 @@ class AppTheme {
           minimumSize: const Size(0, CeylonTokens.minTapArea),
         ),
       ),
-      
+
       // Text button theme (tertiary actions)
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
@@ -169,7 +167,7 @@ class AppTheme {
           minimumSize: const Size(0, CeylonTokens.minTapArea),
         ),
       ),
-      
+
       // Input decoration theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -195,7 +193,7 @@ class AppTheme {
           vertical: CeylonTokens.spacing16,
         ),
       ),
-      
+
       // Chip theme
       chipTheme: ChipThemeData(
         shape: RoundedRectangleBorder(
@@ -207,7 +205,7 @@ class AppTheme {
           vertical: CeylonTokens.spacing8,
         ),
       ),
-      
+
       // AppBar theme
       appBarTheme: AppBarTheme(
         elevation: 0,
@@ -228,7 +226,7 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
       ),
-      
+
       // List tile theme
       listTileTheme: ListTileThemeData(
         shape: RoundedRectangleBorder(
@@ -241,7 +239,7 @@ class AppTheme {
         minLeadingWidth: 24,
         minVerticalPadding: CeylonTokens.spacing12,
       ),
-      
+
       // Dialog theme
       dialogTheme: DialogThemeData(
         shape: RoundedRectangleBorder(
@@ -249,7 +247,7 @@ class AppTheme {
         ),
         elevation: 8,
       ),
-      
+
       // Snackbar theme
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
@@ -261,7 +259,7 @@ class AppTheme {
         ),
         actionTextColor: colorScheme.primaryContainer,
       ),
-      
+
       // Custom theme extensions
       extensions: [
         CeylonThemeExtension(
@@ -282,7 +280,7 @@ class AppTheme {
     // For fallback, we'll use Noto Sans in case of languages that Inter doesn't support
     // Uncomment if needed for specific language support
     // final notoSansTextTheme = GoogleFonts.notoSansTextTheme();
-    
+
     return interTextTheme.copyWith(
       // Use notoSansTextTheme's displayLarge as fallback if needed
       displayLarge: interTextTheme.displayLarge,
@@ -307,18 +305,20 @@ class AppTheme {
 /// Theme manager to handle theme mode changes
 class ThemeManager extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
-  
+
   ThemeMode get themeMode => _themeMode;
-  
+
   bool get isDarkMode => _themeMode == ThemeMode.dark;
-  
+
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;
     notifyListeners();
   }
-  
+
   void toggleTheme() {
-    _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    _themeMode = _themeMode == ThemeMode.dark
+        ? ThemeMode.light
+        : ThemeMode.dark;
     notifyListeners();
   }
 }

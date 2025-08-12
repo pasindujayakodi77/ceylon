@@ -1,4 +1,8 @@
+import 'package:ceylon/design_system/tokens.dart';
+import 'package:ceylon/design_system/widgets/ceylon_app_bar.dart';
+import 'package:ceylon/design_system/widgets/ceylon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -10,55 +14,196 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool _sent = false;
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  // Validate email
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+      return 'Enter a valid email address';
+    }
+    return null;
+  }
 
   Future<void> _sendResetEmail() async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(
-        email: _emailController.text.trim(),
-      );
+    if (_formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
 
-      setState(() => _sent = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("✅ Reset link sent to email")),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("❌ ${e.toString()}")));
+      setState(() => _isLoading = true);
+
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: _emailController.text.trim(),
+        );
+
+        setState(() {
+          _sent = true;
+          _isLoading = false;
+        });
+
+        // Show success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Reset link sent to your email"),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      } catch (e) {
+        setState(() => _isLoading = false);
+
+        // Show error snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.toString().contains('user-not-found')
+                  ? "No account found with this email"
+                  : "Error sending reset link: ${e.toString()}",
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Forgot Password")),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Enter your email',
-                border: OutlineInputBorder(),
+      backgroundColor: colorScheme.background,
+      appBar: CeylonAppBar(title: "Reset Password", centerTitle: true),
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(CeylonTokens.spacing24),
+            children: [
+              const SizedBox(height: CeylonTokens.spacing16),
+
+              // Header section
+              Text(
+                "Forgot your password?",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: colorScheme.onBackground,
+                  fontWeight: FontWeight.bold,
+                ),
+              ).animate().fadeIn().slideY(
+                begin: 0.3,
+                end: 0,
+                curve: Curves.easeOutQuad,
               ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _sendResetEmail,
-              child: const Text("Send Reset Link"),
-            ),
-            if (_sent) ...[
-              const SizedBox(height: 16),
-              const Text(
-                "If the email is registered, you’ll receive a reset link.",
-                textAlign: TextAlign.center,
-              ),
+
+              const SizedBox(height: CeylonTokens.spacing8),
+
+              Text(
+                    "Enter your email address and we'll send you a link to reset your password.",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  )
+                  .animate(delay: 100.ms)
+                  .fadeIn()
+                  .slideY(begin: 0.3, end: 0, curve: Curves.easeOutQuad),
+
+              const SizedBox(height: CeylonTokens.spacing32),
+
+              // Email field
+              TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email address',
+                      hintText: 'Enter your email address',
+                      prefixIcon: const Icon(Icons.email_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          CeylonTokens.radiusMedium,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: colorScheme.surfaceVariant.withOpacity(0.3),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.done,
+                    validator: _validateEmail,
+                    onFieldSubmitted: (_) => _sendResetEmail(),
+                  )
+                  .animate(delay: 200.ms)
+                  .fadeIn()
+                  .slideY(begin: 0.3, end: 0, curve: Curves.easeOutQuad),
+
+              const SizedBox(height: CeylonTokens.spacing32),
+
+              // Submit button
+              CeylonButton.primary(
+                    onPressed: _isLoading ? null : _sendResetEmail,
+                    label: _isLoading ? "Sending..." : "Send Reset Link",
+                    leadingIcon: _isLoading ? null : Icons.send,
+                    isLoading: _isLoading,
+                    isFullWidth: true,
+                  )
+                  .animate(delay: 300.ms)
+                  .fadeIn()
+                  .slideY(begin: 0.3, end: 0, curve: Curves.easeOutQuad),
+
+              if (_sent) ...[
+                const SizedBox(height: CeylonTokens.spacing24),
+
+                // Success message
+                Container(
+                  padding: const EdgeInsets.all(CeylonTokens.spacing16),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(
+                      CeylonTokens.radiusMedium,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: colorScheme.primary,
+                            size: 24,
+                          ),
+                          const SizedBox(width: CeylonTokens.spacing8),
+                          Text(
+                            "Email sent",
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: CeylonTokens.spacing8),
+                      Text(
+                        "If an account exists with this email, you'll receive a password reset link shortly. Please check your email inbox and spam folder.",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(duration: 500.ms),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

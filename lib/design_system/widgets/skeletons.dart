@@ -24,8 +24,8 @@ class SkeletonBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final effectiveBorderRadius = borderRadius ?? 
-        BorderRadius.circular(CeylonTokens.radiusSmall);
+    final effectiveBorderRadius =
+        borderRadius ?? BorderRadius.circular(CeylonTokens.radiusSmall);
 
     return Container(
       width: width,
@@ -34,7 +34,7 @@ class SkeletonBox extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: effectiveBorderRadius,
         color: colorScheme.surfaceVariant.withOpacity(
-          theme.brightness == Brightness.dark ? 0.3 : 0.5
+          theme.brightness == Brightness.dark ? 0.3 : 0.5,
         ),
       ),
       child: _buildShimmerEffect(context),
@@ -54,18 +54,12 @@ class SkeletonBox extends StatelessWidget {
         return LinearGradient(
           begin: const Alignment(-1.0, -0.5),
           end: const Alignment(1.0, 0.5),
-          colors: [
-            baseColor,
-            highlightColor,
-            baseColor,
-          ],
+          colors: [baseColor, highlightColor, baseColor],
           stops: const [0.0, 0.5, 1.0],
           tileMode: TileMode.mirror,
         ).createShader(bounds);
       },
-      child: Container(
-        color: Colors.white,
-      ),
+      child: Container(color: Colors.white),
     );
   }
 }
@@ -153,10 +147,7 @@ class SkeletonListTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SkeletonBox(
-                  width: double.infinity,
-                  height: 18.0,
-                ),
+                const SkeletonBox(width: double.infinity, height: 18.0),
                 if (showSubtitle) ...[
                   const SizedBox(height: CeylonTokens.spacing8),
                   SkeletonBox(
@@ -194,8 +185,8 @@ class SkeletonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderRadius = borderRadius ?? 
-        BorderRadius.circular(CeylonTokens.radiusMedium);
+    final effectiveBorderRadius =
+        borderRadius ?? BorderRadius.circular(CeylonTokens.radiusMedium);
 
     return Container(
       width: width,
@@ -223,10 +214,7 @@ class SkeletonCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SkeletonBox(
-                  width: double.infinity,
-                  height: 20.0,
-                ),
+                const SkeletonBox(width: double.infinity, height: 20.0),
                 const SizedBox(height: CeylonTokens.spacing12),
                 SkeletonText(
                   lines: 2,
@@ -271,7 +259,7 @@ class SkeletonList extends StatelessWidget {
   final bool showDividers;
   final EdgeInsetsGeometry padding;
   final bool scrollable;
-  
+
   const SkeletonList({
     super.key,
     this.itemCount = 5,
@@ -289,12 +277,8 @@ class SkeletonList extends StatelessWidget {
       (index) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SkeletonListTile(
-            height: itemHeight,
-            showLeading: showLeading,
-          ),
-          if (showDividers && index < itemCount - 1)
-            const Divider(height: 1),
+          SkeletonListTile(height: itemHeight, showLeading: showLeading),
+          if (showDividers && index < itemCount - 1) const Divider(height: 1),
         ],
       ),
     );
@@ -309,10 +293,7 @@ class SkeletonList extends StatelessWidget {
 
     return Padding(
       padding: padding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: listItems,
-      ),
+      child: Column(mainAxisSize: MainAxisSize.min, children: listItems),
     );
   }
 }
@@ -342,9 +323,7 @@ class SkeletonGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final gridItems = List.generate(
       itemCount,
-      (index) => SkeletonCard(
-        height: itemHeight,
-      ),
+      (index) => SkeletonCard(height: itemHeight),
     );
 
     if (scrollable) {
@@ -353,7 +332,13 @@ class SkeletonGrid extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         mainAxisSpacing: mainAxisSpacing,
         crossAxisSpacing: crossAxisSpacing,
-        childAspectRatio: (1 / (itemHeight / ((MediaQuery.of(context).size.width - padding.horizontal - (crossAxisCount - 1) * crossAxisSpacing) / crossAxisCount))),
+        childAspectRatio:
+            (1 /
+            (itemHeight /
+                ((MediaQuery.of(context).size.width -
+                        padding.horizontal -
+                        (crossAxisCount - 1) * crossAxisSpacing) /
+                    crossAxisCount))),
         children: gridItems,
       );
     }
@@ -366,7 +351,13 @@ class SkeletonGrid extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         mainAxisSpacing: mainAxisSpacing,
         crossAxisSpacing: crossAxisSpacing,
-        childAspectRatio: (1 / (itemHeight / ((MediaQuery.of(context).size.width - padding.horizontal - (crossAxisCount - 1) * crossAxisSpacing) / crossAxisCount))),
+        childAspectRatio:
+            (1 /
+            (itemHeight /
+                ((MediaQuery.of(context).size.width -
+                        padding.horizontal -
+                        (crossAxisCount - 1) * crossAxisSpacing) /
+                    crossAxisCount))),
         children: gridItems,
       ),
     );
