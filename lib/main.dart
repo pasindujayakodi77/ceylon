@@ -15,6 +15,7 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
 import 'features/auth/presentation/screens/onboarding_screen.dart';
 import 'features/home/presentation/screens/home_screen.dart';
+import 'features/map/presentation/routes/map_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,9 +78,12 @@ class _MyAppState extends State<MyApp> {
     // Access theme manager for light/dark mode
     final themeManager = Provider.of<ThemeManager>(context);
 
+    // Import map routes
+    final mapRoutes = MapRoutes.routes;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {'/home': (_) => const TouristHomeScreen()},
+      routes: {'/home': (_) => const TouristHomeScreen(), ...mapRoutes},
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

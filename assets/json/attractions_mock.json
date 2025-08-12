@@ -1,0 +1,152 @@
+[
+  {
+    "id": "sigiriya",
+    "name": "Sigiriya Rock Fortress",
+    "description": "Ancient rock citadel with frescoes and sweeping views. Sigiriya, also known as the Lion Rock, is a UNESCO World Heritage site and one of Sri Lanka's most iconic attractions.",
+    "location": "Sigiriya, Central Province",
+    "category": "Historic",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Sigiriya%20Rock%20Fortress,sri%20lanka"
+    ],
+    "latitude": 7.9569,
+    "longitude": 80.7599,
+    "rating": 4.7,
+    "tags": ["history", "view", "hike"],
+    "isFavorite": false
+  },
+  {
+    "id": "dambulla_caves",
+    "name": "Dambulla Cave Temple",
+    "description": "Ancient Buddhist cave temple with stunning murals and statues. The Golden Temple of Dambulla is a UNESCO World Heritage site and features over 150 Buddha statues.",
+    "location": "Dambulla, Central Province",
+    "category": "Temple",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Dambulla%20Cave%20Temple,sri%20lanka"
+    ],
+    "latitude": 7.8538,
+    "longitude": 80.6490,
+    "rating": 4.6,
+    "tags": ["caves", "art", "religious"],
+    "isFavorite": false
+  },
+  {
+    "id": "kandy_temple",
+    "name": "Temple of the Sacred Tooth Relic",
+    "description": "Sacred Buddhist temple housing Buddha's tooth relic. Located in the royal palace complex of the former Kingdom of Kandy, this temple is one of Buddhism's most sacred pilgrimage sites.",
+    "location": "Kandy, Central Province",
+    "category": "Temple",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Temple%20of%20the%20Sacred%20Tooth%20Relic,Kandy"
+    ],
+    "latitude": 7.2945,
+    "longitude": 80.6410,
+    "rating": 4.8,
+    "tags": ["religious", "cultural", "history"],
+    "isFavorite": false
+  },
+  {
+    "id": "unawatuna",
+    "name": "Unawatuna Beach",
+    "description": "Golden sand beach with calm waters and great snorkeling. This crescent-shaped beach is one of Sri Lanka's most popular coastal destinations.",
+    "location": "Unawatuna, Southern Province",
+    "category": "Beach",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Unawatuna%20Beach,sri%20lanka"
+    ],
+    "latitude": 6.0100,
+    "longitude": 80.2494,
+    "rating": 4.5,
+    "tags": ["beach", "swimming", "snorkeling"],
+    "isFavorite": false
+  },
+  {
+    "id": "yala_np",
+    "name": "Yala National Park",
+    "description": "Wildlife sanctuary famous for leopards and elephants. Yala has one of the highest leopard densities in the world, making it a premier safari destination.",
+    "location": "Hambantota, Southern Province",
+    "category": "Wildlife",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Yala%20National%20Park,sri%20lanka"
+    ],
+    "latitude": 6.3698,
+    "longitude": 81.5215,
+    "rating": 4.6,
+    "tags": ["safari", "wildlife", "nature"],
+    "isFavorite": false
+  },
+  {
+    "id": "horton_plains",
+    "name": "Horton Plains National Park",
+    "description": "Plateau with biodiversity and breathtaking landscapes. Home to World's End, a stunning cliff with a sheer drop of about 4,000 feet.",
+    "location": "Nuwara Eliya, Central Province",
+    "category": "Park",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Horton%20Plains%20National%20Park"
+    ],
+    "latitude": 6.8015,
+    "longitude": 80.8083,
+    "rating": 4.5,
+    "tags": ["hiking", "nature", "views"],
+    "isFavorite": false
+  },
+  {
+    "id": "ella_rock",
+    "name": "Ella Rock",
+    "description": "Hiking destination with spectacular mountain views. A challenging but rewarding hike through tea plantations and forests to reach the summit.",
+    "location": "Ella, Uva Province",
+    "category": "Mountain",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Ella%20Rock,sri%20lanka"
+    ],
+    "latitude": 6.8667,
+    "longitude": 81.0466,
+    "rating": 4.7,
+    "tags": ["hiking", "views", "nature"],
+    "isFavorite": false
+  },
+  {
+    "id": "galle_fort",
+    "name": "Galle Fort",
+    "description": "Colonial-era fortress with Dutch and Portuguese influences. This UNESCO World Heritage site is a living monument with well-preserved architecture.",
+    "location": "Galle, Southern Province",
+    "category": "Historic",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Galle%20Fort,sri%20lanka"
+    ],
+    "latitude": 6.0260,
+    "longitude": 80.2168,
+    "rating": 4.7,
+    "tags": ["history", "architecture", "colonial"],
+    "isFavorite": false
+  },
+  {
+    "id": "nine_arch",
+    "name": "Nine Arch Bridge",
+    "description": "Colonial-era railway bridge surrounded by tea plantations. This iconic bridge is one of Sri Lanka's most photographed locations.",
+    "location": "Ella, Uva Province",
+    "category": "Historic",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Nine%20Arch%20Bridge,sri%20lanka"
+    ],
+    "latitude": 6.8782,
+    "longitude": 81.0613,
+    "rating": 4.6,
+    "tags": ["railway", "architecture", "photography"],
+    "isFavorite": false
+  },
+  {
+    "id": "pinnawala",
+    "name": "Pinnawala Elephant Orphanage",
+    "description": "Sanctuary for orphaned elephants to observe and interact. Watch elephants bathing in the river during designated times.",
+    "location": "Pinnawala, Sabaragamuwa Province",
+    "category": "Wildlife",
+    "images": [
+      "https://source.unsplash.com/featured/800x500/?Pinnawala%20Elephant%20Orphanage"
+    ],
+    "latitude": 7.3000,
+    "longitude": 80.3833,
+    "rating": 4.2,
+    "tags": ["elephants", "wildlife", "sanctuary"],
+    "isFavorite": false
+  }
+]
