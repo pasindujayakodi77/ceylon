@@ -12,6 +12,7 @@ class LocalRatesRepository {
 
   Future<void> load() async {
     if (_rates != null) return;
+    print('Loading asset: $_assetPath'); // Debug log
     final raw = await rootBundle.loadString(_assetPath);
     final data = jsonDecode(raw) as Map<String, dynamic>;
     _base = data['base'] as String? ?? 'LKR';

@@ -14,6 +14,7 @@ import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.
 import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_screen.dart';
 
 import 'package:ceylon/features/holidays/presentation/screens/holiday_calendar_screen.dart';
+import 'package:ceylon/features/recommendations/presentation/screens/recommendations_screen.dart';
 
 class TouristHomeScreen extends StatelessWidget {
   const TouristHomeScreen({super.key});
@@ -103,6 +104,19 @@ class TouristHomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => const HolidayCalendarScreen(),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          TextButton.icon(
+            icon: const Icon(Icons.auto_awesome),
+            label: const Text('AI Picks'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const RecommendationsScreen(),
                 ),
               );
             },

@@ -28,7 +28,7 @@ class _AttractionsFilterScreenState extends State<AttractionsFilterScreen> {
 
   // Build the Firestore query based on current filters
   Query _buildQuery() {
-    Query q = FirebaseFirestore.instance.collection('places');
+    Query q = FirebaseFirestore.instance.collection('attractions');
 
     if (_category != 'all') {
       q = q.where('category', isEqualTo: _category);

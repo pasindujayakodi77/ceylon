@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    
+    {
+      "name": "ceylon (with Gemini)",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        // Define the Gemini API key for the recommender
+        "--dart-define=GEMINI_API_KEY=AIzaSyCFyEVfSSYIsnp0djUhHB6EE7E2ZysFcA4"
+      ]
+    }
+  ]
+}

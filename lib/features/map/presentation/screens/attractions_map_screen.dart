@@ -134,7 +134,7 @@ class _AttractionsMapScreenState extends State<AttractionsMapScreen> {
   @override
   Widget build(BuildContext context) {
     final placesStream = FirebaseFirestore.instance
-        .collection('places')
+        .collection('attractions')
         .snapshots();
 
     return Scaffold(
