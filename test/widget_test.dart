@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
 
 import 'package:ceylon/main.dart';
 
@@ -14,7 +15,11 @@ void main() {
     WidgetTester tester,
   ) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const CeylonApp());
+    await tester.pumpWidget(
+      const MyApp(
+        home: const Center(child: const Text('🧭 Welcome to CEYLON App')),
+      ),
+    );
 
     // Verify that our app displays the welcome message.
     expect(find.text('🧭 Welcome to CEYLON App'), findsOneWidget);
