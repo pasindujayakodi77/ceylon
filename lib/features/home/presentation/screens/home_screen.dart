@@ -15,6 +15,8 @@ import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_
 
 import 'package:ceylon/features/holidays/presentation/screens/holiday_calendar_screen.dart';
 import 'package:ceylon/features/recommendations/presentation/screens/recommendations_screen.dart';
+import 'package:flutter/foundation.dart';
+import 'package:ceylon/dev/dev_tools_screen.dart';
 
 class TouristHomeScreen extends StatelessWidget {
   const TouristHomeScreen({super.key});
@@ -41,6 +43,18 @@ class TouristHomeScreen extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(height: 16),
+          if (kDebugMode)
+            TextButton.icon(
+              icon: const Icon(Icons.build),
+              label: const Text('Dev Tools'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const DevToolsScreen()),
+                );
+              },
+            ),
           const SizedBox(height: 16),
           TextButton.icon(
             icon: const Icon(Icons.menu_book),

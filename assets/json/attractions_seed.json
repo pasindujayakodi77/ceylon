@@ -1,0 +1,1131 @@
+{
+  "items": [
+    {
+      "id": "sigiriya",
+      "name": "Sigiriya Rock Fortress",
+      "city": "Sigiriya",
+      "category": "history",
+      "tags": [
+        "history",
+        "view",
+        "hike"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Sigiriya%20Rock%20Fortress,sri%20lanka",
+      "description": "Ancient rock citadel with frescoes and sweeping views.",
+      "location": {
+        "lat": 7.9569,
+        "lng": 80.7599
+      },
+      "avg_rating": 4.7,
+      "review_count": 677,
+      "est_cost": 3000
+    },
+    {
+      "id": "dambulla_caves",
+      "name": "Dambulla Cave Temple",
+      "city": "Dambulla",
+      "category": "history",
+      "tags": [
+        "caves",
+        "art",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Dambulla%20Cave%20Temple,sri%20lanka",
+      "description": "Rock cave complex with Buddhist murals and statues.",
+      "location": {
+        "lat": 7.8568,
+        "lng": 80.6495
+      },
+      "avg_rating": 4.6,
+      "review_count": 709,
+      "est_cost": 9000
+    },
+    {
+      "id": "pidurangala",
+      "name": "Pidurangala Rock (Lion's Rock Viewpoint)",
+      "city": "Sigiriya",
+      "category": "view",
+      "tags": [
+        "sunrise",
+        "hike",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Pidurangala%20Rock%20(Lion's%20Rock%20Viewpoint),sri%20lanka",
+      "description": "Popular sunrise hike facing Sigiriya.",
+      "location": {
+        "lat": 7.9564,
+        "lng": 80.7506
+      },
+      "avg_rating": 4.6,
+      "review_count": 1978,
+      "est_cost": 500
+    },
+    {
+      "id": "polonnaruwa",
+      "name": "Ancient City of Polonnaruwa",
+      "city": "Polonnaruwa",
+      "category": "history",
+      "tags": [
+        "ruins",
+        "unesco",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Ancient%20City%20of%20Polonnaruwa,sri%20lanka",
+      "description": "UNESCO ruin city with well‑preserved temples and pools.",
+      "location": {
+        "lat": 7.9396,
+        "lng": 81.0038
+      },
+      "avg_rating": 4.7,
+      "review_count": 755,
+      "est_cost": 0
+    },
+    {
+      "id": "anuradhapura",
+      "name": "Sacred City of Anuradhapura",
+      "city": "Anuradhapura",
+      "category": "religious",
+      "tags": [
+        "stupa",
+        "history",
+        "unesco"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Sacred%20City%20of%20Anuradhapura,sri%20lanka",
+      "description": "Ancient stupas, bodhi tree and monastic ruins.",
+      "location": {
+        "lat": 8.3114,
+        "lng": 80.4037
+      },
+      "avg_rating": 4.8,
+      "review_count": 1835,
+      "est_cost": 500
+    },
+    {
+      "id": "mihintale",
+      "name": "Mihintale",
+      "city": "Mihintale",
+      "category": "religious",
+      "tags": [
+        "stupa",
+        "view",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Mihintale,sri%20lanka",
+      "description": "Hilltop complex known as birthplace of Buddhism in Sri Lanka.",
+      "location": {
+        "lat": 8.3508,
+        "lng": 80.5059
+      },
+      "avg_rating": 4.7,
+      "review_count": 1571,
+      "est_cost": 3000
+    },
+    {
+      "id": "ritigala",
+      "name": "Ritigala Forest Monastery",
+      "city": "Habarana",
+      "category": "nature",
+      "tags": [
+        "ruins",
+        "forest",
+        "hike"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Ritigala%20Forest%20Monastery,sri%20lanka",
+      "description": "Mysterious ruins hidden in a strict nature reserve.",
+      "location": {
+        "lat": 8.1211,
+        "lng": 80.6625
+      },
+      "avg_rating": 4.9,
+      "review_count": 2257,
+      "est_cost": 9000
+    },
+    {
+      "id": "minneriya",
+      "name": "Minneriya National Park (Elephant Gathering)",
+      "city": "Habarana",
+      "category": "wildlife",
+      "tags": [
+        "elephants",
+        "safari",
+        "wildlife"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Minneriya%20National%20Park%20(Elephant%20Gathering),sri%20lanka",
+      "description": "Seasonal elephant gathering around Minneriya tank.",
+      "location": {
+        "lat": 8.0392,
+        "lng": 80.8203
+      },
+      "avg_rating": 4.6,
+      "review_count": 857,
+      "est_cost": 5000
+    },
+    {
+      "id": "kaudulla",
+      "name": "Kaudulla National Park",
+      "city": "Habarana",
+      "category": "wildlife",
+      "tags": [
+        "elephants",
+        "safari",
+        "wildlife"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Kaudulla%20National%20Park,sri%20lanka",
+      "description": "Adjacent park with elephant herds and birdlife.",
+      "location": {
+        "lat": 8.1219,
+        "lng": 80.9305
+      },
+      "avg_rating": 4.5,
+      "review_count": 1284,
+      "est_cost": 5000
+    },
+    {
+      "id": "kandy_tooth",
+      "name": "Temple of the Tooth",
+      "city": "Kandy",
+      "category": "religious",
+      "tags": [
+        "culture",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Temple%20of%20the%20Tooth,sri%20lanka",
+      "description": "Buddhist temple housing the sacred tooth relic.",
+      "location": {
+        "lat": 7.2949,
+        "lng": 80.6413
+      },
+      "avg_rating": 4.5,
+      "review_count": 1941,
+      "est_cost": 5000
+    },
+    {
+      "id": "kandy_lake",
+      "name": "Kandy Lake Walk",
+      "city": "Kandy",
+      "category": "relax",
+      "tags": [
+        "walk",
+        "city",
+        "relax"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Kandy%20Lake%20Walk,sri%20lanka",
+      "description": "Scenic loop around the heart‑shaped Kandy Lake.",
+      "location": {
+        "lat": 7.2901,
+        "lng": 80.6414
+      },
+      "avg_rating": 4.2,
+      "review_count": 1365,
+      "est_cost": 0
+    },
+    {
+      "id": "peradeniya_gardens",
+      "name": "Peradeniya Royal Botanical Gardens",
+      "city": "Peradeniya",
+      "category": "garden",
+      "tags": [
+        "garden",
+        "orchids",
+        "walk"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Peradeniya%20Royal%20Botanical%20Gardens,sri%20lanka",
+      "description": "Expansive gardens with orchids and giant palms.",
+      "location": {
+        "lat": 7.2715,
+        "lng": 80.5953
+      },
+      "avg_rating": 4.4,
+      "review_count": 697,
+      "est_cost": 500
+    },
+    {
+      "id": "pinnawala",
+      "name": "Pinnawala Elephant Orphanage",
+      "city": "Rambukkana",
+      "category": "wildlife",
+      "tags": [
+        "elephants",
+        "family"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Pinnawala%20Elephant%20Orphanage,sri%20lanka",
+      "description": "Elephant care center with river bathing times.",
+      "location": {
+        "lat": 7.2975,
+        "lng": 80.3861
+      },
+      "avg_rating": 4.3,
+      "review_count": 719,
+      "est_cost": 0
+    },
+    {
+      "id": "knuckles",
+      "name": "Knuckles Mountain Range",
+      "city": "Matale",
+      "category": "hike",
+      "tags": [
+        "hike",
+        "nature",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Knuckles%20Mountain%20Range,sri%20lanka",
+      "description": "Cloud forests and rugged peaks with village trails.",
+      "location": {
+        "lat": 7.4656,
+        "lng": 80.7847
+      },
+      "avg_rating": 4.3,
+      "review_count": 1368,
+      "est_cost": 500
+    },
+    {
+      "id": "nine_arch",
+      "name": "Nine Arches Bridge",
+      "city": "Ella",
+      "category": "view",
+      "tags": [
+        "train",
+        "photo",
+        "hike"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Nine%20Arches%20Bridge,sri%20lanka",
+      "description": "Iconic stone bridge — best at train time.",
+      "location": {
+        "lat": 6.8761,
+        "lng": 81.0606
+      },
+      "avg_rating": 4.4,
+      "review_count": 281,
+      "est_cost": 5000
+    },
+    {
+      "id": "little_adams_peak",
+      "name": "Little Adam's Peak",
+      "city": "Ella",
+      "category": "hike",
+      "tags": [
+        "hike",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Little%20Adam's%20Peak,sri%20lanka",
+      "description": "Short, rewarding ridge walk near Ella.",
+      "location": {
+        "lat": 6.8611,
+        "lng": 81.0584
+      },
+      "avg_rating": 4.4,
+      "review_count": 1149,
+      "est_cost": 9000
+    },
+    {
+      "id": "ella_rock",
+      "name": "Ella Rock",
+      "city": "Ella",
+      "category": "hike",
+      "tags": [
+        "hike",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Ella%20Rock,sri%20lanka",
+      "description": "Longer hike with dramatic valley views.",
+      "location": {
+        "lat": 6.8396,
+        "lng": 81.0609
+      },
+      "avg_rating": 4.5,
+      "review_count": 1819,
+      "est_cost": 15000
+    },
+    {
+      "id": "demodara_loop",
+      "name": "Demodara Loop",
+      "city": "Demodara",
+      "category": "train",
+      "tags": [
+        "train",
+        "engineering"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Demodara%20Loop,sri%20lanka",
+      "description": "Railway loop where the track passes under itself.",
+      "location": {
+        "lat": 6.874,
+        "lng": 81.0636
+      },
+      "avg_rating": 4.7,
+      "review_count": 2304,
+      "est_cost": 1500
+    },
+    {
+      "id": "liptons_seat",
+      "name": "Lipton's Seat",
+      "city": "Haputale",
+      "category": "view",
+      "tags": [
+        "tea",
+        "view",
+        "sunrise"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Lipton's%20Seat,sri%20lanka",
+      "description": "Sunrise lookout over rolling tea estates.",
+      "location": {
+        "lat": 6.7617,
+        "lng": 80.9449
+      },
+      "avg_rating": 4.7,
+      "review_count": 226,
+      "est_cost": 3000
+    },
+    {
+      "id": "tea_factory_tour",
+      "name": "Halpewatte Tea Factory Tour",
+      "city": "Badulla",
+      "category": "culture",
+      "tags": [
+        "tea",
+        "factory",
+        "culture"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Halpewatte%20Tea%20Factory%20Tour,sri%20lanka",
+      "description": "Guided tea processing tour and tasting.",
+      "location": {
+        "lat": 6.8685,
+        "lng": 81.0536
+      },
+      "avg_rating": 4.9,
+      "review_count": 861,
+      "est_cost": 1500
+    },
+    {
+      "id": "ravana_falls",
+      "name": "Ravana Falls",
+      "city": "Ella",
+      "category": "waterfall",
+      "tags": [
+        "waterfall",
+        "photo"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Ravana%20Falls,sri%20lanka",
+      "description": "Roadside cascade popular for photo stops.",
+      "location": {
+        "lat": 6.8399,
+        "lng": 81.0527
+      },
+      "avg_rating": 4.8,
+      "review_count": 2188,
+      "est_cost": 1500
+    },
+    {
+      "id": "horton_plains",
+      "name": "Horton Plains / World's End",
+      "city": "Nuwara Eliya",
+      "category": "hike",
+      "tags": [
+        "hike",
+        "view",
+        "nature"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Horton%20Plains%20/%20World's%20End,sri%20lanka",
+      "description": "High‑plateau trek with sheer cliff viewpoint.",
+      "location": {
+        "lat": 6.8029,
+        "lng": 80.7998
+      },
+      "avg_rating": 4.7,
+      "review_count": 2186,
+      "est_cost": 1500
+    },
+    {
+      "id": "bakers_falls",
+      "name": "Baker's Falls",
+      "city": "Horton Plains",
+      "category": "waterfall",
+      "tags": [
+        "waterfall",
+        "hike"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Baker's%20Falls,sri%20lanka",
+      "description": "Forest waterfall along the Horton loop trail.",
+      "location": {
+        "lat": 6.807,
+        "lng": 80.802
+      },
+      "avg_rating": 4.6,
+      "review_count": 2298,
+      "est_cost": 5000
+    },
+    {
+      "id": "gregory_lake",
+      "name": "Gregory Lake Park",
+      "city": "Nuwara Eliya",
+      "category": "relax",
+      "tags": [
+        "lake",
+        "relax",
+        "family"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Gregory%20Lake%20Park,sri%20lanka",
+      "description": "Boating, pony rides and lakeside strolls.",
+      "location": {
+        "lat": 6.9571,
+        "lng": 80.7829
+      },
+      "avg_rating": 4.9,
+      "review_count": 560,
+      "est_cost": 500
+    },
+    {
+      "id": "adams_peak",
+      "name": "Sri Pada (Adam's Peak)",
+      "city": "Nallathanniya",
+      "category": "pilgrimage",
+      "tags": [
+        "pilgrimage",
+        "hike",
+        "sunrise"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Sri%20Pada%20(Adam's%20Peak),sri%20lanka",
+      "description": "Night climb to a sacred summit and sunrise.",
+      "location": {
+        "lat": 6.8098,
+        "lng": 80.499
+      },
+      "avg_rating": 4.5,
+      "review_count": 1132,
+      "est_cost": 15000
+    },
+    {
+      "id": "devon_falls",
+      "name": "Devon Falls",
+      "city": "Talawakele",
+      "category": "waterfall",
+      "tags": [
+        "waterfall",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Devon%20Falls,sri%20lanka",
+      "description": "Tall cascade visible from the A7.",
+      "location": {
+        "lat": 6.966,
+        "lng": 80.5328
+      },
+      "avg_rating": 4.3,
+      "review_count": 533,
+      "est_cost": 15000
+    },
+    {
+      "id": "st_clairs_falls",
+      "name": "St. Clair's Falls",
+      "city": "Talawakele",
+      "category": "waterfall",
+      "tags": [
+        "waterfall",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?St.%20Clair's%20Falls,sri%20lanka",
+      "description": "‘Little Niagara’ of Sri Lanka near tea estates.",
+      "location": {
+        "lat": 6.9565,
+        "lng": 80.5368
+      },
+      "avg_rating": 4.2,
+      "review_count": 737,
+      "est_cost": 0
+    },
+    {
+      "id": "diyaluma",
+      "name": "Diyaluma Falls",
+      "city": "Koslanda",
+      "category": "waterfall",
+      "tags": [
+        "waterfall",
+        "hike",
+        "swim"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Diyaluma%20Falls,sri%20lanka",
+      "description": "Tiered waterfall with natural infinity pools.",
+      "location": {
+        "lat": 6.7631,
+        "lng": 81.0307
+      },
+      "avg_rating": 4.5,
+      "review_count": 771,
+      "est_cost": 500
+    },
+    {
+      "id": "seetha_amman",
+      "name": "Seetha Amman Temple",
+      "city": "Nuwara Eliya",
+      "category": "religious",
+      "tags": [
+        "hindu",
+        "temple",
+        "culture"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Seetha%20Amman%20Temple,sri%20lanka",
+      "description": "Hindu temple tied to the Ramayana legend.",
+      "location": {
+        "lat": 6.9728,
+        "lng": 80.7826
+      },
+      "avg_rating": 4.3,
+      "review_count": 2346,
+      "est_cost": 5000
+    },
+    {
+      "id": "galle_fort",
+      "name": "Galle Fort",
+      "city": "Galle",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "sunset",
+        "walk"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Galle%20Fort,sri%20lanka",
+      "description": "UNESCO sea fort with cafes, boutiques and sunsets.",
+      "location": {
+        "lat": 6.026,
+        "lng": 80.217
+      },
+      "avg_rating": 4.3,
+      "review_count": 2215,
+      "est_cost": 15000
+    },
+    {
+      "id": "unawatuna",
+      "name": "Unawatuna Beach",
+      "city": "Unawatuna",
+      "category": "beach",
+      "tags": [
+        "beach",
+        "swim"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Unawatuna%20Beach,sri%20lanka",
+      "description": "Sheltered bay popular with families.",
+      "location": {
+        "lat": 6.0106,
+        "lng": 80.249
+      },
+      "avg_rating": 4.6,
+      "review_count": 1755,
+      "est_cost": 500
+    },
+    {
+      "id": "mirissa",
+      "name": "Mirissa Beach",
+      "city": "Mirissa",
+      "category": "beach",
+      "tags": [
+        "beach",
+        "sunset"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Mirissa%20Beach,sri%20lanka",
+      "description": "Chilled bay; whale watching in season.",
+      "location": {
+        "lat": 5.9485,
+        "lng": 80.4544
+      },
+      "avg_rating": 4.7,
+      "review_count": 292,
+      "est_cost": 15000
+    },
+    {
+      "id": "coconut_tree_hill",
+      "name": "Coconut Tree Hill",
+      "city": "Mirissa",
+      "category": "view",
+      "tags": [
+        "view",
+        "photo",
+        "sunrise"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Coconut%20Tree%20Hill,sri%20lanka",
+      "description": "Palm‑covered headland — iconic sunrise spot.",
+      "location": {
+        "lat": 5.9439,
+        "lng": 80.454
+      },
+      "avg_rating": 4.6,
+      "review_count": 2269,
+      "est_cost": 500
+    },
+    {
+      "id": "weligama",
+      "name": "Weligama Surf Point",
+      "city": "Weligama",
+      "category": "beach",
+      "tags": [
+        "surf",
+        "beach"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Weligama%20Surf%20Point,sri%20lanka",
+      "description": "Gentle waves ideal for beginner surf lessons.",
+      "location": {
+        "lat": 5.9735,
+        "lng": 80.4297
+      },
+      "avg_rating": 4.8,
+      "review_count": 1090,
+      "est_cost": 9000
+    },
+    {
+      "id": "hikkaduwa",
+      "name": "Hikkaduwa Coral Sanctuary",
+      "city": "Hikkaduwa",
+      "category": "snorkel",
+      "tags": [
+        "snorkel",
+        "turtles"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Hikkaduwa%20Coral%20Sanctuary,sri%20lanka",
+      "description": "Nearshore reef with turtles and fish.",
+      "location": {
+        "lat": 6.1401,
+        "lng": 80.108
+      },
+      "avg_rating": 4.8,
+      "review_count": 1609,
+      "est_cost": 0
+    },
+    {
+      "id": "bentota",
+      "name": "Bentota Beach",
+      "city": "Bentota",
+      "category": "beach",
+      "tags": [
+        "beach",
+        "watersports"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Bentota%20Beach,sri%20lanka",
+      "description": "Wide sandy beach; water sports on the river.",
+      "location": {
+        "lat": 6.421,
+        "lng": 80.0033
+      },
+      "avg_rating": 4.8,
+      "review_count": 2389,
+      "est_cost": 9000
+    },
+    {
+      "id": "kosgoda_turtles",
+      "name": "Kosgoda Turtle Hatchery",
+      "city": "Kosgoda",
+      "category": "wildlife",
+      "tags": [
+        "turtles",
+        "education"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Kosgoda%20Turtle%20Hatchery,sri%20lanka",
+      "description": "Sea turtle conservation and releases.",
+      "location": {
+        "lat": 6.3362,
+        "lng": 80.0308
+      },
+      "avg_rating": 4.4,
+      "review_count": 1534,
+      "est_cost": 15000
+    },
+    {
+      "id": "sinharaja",
+      "name": "Sinharaja Rain Forest",
+      "city": "Deniyaya",
+      "category": "nature",
+      "tags": [
+        "forest",
+        "birding",
+        "nature"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Sinharaja%20Rain%20Forest,sri%20lanka",
+      "description": "Biodiverse primary rainforest (UNESCO).",
+      "location": {
+        "lat": 6.4167,
+        "lng": 80.5
+      },
+      "avg_rating": 4.6,
+      "review_count": 388,
+      "est_cost": 0
+    },
+    {
+      "id": "koneswaram",
+      "name": "Koneswaram Temple",
+      "city": "Trincomalee",
+      "category": "religious",
+      "tags": [
+        "hindu",
+        "temple",
+        "view"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Koneswaram%20Temple,sri%20lanka",
+      "description": "Hilltop Hindu temple over the sea cliffs.",
+      "location": {
+        "lat": 8.5874,
+        "lng": 81.2152
+      },
+      "avg_rating": 4.5,
+      "review_count": 1014,
+      "est_cost": 5000
+    },
+    {
+      "id": "uppuveli",
+      "name": "Uppuveli Beach",
+      "city": "Trincomalee",
+      "category": "beach",
+      "tags": [
+        "beach",
+        "relax"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Uppuveli%20Beach,sri%20lanka",
+      "description": "Long, calm sandy beach north of Trinco.",
+      "location": {
+        "lat": 8.609,
+        "lng": 81.223
+      },
+      "avg_rating": 4.5,
+      "review_count": 1249,
+      "est_cost": 1500
+    },
+    {
+      "id": "nilaveli",
+      "name": "Nilaveli Beach",
+      "city": "Nilaveli",
+      "category": "beach",
+      "tags": [
+        "beach",
+        "snorkel"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Nilaveli%20Beach,sri%20lanka",
+      "description": "Quiet coastline and gateway to Pigeon Island.",
+      "location": {
+        "lat": 8.672,
+        "lng": 81.2011
+      },
+      "avg_rating": 4.8,
+      "review_count": 485,
+      "est_cost": 0
+    },
+    {
+      "id": "pigeon_island",
+      "name": "Pigeon Island National Park",
+      "city": "Nilaveli",
+      "category": "snorkel",
+      "tags": [
+        "snorkel",
+        "marine"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Pigeon%20Island%20National%20Park,sri%20lanka",
+      "description": "Coral gardens with reef sharks and turtles.",
+      "location": {
+        "lat": 8.7169,
+        "lng": 81.1975
+      },
+      "avg_rating": 4.7,
+      "review_count": 1609,
+      "est_cost": 0
+    },
+    {
+      "id": "arugam_bay",
+      "name": "Arugam Bay Main Point",
+      "city": "Arugam Bay",
+      "category": "surf",
+      "tags": [
+        "surf",
+        "beach"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Arugam%20Bay%20Main%20Point,sri%20lanka",
+      "description": "World‑class right‑hand point break (seasonal).",
+      "location": {
+        "lat": 6.838,
+        "lng": 81.834
+      },
+      "avg_rating": 4.7,
+      "review_count": 1853,
+      "est_cost": 3000
+    },
+    {
+      "id": "yala",
+      "name": "Yala National Park",
+      "city": "Tissamaharama",
+      "category": "wildlife",
+      "tags": [
+        "safari",
+        "wildlife"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Yala%20National%20Park,sri%20lanka",
+      "description": "Sri Lanka’s famous leopard territory.",
+      "location": {
+        "lat": 6.3667,
+        "lng": 81.5167
+      },
+      "avg_rating": 4.4,
+      "review_count": 1133,
+      "est_cost": 3000
+    },
+    {
+      "id": "udawalawe",
+      "name": "Udawalawe National Park",
+      "city": "Udawalawe",
+      "category": "wildlife",
+      "tags": [
+        "safari",
+        "elephants"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Udawalawe%20National%20Park,sri%20lanka",
+      "description": "Huge elephant herds on open plains.",
+      "location": {
+        "lat": 6.475,
+        "lng": 80.888
+      },
+      "avg_rating": 4.6,
+      "review_count": 155,
+      "est_cost": 5000
+    },
+    {
+      "id": "bundala",
+      "name": "Bundala National Park",
+      "city": "Hambantota",
+      "category": "wildlife",
+      "tags": [
+        "birding",
+        "safari"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Bundala%20National%20Park,sri%20lanka",
+      "description": "Coastal lagoons with flamingos and waders.",
+      "location": {
+        "lat": 6.2,
+        "lng": 81.2
+      },
+      "avg_rating": 4.5,
+      "review_count": 715,
+      "est_cost": 15000
+    },
+    {
+      "id": "colombo_museum",
+      "name": "Colombo National Museum",
+      "city": "Colombo",
+      "category": "museum",
+      "tags": [
+        "museum",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Colombo%20National%20Museum,sri%20lanka",
+      "description": "Largest museum in Sri Lanka with cultural artifacts.",
+      "location": {
+        "lat": 6.9008,
+        "lng": 79.8612
+      },
+      "avg_rating": 4.7,
+      "review_count": 766,
+      "est_cost": 500
+    },
+    {
+      "id": "gangaramaya",
+      "name": "Gangaramaya Temple",
+      "city": "Colombo",
+      "category": "religious",
+      "tags": [
+        "buddhist",
+        "temple"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Gangaramaya%20Temple,sri%20lanka",
+      "description": "City temple complex with eclectic museum.",
+      "location": {
+        "lat": 6.9154,
+        "lng": 79.856
+      },
+      "avg_rating": 4.6,
+      "review_count": 428,
+      "est_cost": 3000
+    },
+    {
+      "id": "galle_face",
+      "name": "Galle Face Green",
+      "city": "Colombo",
+      "category": "relax",
+      "tags": [
+        "sunset",
+        "streetfood"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Galle%20Face%20Green,sri%20lanka",
+      "description": "Sunset promenade with street food.",
+      "location": {
+        "lat": 6.9271,
+        "lng": 79.8428
+      },
+      "avg_rating": 4.9,
+      "review_count": 1786,
+      "est_cost": 9000
+    },
+    {
+      "id": "independence_square",
+      "name": "Independence Square & Arcade",
+      "city": "Colombo",
+      "category": "culture",
+      "tags": [
+        "architecture",
+        "walk"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Independence%20Square%20&%20Arcade,sri%20lanka",
+      "description": "Historic memorial hall with colonial‑era arcade.",
+      "location": {
+        "lat": 6.9021,
+        "lng": 79.8667
+      },
+      "avg_rating": 4.8,
+      "review_count": 1223,
+      "est_cost": 1500
+    },
+    {
+      "id": "pettah_market",
+      "name": "Pettah Floating Market",
+      "city": "Colombo",
+      "category": "market",
+      "tags": [
+        "market",
+        "streetfood"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Pettah%20Floating%20Market,sri%20lanka",
+      "description": "Stalls over Beira canal; good for snacks.",
+      "location": {
+        "lat": 6.9449,
+        "lng": 79.8657
+      },
+      "avg_rating": 4.8,
+      "review_count": 422,
+      "est_cost": 15000
+    },
+    {
+      "id": "beira_lake",
+      "name": "Beira Lake + Seema Malaka",
+      "city": "Colombo",
+      "category": "relax",
+      "tags": [
+        "lake",
+        "architecture"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Beira%20Lake%20+%20Seema%20Malaka,sri%20lanka",
+      "description": "Floating pavilions designed by Geoffrey Bawa.",
+      "location": {
+        "lat": 6.9215,
+        "lng": 79.8559
+      },
+      "avg_rating": 4.5,
+      "review_count": 2136,
+      "est_cost": 15000
+    },
+    {
+      "id": "viharamahadevi",
+      "name": "Viharamahadevi Park",
+      "city": "Colombo",
+      "category": "park",
+      "tags": [
+        "park",
+        "relax"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Viharamahadevi%20Park,sri%20lanka",
+      "description": "Central city park with blooming trees.",
+      "location": {
+        "lat": 6.9109,
+        "lng": 79.8621
+      },
+      "avg_rating": 4.7,
+      "review_count": 1132,
+      "est_cost": 9000
+    },
+    {
+      "id": "jaffna_fort",
+      "name": "Jaffna Fort",
+      "city": "Jaffna",
+      "category": "history",
+      "tags": [
+        "fort",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Jaffna%20Fort,sri%20lanka",
+      "description": "Dutch‑built star fort overlooking the lagoon.",
+      "location": {
+        "lat": 9.6615,
+        "lng": 80.01
+      },
+      "avg_rating": 4.3,
+      "review_count": 955,
+      "est_cost": 500
+    },
+    {
+      "id": "nallur_kovil",
+      "name": "Nallur Kandaswamy Kovil",
+      "city": "Jaffna",
+      "category": "religious",
+      "tags": [
+        "hindu",
+        "temple"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Nallur%20Kandaswamy%20Kovil,sri%20lanka",
+      "description": "Vibrant Dravidian‑style Hindu temple.",
+      "location": {
+        "lat": 9.6758,
+        "lng": 80.0337
+      },
+      "avg_rating": 4.5,
+      "review_count": 2333,
+      "est_cost": 9000
+    },
+    {
+      "id": "delft_island",
+      "name": "Delft Island (Neduntheevu)",
+      "city": "Jaffna",
+      "category": "island",
+      "tags": [
+        "island",
+        "offbeat"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Delft%20Island%20(Neduntheevu),sri%20lanka",
+      "description": "Remote coral island with wild horses and baobabs.",
+      "location": {
+        "lat": 9.51,
+        "lng": 79.65
+      },
+      "avg_rating": 4.9,
+      "review_count": 1714,
+      "est_cost": 1500
+    },
+    {
+      "id": "sigiriya_museum",
+      "name": "Sigiriya Museum",
+      "city": "Sigiriya",
+      "category": "museum",
+      "tags": [
+        "museum",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Sigiriya%20Museum,sri%20lanka",
+      "description": "Context museum for the rock fortress.",
+      "location": {
+        "lat": 7.9576,
+        "lng": 80.7604
+      },
+      "avg_rating": 4.4,
+      "review_count": 1035,
+      "est_cost": 1500
+    },
+    {
+      "id": "dambulla_museum",
+      "name": "Golden Temple Museum",
+      "city": "Dambulla",
+      "category": "museum",
+      "tags": [
+        "museum",
+        "history"
+      ],
+      "photo": "https://source.unsplash.com/featured/800x500/?Golden%20Temple%20Museum,sri%20lanka",
+      "description": "Museum near the golden Buddha statue.",
+      "location": {
+        "lat": 7.872,
+        "lng": 80.6512
+      },
+      "avg_rating": 4.5,
+      "review_count": 644,
+      "est_cost": 5000
+    }
+  ],
+  "count": 58
+}

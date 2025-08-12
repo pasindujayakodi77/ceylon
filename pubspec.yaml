@@ -96,6 +96,7 @@ flutter:
     - assets/json/holidays.json
     - assets/json/currency_rates.json
     - assets/json/tipping_guide.json
+    - assets/json/attractions_seed.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:
