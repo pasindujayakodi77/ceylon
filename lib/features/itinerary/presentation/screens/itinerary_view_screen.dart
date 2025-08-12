@@ -5,7 +5,6 @@ import 'package:ceylon/features/itinerary/data/itinerary_repository.dart';
 import 'package:ceylon/features/itinerary/presentation/widgets/itinerary_day_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,9 +56,10 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
     if (item.placeId != null && item.placeId!.isNotEmpty) {
       // Navigate to place details
       if (mounted && context.mounted) {
-        context.pushNamed(
-          'placeDetails',
-          pathParameters: {'id': item.placeId!},
+        Navigator.pushNamed(
+          context,
+          '/place-details',
+          arguments: item, // Pass the itinerary item as argument
         );
       }
     }
@@ -358,9 +358,9 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
             icon: const Icon(Icons.edit),
             onPressed: () {
               if (mounted && context.mounted) {
-                context.pushNamed(
-                  'editItinerary',
-                  pathParameters: {'id': widget.itineraryId},
+                Navigator.pushNamed(
+                  context,
+                  '/itineraries/${widget.itineraryId}/edit',
                 );
               }
             },
