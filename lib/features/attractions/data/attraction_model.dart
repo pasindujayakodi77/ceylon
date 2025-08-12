@@ -11,6 +11,9 @@ class Attraction {
   final List<String> tags;
   final bool isFavorite;
 
+  // Added imageUrl getter to fix compatibility
+  String? get imageUrl => images.isNotEmpty ? images[0] : null;
+
   Attraction({
     required this.id,
     required this.name,

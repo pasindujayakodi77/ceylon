@@ -179,7 +179,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               subtitle: 'Cultural Triangle',
                               backgroundColor: Colors.orange.shade300,
                               imageUrl:
-                                  'https://images.unsplash.com/photo-1590562177087-bee1e9db2a76',
+                                  'https://picsum.photos/seed/temple/800/500',
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
@@ -195,7 +195,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               subtitle: 'Central Highlands',
                               backgroundColor: Colors.green.shade300,
                               imageUrl:
-                                  'https://images.unsplash.com/photo-1583204820092-a518213ee29e',
+                                  'https://picsum.photos/seed/beach/800/500',
                               onTap: () {
                                 // Navigate to Ella details
                               },
@@ -209,7 +209,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               subtitle: 'Southern Coast',
                               backgroundColor: Colors.blue.shade300,
                               imageUrl:
-                                  'https://images.unsplash.com/photo-1577511742756-bedb830fdaaa',
+                                  'https://picsum.photos/seed/wildlife/800/500',
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
@@ -255,12 +255,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               icon: Icons.map_outlined,
                               isPrimary: true,
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const ItineraryListScreen(),
-                                  ),
-                                );
+                                Navigator.pushNamed(context, '/itineraries');
                               },
                             )
                             .animate()

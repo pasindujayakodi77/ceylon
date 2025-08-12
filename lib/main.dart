@@ -1,5 +1,7 @@
+import 'package:ceylon/core/navigation/app_router.dart';
 import 'package:ceylon/design_system/app_theme.dart';
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
+import 'package:ceylon/features/itinerary/data/itinerary_repository.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,7 +17,6 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
 import 'features/auth/presentation/screens/onboarding_screen.dart';
 import 'features/home/presentation/screens/home_screen.dart';
-import 'features/map/presentation/routes/map_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +48,7 @@ void main() async {
       providers: [
         BlocProvider(create: (_) => AuthBloc(authRepo: authRepo)),
         ChangeNotifierProvider.value(value: themeManager),
+        Provider<ItineraryRepository>(create: (_) => ItineraryRepository()),
       ],
       child: MyApp(home: homeWidget),
     ),
@@ -78,12 +80,10 @@ class _MyAppState extends State<MyApp> {
     // Access theme manager for light/dark mode
     final themeManager = Provider.of<ThemeManager>(context);
 
-    // Import map routes
-    final mapRoutes = MapRoutes.routes;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {'/home': (_) => const TouristHomeScreen(), ...mapRoutes},
+      routes: {'/home': (_) => const TouristHomeScreen(), ...AppRouter.routes},
+      onGenerateRoute: AppRouter.onGenerateRoute,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
