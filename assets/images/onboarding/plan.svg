@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <rect width="240" height="240" fill="#FFF3E0" rx="20" ry="20"/>
+  <rect x="70" y="60" width="100" height="120" rx="10" ry="10" fill="#FF9800" opacity="0.7"/>
+  <circle cx="120" cy="100" r="20" fill="#FFFFFF"/>
+  <path d="M100,140 L120,160 L140,140" stroke="#FFFFFF" stroke-width="4" fill="none"/>
+  <text x="120" y="190" text-anchor="middle" font-family="Arial" font-size="14" fill="#E65100">Plan Your Trip</text>
+</svg>

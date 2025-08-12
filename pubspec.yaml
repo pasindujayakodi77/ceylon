@@ -72,6 +72,7 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_animate: ^4.5.0
   provider: ^6.1.1
+  flutter_svg: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +104,8 @@ flutter:
     - assets/json/currency_rates.json
     - assets/json/tipping_guide.json
     - assets/json/attractions_seed.json
+    - assets/images/
+    - assets/images/onboarding/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
