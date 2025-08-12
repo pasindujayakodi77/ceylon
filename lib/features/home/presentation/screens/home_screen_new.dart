@@ -29,7 +29,7 @@ class TouristHomeScreen extends StatefulWidget {
 class _TouristHomeScreenState extends State<TouristHomeScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _showFloatingButton = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +41,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
       }
     });
   }
-  
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -111,18 +111,21 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                   children: [
                     Text(
                       'Welcome, $firstName',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onBackground,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onBackground,
+                          ),
                     ).animate().fadeIn().slideY(begin: 0.2, end: 0),
                     const SizedBox(height: CeylonTokens.spacing8),
                     Text(
-                      'Discover the wonders of Sri Lanka',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2, end: 0),
+                          'Discover the wonders of Sri Lanka',
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(color: colorScheme.onSurfaceVariant),
+                        )
+                        .animate()
+                        .fadeIn(delay: 100.ms)
+                        .slideY(begin: 0.2, end: 0),
                   ],
                 ),
               ),
@@ -135,8 +138,9 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                   horizontal: CeylonTokens.spacing16,
                   vertical: CeylonTokens.spacing8,
                 ),
-                child: WeatherWidget.placeholder(context)
-                    .animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0),
+                child: WeatherWidget.placeholder(
+                  context,
+                ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0),
               ),
             ),
 
@@ -152,11 +156,13 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                     onActionPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const AttractionsMapScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => const AttractionsMapScreen(),
+                        ),
                       );
                     },
                   ).animate().fadeIn(delay: 300.ms),
-                  
+
                   // Horizontal scrolling highlights
                   SizedBox(
                     height: 180,
@@ -169,38 +175,50 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                       children: [
                         // These would typically come from a database
                         HighlightCard(
-                          title: 'Sigiriya Rock',
-                          subtitle: 'Cultural Triangle',
-                          backgroundColor: Colors.orange.shade300,
-                          imageUrl: 'https://images.unsplash.com/photo-1590562177087-bee1e9db2a76',
-                          hasBadge: true,
-                          badgeText: 'UNESCO',
-                          onTap: () {
-                            // Navigate to Sigiriya details
-                          },
-                        ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.2, end: 0),
-                        
+                              title: 'Sigiriya Rock',
+                              subtitle: 'Cultural Triangle',
+                              backgroundColor: Colors.orange.shade300,
+                              imageUrl:
+                                  'https://images.unsplash.com/photo-1590562177087-bee1e9db2a76',
+                              hasBadge: true,
+                              badgeText: 'UNESCO',
+                              onTap: () {
+                                // Navigate to Sigiriya details
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 400.ms)
+                            .slideX(begin: 0.2, end: 0),
+
                         HighlightCard(
-                          title: 'Ella Train Ride',
-                          subtitle: 'Central Highlands',
-                          backgroundColor: Colors.green.shade300,
-                          imageUrl: 'https://images.unsplash.com/photo-1583204820092-a518213ee29e',
-                          onTap: () {
-                            // Navigate to Ella details
-                          },
-                        ).animate().fadeIn(delay: 500.ms).slideX(begin: 0.2, end: 0),
-                        
+                              title: 'Ella Train Ride',
+                              subtitle: 'Central Highlands',
+                              backgroundColor: Colors.green.shade300,
+                              imageUrl:
+                                  'https://images.unsplash.com/photo-1583204820092-a518213ee29e',
+                              onTap: () {
+                                // Navigate to Ella details
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 500.ms)
+                            .slideX(begin: 0.2, end: 0),
+
                         HighlightCard(
-                          title: 'Galle Fort',
-                          subtitle: 'Southern Coast',
-                          backgroundColor: Colors.blue.shade300,
-                          imageUrl: 'https://images.unsplash.com/photo-1577511742756-bedb830fdaaa',
-                          hasBadge: true,
-                          badgeText: 'UNESCO',
-                          onTap: () {
-                            // Navigate to Galle details
-                          },
-                        ).animate().fadeIn(delay: 600.ms).slideX(begin: 0.2, end: 0),
+                              title: 'Galle Fort',
+                              subtitle: 'Southern Coast',
+                              backgroundColor: Colors.blue.shade300,
+                              imageUrl:
+                                  'https://images.unsplash.com/photo-1577511742756-bedb830fdaaa',
+                              hasBadge: true,
+                              badgeText: 'UNESCO',
+                              onTap: () {
+                                // Navigate to Galle details
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 600.ms)
+                            .slideX(begin: 0.2, end: 0),
                       ],
                     ),
                   ),
@@ -217,7 +235,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                     title: 'Plan Your Trip',
                     subtitle: 'Essential tools for your journey',
                   ).animate().fadeIn(delay: 700.ms),
-                  
+
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: CeylonTokens.spacing16,
@@ -232,68 +250,97 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                       childAspectRatio: 1.2,
                       children: [
                         FeatureCard(
-                          title: 'My Itineraries',
-                          subtitle: 'Plan and organize your trips',
-                          icon: Icons.map_outlined,
-                          isPrimary: true,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const ItineraryListScreen(),
-                              ),
-                            );
-                          },
-                        ).animate().fadeIn(delay: 800.ms).scale(delay: 800.ms, begin: const Offset(0.95, 0.95), end: const Offset(1, 1)),
-                        
+                              title: 'My Itineraries',
+                              subtitle: 'Plan and organize your trips',
+                              icon: Icons.map_outlined,
+                              isPrimary: true,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const ItineraryListScreen(),
+                                  ),
+                                );
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 800.ms)
+                            .scale(
+                              delay: 800.ms,
+                              begin: const Offset(0.95, 0.95),
+                              end: const Offset(1, 1),
+                            ),
+
                         FeatureCard(
-                          title: 'Favorites',
-                          subtitle: 'Your saved places',
-                          icon: Icons.favorite_border,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const FavoritesScreen(),
-                              ),
-                            );
-                          },
-                        ).animate().fadeIn(delay: 900.ms).scale(delay: 900.ms, begin: const Offset(0.95, 0.95), end: const Offset(1, 1)),
-                        
+                              title: 'Favorites',
+                              subtitle: 'Your saved places',
+                              icon: Icons.favorite_border,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const FavoritesScreen(),
+                                  ),
+                                );
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 900.ms)
+                            .scale(
+                              delay: 900.ms,
+                              begin: const Offset(0.95, 0.95),
+                              end: const Offset(1, 1),
+                            ),
+
                         FeatureCard(
-                          title: 'Trip Journal',
-                          subtitle: 'Capture your memories',
-                          icon: Icons.book_outlined,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const TripJournalScreen(),
-                              ),
-                            );
-                          },
-                        ).animate().fadeIn(delay: 1000.ms).scale(delay: 1000.ms, begin: const Offset(0.95, 0.95), end: const Offset(1, 1)),
-                        
+                              title: 'Trip Journal',
+                              subtitle: 'Capture your memories',
+                              icon: Icons.book_outlined,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const TripJournalScreen(),
+                                  ),
+                                );
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 1000.ms)
+                            .scale(
+                              delay: 1000.ms,
+                              begin: const Offset(0.95, 0.95),
+                              end: const Offset(1, 1),
+                            ),
+
                         FeatureCard(
-                          title: 'Explore Map',
-                          subtitle: 'Discover nearby attractions',
-                          icon: Icons.travel_explore,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const AttractionsMapScreen(),
-                              ),
-                            );
-                          },
-                        ).animate().fadeIn(delay: 1100.ms).scale(delay: 1100.ms, begin: const Offset(0.95, 0.95), end: const Offset(1, 1)),
+                              title: 'Explore Map',
+                              subtitle: 'Discover nearby attractions',
+                              icon: Icons.travel_explore,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const AttractionsMapScreen(),
+                                  ),
+                                );
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: 1100.ms)
+                            .scale(
+                              delay: 1100.ms,
+                              begin: const Offset(0.95, 0.95),
+                              end: const Offset(1, 1),
+                            ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            
+
             // Travel resources
             SliverToBoxAdapter(
               child: Column(
@@ -303,7 +350,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                     title: 'Travel Resources',
                     subtitle: 'Useful information for your stay',
                   ).animate().fadeIn(delay: 1200.ms),
-                  
+
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: CeylonTokens.spacing16,
@@ -323,7 +370,8 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => const CurrencyAndTipsScreen(),
+                                      builder: (_) =>
+                                          const CurrencyAndTipsScreen(),
                                     ),
                                   );
                                 },
@@ -339,7 +387,8 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => const HolidayCalendarScreen(),
+                                      builder: (_) =>
+                                          const HolidayCalendarScreen(),
                                     ),
                                   );
                                 },
@@ -347,9 +396,9 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: CeylonTokens.spacing16),
-                        
+
                         // AI Picks - Special card
                         InkWell(
                           onTap: () {
@@ -360,9 +409,13 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               ),
                             );
                           },
-                          borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
+                          borderRadius: BorderRadius.circular(
+                            CeylonTokens.radiusMedium,
+                          ),
                           child: Ink(
-                            padding: const EdgeInsets.all(CeylonTokens.spacing16),
+                            padding: const EdgeInsets.all(
+                              CeylonTokens.spacing16,
+                            ),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
@@ -372,12 +425,16 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
+                              borderRadius: BorderRadius.circular(
+                                CeylonTokens.radiusMedium,
+                              ),
                             ),
                             child: Row(
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.all(CeylonTokens.spacing12),
+                                  padding: const EdgeInsets.all(
+                                    CeylonTokens.spacing12,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.2),
                                     shape: BoxShape.circle,
@@ -390,20 +447,30 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                 const SizedBox(width: CeylonTokens.spacing16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'AI Recommendations',
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: colorScheme.onPrimaryContainer,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: colorScheme
+                                                  .onPrimaryContainer,
+                                            ),
                                       ),
                                       Text(
                                         'Personalized suggestions just for you',
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: colorScheme.onPrimaryContainer.withOpacity(0.8),
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color: colorScheme
+                                                  .onPrimaryContainer
+                                                  .withOpacity(0.8),
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -432,14 +499,14 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                     title: 'Featured Businesses',
                     subtitle: 'Local services to enhance your experience',
                   ).animate().fadeIn(delay: 1600.ms),
-                  
+
                   const PromotedBusinessesCarousel(
                     limit: 6,
                   ).animate().fadeIn(delay: 1700.ms),
                 ],
               ),
             ),
-            
+
             // Debug section in development mode
             if (kDebugMode)
               SliverToBoxAdapter(
@@ -451,7 +518,9 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const DevToolsScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => const DevToolsScreen(),
+                        ),
                       );
                     },
                   ),
@@ -459,13 +528,11 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
               ),
 
             // Bottom spacing
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 80),
-            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],
         ),
       ),
-      
+
       // Floating action button to scroll to top (appears when scrolled)
       floatingActionButton: AnimatedScale(
         scale: _showFloatingButton ? 1.0 : 0.0,
