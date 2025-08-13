@@ -1,6 +1,7 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/core/utils/image_url_validator.dart';
 
 class NearbyAttractionsWidget extends StatelessWidget {
   final List<Attraction> attractions;
@@ -81,7 +82,9 @@ class NearbyAttractionsWidget extends StatelessWidget {
               child: SizedBox(
                 height: 100,
                 width: double.infinity,
-                child: attraction.images.isNotEmpty
+                child:
+                    (attraction.images.isNotEmpty &&
+                        isValidImageUrl(attraction.images.first))
                     ? Image.network(
                         attraction.images.first,
                         fit: BoxFit.cover,

@@ -3,6 +3,7 @@ import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:ceylon/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/core/utils/image_url_validator.dart';
 
 class AttractionMarkerCard extends StatelessWidget {
   final Attraction attraction;
@@ -41,7 +42,9 @@ class AttractionMarkerCard extends StatelessWidget {
                 topLeft: Radius.circular(CeylonTokens.radiusMedium),
                 topRight: Radius.circular(CeylonTokens.radiusMedium),
               ),
-              child: attraction.images.isNotEmpty
+              child:
+                  (attraction.images.isNotEmpty &&
+                      isValidImageUrl(attraction.images.first))
                   ? Image.network(
                       attraction.images.first,
                       height: 120,

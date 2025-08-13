@@ -1,6 +1,7 @@
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:ceylon/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/core/utils/image_url_validator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// A reusable attraction detail widget
@@ -31,12 +32,29 @@ class AttractionDetailView extends StatelessWidget {
         if (attraction.images.isNotEmpty)
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.network(
-              attraction.images.first,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child:
+                (attraction.images.isNotEmpty &&
+                    isValidImageUrl(attraction.images.first))
+                ? Image.network(
+                    attraction.images.first,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      child: const Center(
+                        child: Icon(Icons.image_not_supported, size: 40),
+                      ),
+                    ),
+                  )
+                : Container(
+                    height: 200,
+                    width: double.infinity,
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    child: const Center(child: Icon(Icons.image, size: 40)),
+                  ),
           ),
 
         Padding(

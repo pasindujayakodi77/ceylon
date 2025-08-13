@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ceylon/core/utils/image_url_validator.dart';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:ceylon/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:ceylon/features/reviews/presentation/screens/reviews_screen.dart';
@@ -31,7 +32,9 @@ class AttractionDetailScreen extends StatelessWidget {
       expandedHeight: 250,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
-        background: attraction.images.isNotEmpty
+        background:
+            (attraction.images.isNotEmpty &&
+                isValidImageUrl(attraction.images.first))
             ? Image.network(
                 attraction.images.first,
                 fit: BoxFit.cover,

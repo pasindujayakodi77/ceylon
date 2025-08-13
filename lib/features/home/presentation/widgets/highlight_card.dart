@@ -1,5 +1,6 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/core/utils/image_url_validator.dart';
 
 /// A highlight card for featured attractions or content
 class HighlightCard extends StatelessWidget {
@@ -42,9 +43,16 @@ class HighlightCard extends StatelessWidget {
         child: Stack(
           children: [
             // Image or color background
-            if (imageUrl != null)
+            if (imageUrl != null && isValidImageUrl(imageUrl))
               Positioned.fill(
-                child: Image.network(imageUrl!, fit: BoxFit.cover),
+                child: Image.network(
+                  imageUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[300],
+                    child: const Icon(Icons.image_not_supported, size: 40),
+                  ),
+                ),
               ),
 
             // Gradient overlay for text visibility

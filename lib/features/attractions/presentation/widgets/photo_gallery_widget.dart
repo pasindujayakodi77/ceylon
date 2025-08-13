@@ -1,5 +1,6 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/core/utils/image_url_validator.dart';
 
 class PhotoGalleryWidget extends StatefulWidget {
   final List<String> imageUrls;
@@ -63,16 +64,31 @@ class _PhotoGalleryWidgetState extends State<PhotoGalleryWidget> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        widget.imageUrls[index],
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          child: const Center(
-                            child: Icon(Icons.image_not_supported, size: 40),
-                          ),
-                        ),
-                      ),
+                      isValidImageUrl(widget.imageUrls[index])
+                          ? Image.network(
+                              widget.imageUrls[index],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primaryContainer,
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.image_not_supported,
+                                        size: 40,
+                                      ),
+                                    ),
+                                  ),
+                            )
+                          : Container(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
+                              child: const Center(
+                                child: Icon(Icons.image, size: 40),
+                              ),
+                            ),
                       // Gradient overlay at the bottom for indicator visibility
                       Positioned(
                         bottom: 0,
