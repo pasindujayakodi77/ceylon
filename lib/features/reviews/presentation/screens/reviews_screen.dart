@@ -32,18 +32,33 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
   @override
   void initState() {
     super.initState();
+    _initializePlaceDocument();
     _checkUserReview();
   }
 
   Future<void> _checkUserReview() async {
+    if (!mounted) return;
+
     setState(() => _isLoading = true);
-    final review = await _reviewsProvider.getUserReviewForPlace(
-      widget.attractionName,
-    );
-    setState(() {
-      _userReview = review;
-      _isLoading = false;
-    });
+
+    try {
+      final review = await _reviewsProvider.getUserReviewForPlace(
+        widget.attractionName,
+      );
+
+      if (mounted) {
+        setState(() {
+          _userReview = review;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -134,7 +149,10 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         }
 
         if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const Center(child: Text('No data available'));
+          // If the place document doesn't exist yet, create it with default values
+          // This fixes the "document not found" error for new places
+          _initializePlaceDocument();
+          return const Center(child: Text('No ratings yet'));
         }
 
         final data = snapshot.data!.data() as Map<String, dynamic>?;
@@ -263,29 +281,40 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/empty_reviews.png',
-                  height: 120,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.rate_review_outlined,
-                    size: 80,
-                    color: Colors.grey,
-                  ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min, // Use minimum space
+                  children: [
+                    Image.asset(
+                      'assets/images/empty_reviews.png',
+                      height: 100, // Reduced height
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.rate_review_outlined,
+                        size: 60, // Reduced size
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 12), // Reduced spacing
+                    const Text(
+                      "No reviews yet",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Be the first to review this place!",
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                const Text(
-                  "No reviews yet",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  "Be the first to review this place!",
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
+              ),
             ),
           );
         }
@@ -311,6 +340,30 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         );
       },
     );
+  }
+
+  // Initialize place document with default values if it doesn't exist
+  Future<void> _initializePlaceDocument() async {
+    try {
+      // Check if document exists first to avoid unnecessary writes
+      final docRef = FirebaseFirestore.instance
+          .collection('places')
+          .doc(widget.attractionName);
+      final docSnapshot = await docRef.get();
+
+      if (!docSnapshot.exists) {
+        // Create the document with default values
+        await docRef.set({
+          'name': widget.attractionName,
+          'avg_rating': 0.0,
+          'review_count': 0,
+          'category': widget.attractionCategory,
+          'photo': widget.attractionPhoto,
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      debugPrint('Error initializing place document: $e');
+    }
   }
 
   void _showEditReviewDialog() {

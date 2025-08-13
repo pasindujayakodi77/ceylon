@@ -179,6 +179,18 @@ class ReviewsService {
   // Update rating statistics for a place
   Future<void> updateRatingStats(String placeId) async {
     try {
+      // Check if the place document exists
+      final placeDoc = await _firestore.collection('places').doc(placeId).get();
+
+      if (!placeDoc.exists) {
+        // Create the place document if it doesn't exist
+        await _firestore.collection('places').doc(placeId).set({
+          'name': placeId,
+          'avg_rating': 0.0,
+          'review_count': 0,
+        });
+      }
+
       // Get all reviews for this place
       final reviewsSnapshot = await _firestore
           .collection('places')
@@ -190,10 +202,10 @@ class ReviewsService {
 
       if (reviews.isEmpty) {
         // No reviews, reset ratings
-        await _firestore.collection('places').doc(placeId).update({
+        await _firestore.collection('places').doc(placeId).set({
           'avg_rating': 0.0,
           'review_count': 0,
-        });
+        }, SetOptions(merge: true));
         return;
       }
 
@@ -205,13 +217,16 @@ class ReviewsService {
       final avgRating = ratings.reduce((a, b) => a + b) / ratings.length;
 
       // Update place document
-      await _firestore.collection('places').doc(placeId).update({
-        'avg_rating': double.parse(avgRating.toStringAsFixed(2)),
-        'review_count': ratings.length,
-      });
+      await _firestore.collection('places').doc(placeId).set(
+        {
+          'avg_rating': double.parse(avgRating.toStringAsFixed(2)),
+          'review_count': ratings.length,
+        },
+        SetOptions(merge: true),
+      ); // Using set with merge instead of update to avoid not-found errors
     } catch (e) {
       debugPrint('Error updating rating stats: $e');
-      rethrow;
+      // Don't rethrow so we don't crash the app if there's an error
     }
   }
 
