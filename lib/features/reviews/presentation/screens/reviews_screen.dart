@@ -74,61 +74,83 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Rating summary card
-          _buildRatingSummary(),
-
-          const Divider(),
-
-          // User's review form or existing review
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _userReview != null
-              ? _buildUserExistingReview()
-              : ReviewForm(
-                  placeId: widget.attractionName,
-                  placePhoto: widget.attractionPhoto,
-                  placeCategory: widget.attractionCategory,
-                  onSuccess: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('✅ Review submitted')),
-                    );
-                    _checkUserReview();
-                  },
-                  onError: (error) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text('❌ Error: $error')));
-                  },
-                ),
-
-          const Divider(height: 32),
-
-          // Reviews header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "All Reviews",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.filter_list, size: 16),
-                  label: const Text('Sort'),
-                  onPressed: () {
-                    // Add sorting options later
-                  },
-                ),
-              ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Rating summary card in a scrollable container
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 4.0,
+              ),
+              child: _buildRatingSummary(),
             ),
-          ),
 
-          // Reviews list
-          Expanded(child: _buildReviewsList()),
-        ],
+            const Divider(height: 16),
+
+            // User's review form or existing review - wrapped in a container with fixed height
+            Container(
+              constraints: const BoxConstraints(
+                maxHeight: 220,
+              ), // Limit the height
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _userReview != null
+                  ? _buildUserExistingReview()
+                  : SingleChildScrollView(
+                      child: ReviewForm(
+                        placeId: widget.attractionName,
+                        placePhoto: widget.attractionPhoto,
+                        placeCategory: widget.attractionCategory,
+                        onSuccess: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('✅ Review submitted')),
+                          );
+                          _checkUserReview();
+                        },
+                        onError: (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('❌ Error: $error')),
+                          );
+                        },
+                      ),
+                    ),
+            ),
+
+            const Divider(height: 16),
+
+            // Reviews header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "All Reviews",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.filter_list, size: 14),
+                    label: const Text('Sort'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                    ),
+                    onPressed: () {
+                      // Add sorting options later
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            // Reviews list
+            Expanded(child: _buildReviewsList()),
+          ],
+        ),
       ),
     );
   }
@@ -141,18 +163,32 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox(
+            height: 60,
+            child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          );
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return SizedBox(
+            height: 60,
+            child: Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(fontSize: 14),
+              ),
+            ),
+          );
         }
 
         if (!snapshot.hasData || !snapshot.data!.exists) {
           // If the place document doesn't exist yet, create it with default values
           // This fixes the "document not found" error for new places
           _initializePlaceDocument();
-          return const Center(child: Text('No ratings yet'));
+          return const SizedBox(
+            height: 60,
+            child: Center(child: Text('No ratings yet')),
+          );
         }
 
         final data = snapshot.data!.data() as Map<String, dynamic>?;
@@ -160,61 +196,70 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         final reviewCount = (data?['review_count'] as num?)?.toInt() ?? 0;
 
         return Card(
-          margin: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(8),
           elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 if (widget.attractionPhoto != null)
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                     child: Image.network(
                       widget.attractionPhoto!,
-                      width: 80,
-                      height: 80,
+                      width: 60,
+                      height: 60,
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => Container(
-                        width: 80,
-                        height: 80,
+                        width: 60,
+                        height: 60,
                         color: Colors.grey[300],
-                        child: const Icon(Icons.image_not_supported, size: 40),
+                        child: const Icon(Icons.image_not_supported, size: 30),
                       ),
                     ),
                   ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize:
+                        MainAxisSize.min, // Use minimum vertical space
                     children: [
                       Text(
                         widget.attractionName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 16,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       if (widget.attractionCategory != null)
                         Padding(
-                          padding: const EdgeInsets.only(top: 4),
+                          padding: const EdgeInsets.only(top: 2),
                           child: Text(
                             widget.attractionCategory!,
-                            style: TextStyle(color: Colors.grey[600]),
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       Row(
                         children: [
                           RatingBarIndicator(
                             rating: avgRating,
                             itemBuilder: (_, __) =>
                                 const Icon(Icons.star, color: Colors.amber),
-                            itemSize: 24,
+                            itemSize: 18,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 4),
                           Text(
                             '${avgRating.toStringAsFixed(1)} ($reviewCount ${reviewCount == 1 ? 'review' : 'reviews'})',
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ],
                       ),
@@ -231,36 +276,49 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
 
   Widget _buildUserExistingReview() {
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(8),
       color: Colors.blue[50],
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min, // Use minimum vertical space
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'Your Review',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Edit'),
+                  icon: const Icon(Icons.edit, size: 16),
+                  label: const Text('Edit', style: TextStyle(fontSize: 14)),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                  ),
                   onPressed: () => _showEditReviewDialog(),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             RatingBarIndicator(
               rating: (_userReview!['rating'] as num).toDouble(),
               itemBuilder: (_, __) =>
                   const Icon(Icons.star, color: Colors.amber),
-              itemSize: 20,
+              itemSize: 18,
             ),
-            const SizedBox(height: 8),
-            Text(_userReview!['comment'] as String),
+            const SizedBox(height: 4),
+            // Use a scrollable container for long comments
+            SingleChildScrollView(
+              child: Text(
+                _userReview!['comment'] as String,
+                style: const TextStyle(fontSize: 14),
+              ),
+            ),
           ],
         ),
       ),
