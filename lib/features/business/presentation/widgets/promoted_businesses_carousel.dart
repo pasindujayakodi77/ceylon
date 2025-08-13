@@ -97,7 +97,7 @@ class PromotedBusinessesCarousel extends StatelessWidget {
         }).toList();
 
         return SizedBox(
-          height: 260,
+          height: 290, // Increased from 260 to accommodate content
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -165,6 +165,7 @@ class _BusinessCard extends StatelessWidget {
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (photo.isNotEmpty)
                   AspectRatio(
@@ -179,43 +180,65 @@ class _BusinessCard extends StatelessWidget {
                       child: Center(child: Icon(Icons.store, size: 48)),
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          if (avgRating != null)
-                            Text(
-                              "⭐ ${avgRating!.toStringAsFixed(1)} ($reviewCount)",
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.amber,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2), // Reduced from 4
+                        // Put ratings and category on the same line with flexible layout
+                        Row(
+                          children: [
+                            if (avgRating != null)
+                              Text(
+                                "⭐ ${avgRating!.toStringAsFixed(1)}",
+                                style: const TextStyle(
+                                  fontSize: 10, // Reduced from 12
+                                  color: Colors.amber,
+                                ),
+                              ),
+                            if (avgRating != null)
+                              const SizedBox(width: 4), // Reduced from 8
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade50,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  category,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 10),
+                                ),
                               ),
                             ),
-                          const SizedBox(width: 8),
-                          Chip(
-                            label: Text(category),
-                            visualDensity: VisualDensity.compact,
-                            backgroundColor: Colors.blue.shade50,
+                          ],
+                        ),
+                        const SizedBox(height: 2), // Reduced from 4
+                        Expanded(
+                          child: Text(
+                            description,
+                            maxLines: 1, // Reduced from 2
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              height: 1.1,
+                              fontSize: 11,
+                            ), // More compact
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(height: 1.2),
-                      ),
-                      const SizedBox(height: 4),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
