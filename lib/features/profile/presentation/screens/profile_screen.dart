@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/main.dart';
 import 'package:ceylon/features/reviews/presentation/screens/my_reviews_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,9 +16,17 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+// A list of all countries for the dropdown
+class Country {
+  final String name;
+  final String code;
+
+  const Country(this.name, this.code);
+}
+
 class _ProfileScreenState extends State<ProfileScreen> {
   final _name = TextEditingController();
-  final _country = TextEditingController();
+  String _selectedCountry = '';
   String _email = '';
   bool _isEmailVerified = false;
   String _role = '';
@@ -23,36 +34,259 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _selectedLang = 'en';
   String? _profileImageUrl;
 
+  // Image picker instance
+  final ImagePicker _picker = ImagePicker();
+  // For temporary file storage when selecting a new image
+  File? _imageFile;
+  // Flag to track if user is uploading a profile image
+  bool _isUploadingImage = false;
+
+  // List of all countries
+  static const List<Country> countries = [
+    Country('Afghanistan', 'AF'),
+    Country('Albania', 'AL'),
+    Country('Algeria', 'DZ'),
+    Country('Andorra', 'AD'),
+    Country('Angola', 'AO'),
+    Country('Antigua and Barbuda', 'AG'),
+    Country('Argentina', 'AR'),
+    Country('Armenia', 'AM'),
+    Country('Australia', 'AU'),
+    Country('Austria', 'AT'),
+    Country('Azerbaijan', 'AZ'),
+    Country('Bahamas', 'BS'),
+    Country('Bahrain', 'BH'),
+    Country('Bangladesh', 'BD'),
+    Country('Barbados', 'BB'),
+    Country('Belarus', 'BY'),
+    Country('Belgium', 'BE'),
+    Country('Belize', 'BZ'),
+    Country('Benin', 'BJ'),
+    Country('Bhutan', 'BT'),
+    Country('Bolivia', 'BO'),
+    Country('Bosnia and Herzegovina', 'BA'),
+    Country('Botswana', 'BW'),
+    Country('Brazil', 'BR'),
+    Country('Brunei', 'BN'),
+    Country('Bulgaria', 'BG'),
+    Country('Burkina Faso', 'BF'),
+    Country('Burundi', 'BI'),
+    Country('Cabo Verde', 'CV'),
+    Country('Cambodia', 'KH'),
+    Country('Cameroon', 'CM'),
+    Country('Canada', 'CA'),
+    Country('Central African Republic', 'CF'),
+    Country('Chad', 'TD'),
+    Country('Chile', 'CL'),
+    Country('China', 'CN'),
+    Country('Colombia', 'CO'),
+    Country('Comoros', 'KM'),
+    Country('Congo', 'CG'),
+    Country('Costa Rica', 'CR'),
+    Country('Croatia', 'HR'),
+    Country('Cuba', 'CU'),
+    Country('Cyprus', 'CY'),
+    Country('Czech Republic', 'CZ'),
+    Country('Denmark', 'DK'),
+    Country('Djibouti', 'DJ'),
+    Country('Dominica', 'DM'),
+    Country('Dominican Republic', 'DO'),
+    Country('East Timor', 'TL'),
+    Country('Ecuador', 'EC'),
+    Country('Egypt', 'EG'),
+    Country('El Salvador', 'SV'),
+    Country('Equatorial Guinea', 'GQ'),
+    Country('Eritrea', 'ER'),
+    Country('Estonia', 'EE'),
+    Country('Eswatini', 'SZ'),
+    Country('Ethiopia', 'ET'),
+    Country('Fiji', 'FJ'),
+    Country('Finland', 'FI'),
+    Country('France', 'FR'),
+    Country('Gabon', 'GA'),
+    Country('Gambia', 'GM'),
+    Country('Georgia', 'GE'),
+    Country('Germany', 'DE'),
+    Country('Ghana', 'GH'),
+    Country('Greece', 'GR'),
+    Country('Grenada', 'GD'),
+    Country('Guatemala', 'GT'),
+    Country('Guinea', 'GN'),
+    Country('Guinea-Bissau', 'GW'),
+    Country('Guyana', 'GY'),
+    Country('Haiti', 'HT'),
+    Country('Honduras', 'HN'),
+    Country('Hungary', 'HU'),
+    Country('Iceland', 'IS'),
+    Country('India', 'IN'),
+    Country('Indonesia', 'ID'),
+    Country('Iran', 'IR'),
+    Country('Iraq', 'IQ'),
+    Country('Ireland', 'IE'),
+    Country('Israel', 'IL'),
+    Country('Italy', 'IT'),
+    Country('Jamaica', 'JM'),
+    Country('Japan', 'JP'),
+    Country('Jordan', 'JO'),
+    Country('Kazakhstan', 'KZ'),
+    Country('Kenya', 'KE'),
+    Country('Kiribati', 'KI'),
+    Country('Korea, North', 'KP'),
+    Country('Korea, South', 'KR'),
+    Country('Kuwait', 'KW'),
+    Country('Kyrgyzstan', 'KG'),
+    Country('Laos', 'LA'),
+    Country('Latvia', 'LV'),
+    Country('Lebanon', 'LB'),
+    Country('Lesotho', 'LS'),
+    Country('Liberia', 'LR'),
+    Country('Libya', 'LY'),
+    Country('Liechtenstein', 'LI'),
+    Country('Lithuania', 'LT'),
+    Country('Luxembourg', 'LU'),
+    Country('Madagascar', 'MG'),
+    Country('Malawi', 'MW'),
+    Country('Malaysia', 'MY'),
+    Country('Maldives', 'MV'),
+    Country('Mali', 'ML'),
+    Country('Malta', 'MT'),
+    Country('Marshall Islands', 'MH'),
+    Country('Mauritania', 'MR'),
+    Country('Mauritius', 'MU'),
+    Country('Mexico', 'MX'),
+    Country('Micronesia', 'FM'),
+    Country('Moldova', 'MD'),
+    Country('Monaco', 'MC'),
+    Country('Mongolia', 'MN'),
+    Country('Montenegro', 'ME'),
+    Country('Morocco', 'MA'),
+    Country('Mozambique', 'MZ'),
+    Country('Myanmar', 'MM'),
+    Country('Namibia', 'NA'),
+    Country('Nauru', 'NR'),
+    Country('Nepal', 'NP'),
+    Country('Netherlands', 'NL'),
+    Country('New Zealand', 'NZ'),
+    Country('Nicaragua', 'NI'),
+    Country('Niger', 'NE'),
+    Country('Nigeria', 'NG'),
+    Country('North Macedonia', 'MK'),
+    Country('Norway', 'NO'),
+    Country('Oman', 'OM'),
+    Country('Pakistan', 'PK'),
+    Country('Palau', 'PW'),
+    Country('Panama', 'PA'),
+    Country('Papua New Guinea', 'PG'),
+    Country('Paraguay', 'PY'),
+    Country('Peru', 'PE'),
+    Country('Philippines', 'PH'),
+    Country('Poland', 'PL'),
+    Country('Portugal', 'PT'),
+    Country('Qatar', 'QA'),
+    Country('Romania', 'RO'),
+    Country('Russia', 'RU'),
+    Country('Rwanda', 'RW'),
+    Country('Saint Kitts and Nevis', 'KN'),
+    Country('Saint Lucia', 'LC'),
+    Country('Saint Vincent and the Grenadines', 'VC'),
+    Country('Samoa', 'WS'),
+    Country('San Marino', 'SM'),
+    Country('Sao Tome and Principe', 'ST'),
+    Country('Saudi Arabia', 'SA'),
+    Country('Senegal', 'SN'),
+    Country('Serbia', 'RS'),
+    Country('Seychelles', 'SC'),
+    Country('Sierra Leone', 'SL'),
+    Country('Singapore', 'SG'),
+    Country('Slovakia', 'SK'),
+    Country('Slovenia', 'SI'),
+    Country('Solomon Islands', 'SB'),
+    Country('Somalia', 'SO'),
+    Country('South Africa', 'ZA'),
+    Country('South Sudan', 'SS'),
+    Country('Spain', 'ES'),
+    Country('Sri Lanka', 'LK'),
+    Country('Sudan', 'SD'),
+    Country('Suriname', 'SR'),
+    Country('Sweden', 'SE'),
+    Country('Switzerland', 'CH'),
+    Country('Syria', 'SY'),
+    Country('Taiwan', 'TW'),
+    Country('Tajikistan', 'TJ'),
+    Country('Tanzania', 'TZ'),
+    Country('Thailand', 'TH'),
+    Country('Togo', 'TG'),
+    Country('Tonga', 'TO'),
+    Country('Trinidad and Tobago', 'TT'),
+    Country('Tunisia', 'TN'),
+    Country('Turkey', 'TR'),
+    Country('Turkmenistan', 'TM'),
+    Country('Tuvalu', 'TV'),
+    Country('Uganda', 'UG'),
+    Country('Ukraine', 'UA'),
+    Country('United Arab Emirates', 'AE'),
+    Country('United Kingdom', 'GB'),
+    Country('United States', 'US'),
+    Country('Uruguay', 'UY'),
+    Country('Uzbekistan', 'UZ'),
+    Country('Vanuatu', 'VU'),
+    Country('Vatican City', 'VA'),
+    Country('Venezuela', 'VE'),
+    Country('Vietnam', 'VN'),
+    Country('Yemen', 'YE'),
+    Country('Zambia', 'ZM'),
+    Country('Zimbabwe', 'ZW'),
+  ];
+
   Future<void> _loadProfile() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // If user is not logged in, navigate to login screen
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/login');
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // If user is not logged in, navigate to login screen
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed('/login');
+        }
+        return;
       }
-      return;
+
+      // Get the sign-in email and verification status from Firebase Auth
+      _email = user.email ?? 'No email found';
+      _isEmailVerified = user.emailVerified;
+
+      // Ensure the user profile document exists before trying to load it
+      await _ensureUserProfileExists();
+
+      final uid = user.uid;
+      final userDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid);
+      final doc = await userDocRef.get();
+
+      // Now we can be confident that doc.exists will be true
+      if (doc.exists) {
+        final data = doc.data();
+        if (data != null) {
+          _name.text = data['name'] ?? '';
+          _selectedCountry = data['country'] ?? '';
+          _role = data['role'] ?? '';
+          _selectedLang = data['language'] ?? 'en';
+          _profileImageUrl = data['profileImageUrl'];
+        }
+      } else {
+        // This should rarely happen since _ensureUserProfileExists should have created the document
+        // But as a fallback, initialize with default values
+        _name.text = user.displayName ?? '';
+        _selectedCountry = '';
+        _role = 'user'; // Default role
+        _selectedLang = 'en';
+        _profileImageUrl = user.photoURL;
+      }
+    } catch (e) {
+      print('Error loading profile: $e');
+      // Continue with empty fields if there's an error
+    } finally {
+      setState(() => _loading = false);
     }
-
-    // Get the sign-in email and verification status from Firebase Auth
-    _email = user.email ?? 'No email found';
-    _isEmailVerified = user.emailVerified;
-
-    final uid = user.uid;
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
-
-    final data = doc.data();
-    if (data != null) {
-      _name.text = data['name'] ?? '';
-      _country.text = data['country'] ?? '';
-      _role = data['role'] ?? '';
-      _selectedLang = data['language'] ?? 'en';
-      _profileImageUrl = data['profileImageUrl'];
-    }
-
-    setState(() => _loading = false);
   }
 
   Future<void> _sendVerificationEmail() async {
@@ -120,29 +354,165 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  // Shows a searchable country picker dialog
+  void _showCountryPicker(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+    List<Country> filteredCountries = List.from(countries);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: CeylonTokens.borderRadiusLarge.topLeft,
+        ),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: MediaQuery.of(context).size.height * 0.75,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Select your country',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search countries',
+                      prefixIcon: const Icon(Icons.search),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: CeylonTokens.borderRadiusMedium,
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        filteredCountries = countries.where((country) {
+                          return country.name.toLowerCase().contains(
+                                value.toLowerCase(),
+                              ) ||
+                              country.code.toLowerCase().contains(
+                                value.toLowerCase(),
+                              );
+                        }).toList();
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredCountries.length,
+                      itemBuilder: (context, index) {
+                        final country = filteredCountries[index];
+                        return ListTile(
+                          title: Text(country.name),
+                          trailing: Text(country.code),
+                          onTap: () {
+                            this.setState(() {
+                              _selectedCountry = country.name;
+                            });
+                            Navigator.pop(context);
+                          },
+                          selected: country.name == _selectedCountry,
+                          selectedColor: Theme.of(context).colorScheme.primary,
+                          selectedTileColor: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer.withOpacity(0.2),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Future<void> _saveProfile() async {
     setState(() => _loading = true);
 
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // If user is not logged in, navigate to login screen
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/login');
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // If user is not logged in, navigate to login screen
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed('/login');
+        }
+        return;
       }
+
+      final uid = user.uid;
+      final userDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid);
+
+      // First check if the document exists
+      final docSnapshot = await userDocRef.get();
+
+      // Create user data map
+      final userData = {
+        'name': _name.text,
+        'country': _selectedCountry,
+        'language': _selectedLang,
+        'email': user.email ?? '',
+        'role': _role.isNotEmpty ? _role : 'user',
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      if (docSnapshot.exists) {
+        // Update existing document
+        await userDocRef.update(userData);
+      } else {
+        // Create new document with additional fields
+        userData['createdAt'] = FieldValue.serverTimestamp();
+        await userDocRef.set(userData);
+      }
+
+      // Update app locale
+      MyApp.setLocale(context, Locale(_selectedLang));
+
+      setState(() => _loading = false);
+    } catch (e) {
+      setState(() => _loading = false);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(child: Text('Error saving profile: ${e.toString()}')),
+              ],
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+
+      print('Error saving profile: $e');
       return;
     }
-
-    final uid = user.uid;
-    await FirebaseFirestore.instance.collection('users').doc(uid).update({
-      'name': _name.text,
-      'country': _country.text,
-      'language': _selectedLang,
-    });
-
-    // Update app locale
-    MyApp.setLocale(context, Locale(_selectedLang));
-
-    setState(() => _loading = false);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -161,6 +531,250 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       );
+    }
+  }
+
+  // Checks if a user profile document exists, creates one if not
+  Future<bool> _ensureUserProfileExists() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return false;
+
+      final uid = user.uid;
+      final userDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid);
+      final docSnapshot = await userDocRef.get();
+
+      if (!docSnapshot.exists) {
+        // Create a basic profile document if one doesn't exist
+        await userDocRef.set({
+          'name': user.displayName ?? '',
+          'email': user.email ?? '',
+          'country': '',
+          'role': 'user',
+          'language': 'en',
+          'profileImageUrl': user.photoURL,
+          'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+        return true; // Document was created
+      } else {
+        // Document exists but check if Gmail photo needs to be synchronized
+        final data = docSnapshot.data();
+        if (data != null &&
+            user.photoURL != null &&
+            data['profileImageUrl'] == null) {
+          // Update with Gmail photo if we don't have a profile image yet
+          await userDocRef.update({
+            'profileImageUrl': user.photoURL,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        }
+      }
+
+      return true; // Document already exists
+    } catch (e) {
+      print('Error ensuring user profile exists: $e');
+      return false;
+    }
+  }
+
+  // Pick image from gallery or camera
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final pickedFile = await _picker.pickImage(
+        source: source,
+        maxWidth: 1000,
+        maxHeight: 1000,
+        imageQuality: 85,
+      );
+
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+
+        // Upload the image to Firebase Storage
+        await _uploadImage();
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting image: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  // Upload image to Firebase Storage
+  Future<void> _uploadImage() async {
+    if (_imageFile == null) return;
+
+    setState(() {
+      _isUploadingImage = true;
+    });
+
+    try {
+      // Get current user
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final uid = user.uid;
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('profile_images')
+          .child('$uid.jpg');
+
+      // Upload file
+      await storageRef.putFile(_imageFile!);
+
+      // Get download URL
+      final downloadUrl = await storageRef.getDownloadURL();
+
+      // Update profile image URL in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'profileImageUrl': downloadUrl,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      // Update local state
+      setState(() {
+        _profileImageUrl = downloadUrl;
+        _imageFile = null;
+      });
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Profile picture updated successfully!'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error uploading image: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } finally {
+      setState(() {
+        _isUploadingImage = false;
+      });
+    }
+  }
+
+  // Show image picker options
+  Future<void> _showImagePickerOptions() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Take a photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              if (_profileImageUrl != null)
+                ListTile(
+                  leading: const Icon(Icons.delete_outline, color: Colors.red),
+                  title: const Text(
+                    'Remove current photo',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    await _removeProfileImage();
+                  },
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Remove profile image
+  Future<void> _removeProfileImage() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      setState(() {
+        _isUploadingImage = true;
+      });
+
+      // Update Firestore to remove the profile image URL
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).update(
+        {'profileImageUrl': null, 'updatedAt': FieldValue.serverTimestamp()},
+      );
+
+      // Try to delete the file from storage (this may fail if it doesn't exist)
+      try {
+        await FirebaseStorage.instance
+            .ref()
+            .child('profile_images')
+            .child('${user.uid}.jpg')
+            .delete();
+      } catch (e) {
+        // Ignore error if file doesn't exist
+        print('Note: Could not delete storage file: $e');
+      }
+
+      setState(() {
+        _profileImageUrl = null;
+        _isUploadingImage = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Profile picture removed'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isUploadingImage = false;
+      });
+
+      print('Error removing profile image: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error removing profile image: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 
@@ -206,31 +820,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(CeylonTokens.spacing24),
                 child: Column(
                   children: [
-                    Hero(
-                      tag: 'profile-avatar',
-                      child: Material(
-                        elevation: 4,
-                        shadowColor: Colors.black38,
-                        shape: const CircleBorder(),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: colorScheme.primaryContainer,
-                          backgroundImage: _profileImageUrl != null
-                              ? NetworkImage(_profileImageUrl!)
-                              : null,
-                          child: _profileImageUrl == null
-                              ? Text(
-                                  _name.text.isNotEmpty
-                                      ? _name.text[0].toUpperCase()
-                                      : '?',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    color: colorScheme.onPrimaryContainer,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : null,
-                        ),
+                    GestureDetector(
+                      onTap: _showImagePickerOptions,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Profile image
+                          Hero(
+                            tag: 'profile-avatar',
+                            child: Material(
+                              elevation: 4,
+                              shadowColor: Colors.black38,
+                              shape: const CircleBorder(),
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: colorScheme.primaryContainer,
+                                backgroundImage: _profileImageUrl != null
+                                    ? NetworkImage(_profileImageUrl!)
+                                    : null,
+                                child: _profileImageUrl == null
+                                    ? Text(
+                                        _name.text.isNotEmpty
+                                            ? _name.text[0].toUpperCase()
+                                            : '?',
+                                        style: TextStyle(
+                                          fontSize: 32,
+                                          color: colorScheme.onPrimaryContainer,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                            ),
+                          ),
+
+                          // Loading indicator
+                          if (_isUploadingImage)
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 3,
+                                ),
+                              ),
+                            ),
+
+                          // Camera icon for edit hint
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: colorScheme.background,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                size: 18,
+                                color: colorScheme.onPrimary,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: CeylonTokens.spacing16),
@@ -271,12 +933,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: CeylonTokens.spacing16),
 
-                  TextField(
-                    controller: _country,
-                    decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.country,
-                      prefixIcon: const Icon(Icons.public),
-                      filled: true,
+                  GestureDetector(
+                    onTap: () => _showCountryPicker(context),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        controller: TextEditingController(
+                          text: _selectedCountry,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.country,
+                          prefixIcon: const Icon(Icons.public),
+                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          filled: true,
+                          hintText: 'Select your country',
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: CeylonTokens.spacing16),
