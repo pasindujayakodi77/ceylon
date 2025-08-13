@@ -124,14 +124,14 @@ class FavoritesService extends ChangeNotifier {
         final data = doc.data();
         return Attraction(
           id: doc.id,
-          name: data['name'],
-          description: data['description'],
-          location: data['location'],
-          category: data['category'],
+          name: data['name'] as String? ?? 'Unnamed Attraction',
+          description: data['description'] as String? ?? '',
+          location: data['location'] as String? ?? '',
+          category: data['category'] as String? ?? 'other',
           images: List<String>.from(data['images'] ?? []),
-          latitude: data['latitude'],
-          longitude: data['longitude'],
-          rating: data['rating'] ?? 0.0,
+          latitude: (data['latitude'] as num?)?.toDouble() ?? 0.0,
+          longitude: (data['longitude'] as num?)?.toDouble() ?? 0.0,
+          rating: (data['rating'] as num?)?.toDouble() ?? 0.0,
           tags: List<String>.from(data['tags'] ?? []),
           isFavorite: true,
         );
