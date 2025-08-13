@@ -76,6 +76,7 @@ dependencies:
   go_router: ^16.1.0
   uuid: ^4.4.0
   package_info_plus: ^8.3.1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
