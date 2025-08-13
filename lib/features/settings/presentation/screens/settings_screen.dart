@@ -78,9 +78,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _logout() async {
-    final navigator = Navigator.of(context);
-    await _authRepo.signOut();
-    navigator.pushNamedAndRemoveUntil('/login', (route) => false);
+    try {
+      final navigator = Navigator.of(context);
+      await _authRepo.signOut();
+      if (context.mounted) {
+        navigator.pushNamedAndRemoveUntil('/login', (route) => false);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error signing out: ${e.toString()}')),
+        );
+      }
+    }
   }
 
   void _changeTheme() {

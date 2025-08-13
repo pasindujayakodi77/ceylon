@@ -22,7 +22,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _selectedLang = 'en';
 
   Future<void> _loadProfile() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // If user is not logged in, navigate to login screen
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+      return;
+    }
+
+    final uid = user.uid;
     final doc = await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
@@ -41,7 +50,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _saveProfile() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // If user is not logged in, navigate to login screen
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+      return;
+    }
+
+    final uid = user.uid;
     await FirebaseFirestore.instance.collection('users').doc(uid).update({
       'name': _name.text,
       'country': _country.text,

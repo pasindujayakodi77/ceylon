@@ -2,6 +2,7 @@ import 'package:ceylon/features/itinerary/presentation/routes/itinerary_routes.d
 import 'package:ceylon/features/map/presentation/routes/map_routes.dart';
 import 'package:ceylon/features/settings/presentation/screens/settings_screen.dart';
 import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
+import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -24,5 +25,6 @@ class AppRouter {
     // Add other static routes here
     '/settings': (_) => const SettingsScreen(),
     '/profile': (_) => const ProfileScreen(),
+    '/login': (_) => const LoginScreen(),
   };
 }
