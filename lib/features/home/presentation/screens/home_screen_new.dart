@@ -69,6 +69,12 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
         title: 'Ceylon',
         actions: [
           IconButton(
+            icon: Icon(Icons.settings_outlined, color: colorScheme.onSurface),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+          IconButton(
             icon: Icon(
               Icons.notifications_outlined,
               color: colorScheme.onSurface,
