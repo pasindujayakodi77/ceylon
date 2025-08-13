@@ -1,5 +1,6 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
+import 'package:ceylon/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:flutter/material.dart';
 
 class AttractionMarkerCard extends StatelessWidget {
@@ -65,15 +66,23 @@ class AttractionMarkerCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title
-                  Text(
-                    attraction.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  // Title and favorite button
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          attraction.name,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: colorScheme.onSurface,
+                                fontWeight: FontWeight.bold,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      FavoriteButton(attraction: attraction, size: 20),
+                    ],
                   ),
                   const SizedBox(height: CeylonTokens.spacing4),
                   // Category & Rating

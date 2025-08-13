@@ -16,7 +16,7 @@ class BookmarksScreen extends StatefulWidget {
 class _BookmarksScreenState extends State<BookmarksScreen> {
   List<Attraction> _favorites = [];
   bool _isLoadingFavorites = true;
-  
+
   @override
   void initState() {
     super.initState();
@@ -25,10 +25,10 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
 
   Future<void> _loadFavorites() async {
     setState(() => _isLoadingFavorites = true);
-    
+
     final favoritesService = FavoritesProvider.of(context);
     final favorites = await favoritesService.getFavorites();
-    
+
     if (mounted) {
       setState(() {
         _favorites = favorites;
@@ -102,7 +102,7 @@ class _FavoritesView extends StatelessWidget {
   final List<Attraction> favorites;
   final bool isLoading;
   final VoidCallback onRefresh;
-  
+
   const _FavoritesView({
     required this.favorites,
     required this.isLoading,
@@ -147,7 +147,7 @@ class _FavoritesView extends StatelessWidget {
         ),
       );
     }
-    
+
     return RefreshIndicator(
       onRefresh: () async {
         onRefresh();
@@ -159,7 +159,7 @@ class _FavoritesView extends StatelessWidget {
         itemCount: favorites.length,
         itemBuilder: (_, index) {
           final attraction = favorites[index];
-          
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Card(
@@ -281,7 +281,7 @@ class _ItineraryList extends StatelessWidget {
           itemBuilder: (_, index) {
             final data = docs[index].data() as Map<String, dynamic>;
             final String docId = docs[index].id;
-            
+
             // Format date
             String formattedDate = "Unknown date";
             if (data['created_at'] != null) {
@@ -348,9 +348,7 @@ class _ItineraryList extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     '/itinerary',
-                    arguments: {
-                      'id': docId,
-                    },
+                    arguments: {'id': docId},
                   );
                 },
                 trailing: IconButton(
@@ -361,7 +359,7 @@ class _ItineraryList extends StatelessWidget {
                       builder: (_) => AlertDialog(
                         title: const Text("Remove Bookmark"),
                         content: const Text(
-                          "Are you sure you want to remove this bookmark? This won't delete the itinerary."
+                          "Are you sure you want to remove this bookmark? This won't delete the itinerary.",
                         ),
                         actions: [
                           TextButton(
@@ -375,7 +373,7 @@ class _ItineraryList extends StatelessWidget {
                         ],
                       ),
                     );
-                    
+
                     if (confirm == true) {
                       await FirebaseFirestore.instance
                           .collection('users')
