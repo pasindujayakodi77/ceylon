@@ -680,12 +680,14 @@ class _HolidaysEventsCalendarScreenState
                   children: [
                     // Calendar legend
                     const CalendarLegend(),
-
+                    const SizedBox(
+                      height: 8,
+                    ), // Add spacing between legend and calendar
                     // Table calendar
                     Flexible(
                       child: Container(
                         constraints: const BoxConstraints(
-                          maxHeight: 350, // Limit calendar height
+                          maxHeight: 450, // Increased to fix overflow issue
                         ),
                         child: TableCalendar<dynamic>(
                           firstDay: DateTime.utc(2020, 1, 1),
@@ -696,8 +698,13 @@ class _HolidaysEventsCalendarScreenState
                           calendarFormat: _calendarFormat,
                           eventLoader: _getEventsForDay,
                           startingDayOfWeek: StartingDayOfWeek.monday,
-
+                          availableCalendarFormats: const {
+                            CalendarFormat.month: 'Month',
+                          },
                           // Styling
+                          // Make calendar more compact
+                          rowHeight:
+                              34, // Reduced row height to prevent overflow
                           calendarStyle: CalendarStyle(
                             outsideDaysVisible: false,
                             markersMaxCount: 2,
