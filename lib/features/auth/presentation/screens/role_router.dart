@@ -1,4 +1,4 @@
-import 'package:ceylon/features/business/presentation/screens/business_dashboard_screen.dart';
+import 'package:ceylon/features/business/presentation/screens/business_home_screen.dart';
 import 'package:ceylon/features/home/presentation/screens/home_screen_new.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +24,7 @@ class RoleRouter extends StatelessWidget {
         final role = data?['role'] ?? 'tourist';
 
         if (role == 'business') {
-          return const BusinessDashboardScreen();
+          return const BusinessHomeScreen();
         } else {
           return const TouristHomeScreen();
         }

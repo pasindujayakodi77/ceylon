@@ -3,6 +3,11 @@ import 'package:ceylon/features/map/presentation/routes/map_routes.dart';
 import 'package:ceylon/features/settings/presentation/screens/settings_screen.dart';
 import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
+import 'package:ceylon/features/business/presentation/screens/business_home_screen.dart';
+import 'package:ceylon/features/business/presentation/screens/business_dashboard_screen.dart';
+import 'package:ceylon/features/business/presentation/screens/business_analytics_screen.dart';
+import 'package:ceylon/features/business/presentation/screens/business_events_screen.dart';
+import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -26,5 +31,12 @@ class AppRouter {
     '/settings': (_) => const SettingsScreen(),
     '/profile': (_) => const ProfileScreen(),
     '/login': (_) => const LoginScreen(),
+
+    // Business routes
+    '/business': (_) => const BusinessHomeScreen(),
+    '/business/dashboard': (_) => const BusinessDashboardScreen(),
+    '/business/analytics': (_) => const BusinessAnalyticsScreen(),
+    '/business/events': (_) => const BusinessEventsScreen(),
+    '/business/reviews': (_) => const BusinessReviewsScreen(),
   };
 }
