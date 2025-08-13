@@ -79,7 +79,7 @@ dependencies:
   cached_network_image: ^3.4.1
   
   # Calendar dependencies
-  table_calendar: ^3.0.9
+  table_calendar: ^3.1.2
   collection: ^1.18.0
 
 dev_dependencies:
@@ -110,6 +110,7 @@ flutter:
   assets:
     - assets/json/
     - assets/images/
+    - assets/json/holidays_lk.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

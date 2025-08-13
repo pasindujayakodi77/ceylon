@@ -8,6 +8,7 @@ import 'package:ceylon/features/business/presentation/screens/business_dashboard
 import 'package:ceylon/features/business/presentation/screens/business_analytics_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_events_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
+import 'package:ceylon/features/calendar/presentation/screens/holidays_events_calendar_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -31,6 +32,7 @@ class AppRouter {
     '/settings': (_) => const SettingsScreen(),
     '/profile': (_) => const ProfileScreen(),
     '/login': (_) => const LoginScreen(),
+    '/calendar': (_) => const HolidaysEventsCalendarScreen(),
 
     // Business routes
     '/business': (_) => const BusinessHomeScreen(),

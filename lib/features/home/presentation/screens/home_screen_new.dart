@@ -11,7 +11,6 @@ import 'package:ceylon/features/journal/presentation/screens/trip_journal_screen
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
 import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_screen.dart';
-import 'package:ceylon/features/holidays/presentation/screens/holiday_calendar_screen.dart';
 import 'package:ceylon/features/recommendations/presentation/screens/recommendations_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -386,17 +385,11 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                             const SizedBox(width: CeylonTokens.spacing16),
                             Expanded(
                               child: FeatureCard(
-                                title: 'Holidays',
-                                subtitle: 'Public holidays and festivals',
-                                icon: Icons.calendar_today,
+                                title: 'Events & Holidays',
+                                subtitle: 'Sri Lankan holidays and events',
+                                icon: Icons.event_note,
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          const HolidayCalendarScreen(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(context, '/calendar');
                                 },
                               ).animate().fadeIn(delay: 1400.ms),
                             ),
