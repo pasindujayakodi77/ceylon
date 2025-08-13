@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:ceylon/services/google_services_checker.dart';
 
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -56,18 +57,65 @@ class AuthRepository {
         final userCredential = await _auth.signInWithPopup(googleProvider);
         return userCredential.user;
       } else {
-        // Android/iOS flow
-        final googleSignIn = GoogleSignIn.instance;
-        await googleSignIn.initialize();
-        final googleUser = await googleSignIn.authenticate();
-        final googleAuth = await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          idToken: googleAuth.idToken,
-        );
-        final userCredential = await _auth.signInWithCredential(credential);
-        return userCredential.user;
+        // Check for Google Play Services availability
+        final googleServicesError =
+            await GoogleServicesChecker.getGooglePlayServicesError();
+        if (googleServicesError != null) {
+          throw Exception(googleServicesError);
+        }
+
+        try {
+          // Get default client ID from google-services.json
+          // Direct Firebase authentication with Google
+          final googleProvider = GoogleAuthProvider();
+          // Add scopes if needed
+          googleProvider.addScope(
+            'https://www.googleapis.com/auth/userinfo.email',
+          );
+          googleProvider.addScope(
+            'https://www.googleapis.com/auth/userinfo.profile',
+          );
+
+          // Try direct sign-in with Firebase
+          try {
+            // Try Firebase's direct Google sign-in
+            final userCredential = await _auth.signInWithProvider(
+              googleProvider,
+            );
+            return userCredential.user;
+          } catch (firebaseError) {
+            print(
+              "Firebase direct auth failed: $firebaseError. Trying Google Sign-In...",
+            );
+
+            // Fall back to Google Sign-In
+            final googleSignIn = GoogleSignIn.instance;
+            await googleSignIn.initialize();
+            final googleUser = await googleSignIn.authenticate();
+
+            if (googleUser == null) {
+              throw Exception("Google Sign-In canceled by user");
+            }
+
+            final googleAuth = await googleUser.authentication;
+            if (googleAuth.idToken == null) {
+              throw Exception("Failed to get ID token from Google Sign-In");
+            }
+
+            final credential = GoogleAuthProvider.credential(
+              idToken: googleAuth.idToken,
+            );
+
+            final userCredential = await _auth.signInWithCredential(credential);
+            return userCredential.user;
+          }
+        } catch (error) {
+          print("Google Sign-In error: $error");
+          rethrow;
+        }
       }
     } catch (e) {
+      print("Firebase Authentication error: $e");
       throw Exception("Google Sign-In failed: $e");
     }
   }

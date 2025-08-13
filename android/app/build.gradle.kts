@@ -54,7 +54,13 @@ dependencies {
     // Core library desugaring for Java 8+ APIs
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    // Firebase dependencies
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    
+    // Google Sign-In dependencies
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    
+    // Additional dependencies needed for Google Sign-In
+    implementation("com.google.firebase:firebase-analytics")
 }

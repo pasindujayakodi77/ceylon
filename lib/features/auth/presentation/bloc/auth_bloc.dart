@@ -24,9 +24,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final user = await authRepo.signInWithGoogle();
-        emit(AuthSuccess(user!));
+        if (user != null) {
+          emit(AuthSuccess(user));
+        } else {
+          emit(AuthFailure("Google Sign-In failed: User is null"));
+        }
       } catch (e) {
-        emit(AuthFailure(e.toString()));
+        print("Google Sign-In bloc error: $e");
+        emit(AuthFailure("Google Sign-In failed: ${e.toString()}"));
       }
     });
 
