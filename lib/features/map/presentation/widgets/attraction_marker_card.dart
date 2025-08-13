@@ -1,6 +1,7 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:ceylon/features/favorites/presentation/widgets/favorite_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AttractionMarkerCard extends StatelessWidget {
@@ -85,7 +86,7 @@ class AttractionMarkerCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: CeylonTokens.spacing4),
-                  // Category & Rating
+                  // Category
                   Row(
                     children: [
                       Icon(
@@ -101,20 +102,49 @@ class AttractionMarkerCard extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      // Rating
-                      Row(
-                        children: [
-                          const Icon(Icons.star, size: 16, color: Colors.amber),
-                          const SizedBox(width: 2),
-                          Text(
-                            attraction.rating.toString(),
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: colorScheme.onSurfaceVariant,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                        ],
+                      // Rating from Firestore or fallback to model
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('places')
+                            .doc(attraction.name)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          double rating = attraction.rating;
+                          int reviewCount = 0;
+
+                          if (snapshot.hasData && snapshot.data!.exists) {
+                            final data =
+                                snapshot.data!.data() as Map<String, dynamic>?;
+                            if (data != null) {
+                              rating =
+                                  (data['avg_rating'] as num?)?.toDouble() ??
+                                  attraction.rating;
+                              reviewCount =
+                                  (data['review_count'] as num?)?.toInt() ?? 0;
+                            }
+                          }
+
+                          return Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                size: 16,
+                                color: Colors.amber,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                rating > 0
+                                    ? '${rating.toStringAsFixed(1)}${reviewCount > 0 ? " ($reviewCount)" : ""}'
+                                    : "New",
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ],
                   ),

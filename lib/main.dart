@@ -3,6 +3,7 @@ import 'package:ceylon/design_system/app_theme.dart';
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
 import 'package:ceylon/features/home/presentation/screens/home_screen_new.dart';
 import 'package:ceylon/features/itinerary/data/itinerary_repository.dart';
+import 'package:ceylon/features/reviews/providers/reviews_provider.dart';
 import 'package:ceylon/services/favorites_provider.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ void main() async {
         BlocProvider(create: (_) => AuthBloc(authRepo: authRepo)),
         ChangeNotifierProvider.value(value: themeManager),
         Provider<ItineraryRepository>(create: (_) => ItineraryRepository()),
+        ChangeNotifierProvider(create: (_) => ReviewsProvider()),
       ],
       child: FavoritesProvider(child: MyApp(home: homeWidget)),
     ),

@@ -3,6 +3,7 @@ import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/design_system/widgets/ceylon_app_bar.dart';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:ceylon/features/attractions/data/attraction_repository.dart';
+import 'package:ceylon/features/attractions/presentation/screens/attraction_detail_screen.dart';
 import 'package:ceylon/features/map/presentation/widgets/attraction_marker_card.dart';
 import 'package:ceylon/features/map/presentation/widgets/map_filter_chip.dart';
 import 'package:ceylon/features/map/presentation/widgets/map_search_bar.dart';
@@ -309,10 +310,13 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                           attraction: _selectedAttraction!,
                           onTap: () {
                             // Navigate to attraction details
-                            Navigator.pushNamed(
+                            Navigator.push(
                               context,
-                              '/place-details',
-                              arguments: _selectedAttraction,
+                              MaterialPageRoute(
+                                builder: (_) => AttractionDetailScreen(
+                                  attraction: _selectedAttraction!,
+                                ),
+                              ),
                             );
                           },
                         ),
