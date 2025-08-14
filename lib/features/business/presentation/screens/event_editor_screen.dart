@@ -25,6 +25,8 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
   final _bannerCtrl = TextEditingController();
   final _promoCtrl = TextEditingController();
   final _discountCtrl = TextEditingController();
+  final _cityCtrl = TextEditingController();
+  final _tagsCtrl = TextEditingController(); // comma-separated tags
 
   DateTime? _start;
   DateTime? _end;
@@ -41,6 +43,11 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
       _bannerCtrl.text = d['banner'] ?? '';
       _promoCtrl.text = d['promoCode'] ?? '';
       _discountCtrl.text = (d['discountPct']?.toString() ?? '');
+      _cityCtrl.text = d['city'] ?? '';
+      final tags = (d['tags'] as List?)?.whereType<String>().toList() ?? [];
+      if (tags.isNotEmpty) {
+        _tagsCtrl.text = tags.join(', ');
+      }
       _published = (d['published'] as bool?) ?? false;
       _start = (d['startsAt'] as Timestamp?)?.toDate();
       _end = (d['endsAt'] as Timestamp?)?.toDate();
@@ -54,6 +61,8 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
     _bannerCtrl.dispose();
     _promoCtrl.dispose();
     _discountCtrl.dispose();
+    _cityCtrl.dispose();
+    _tagsCtrl.dispose();
     super.dispose();
   }
 
@@ -124,19 +133,42 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
 
     setState(() => _saving = true);
 
-    final data = {
+    // Validate discount percentage if provided (allow decimals)
+    double? discount;
+    final discountText = _discountCtrl.text.trim();
+    if (discountText.isNotEmpty) {
+      discount = double.tryParse(discountText);
+      if (discount == null || discount < 0 || discount > 100) {
+        setState(() => _saving = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Discount % must be a number between 0 and 100'),
+          ),
+        );
+        return;
+      }
+    }
+
+    // Parse tags from CSV (comma separated)
+    final tags = _tagsCtrl.text
+        .split(',')
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty)
+        .toSet()
+        .toList();
+
+    final common = {
       'title': _titleCtrl.text.trim(),
       'description': _descCtrl.text.trim(),
       'banner': _bannerCtrl.text.trim(),
       'promoCode': _promoCtrl.text.trim(),
-      'discountPct': _discountCtrl.text.trim().isEmpty
-          ? null
-          : int.tryParse(_discountCtrl.text.trim()),
+      'discountPct': discount,
       'startsAt': Timestamp.fromDate(_start!),
       'endsAt': Timestamp.fromDate(_end!),
       'published': _published,
-      'updatedAt': FieldValue.serverTimestamp(),
-      'createdAt': FieldValue.serverTimestamp(), // merge keeps original
+      'city': _cityCtrl.text.trim().isEmpty ? null : _cityCtrl.text.trim(),
+      'tags': tags,
+      'businessId': widget.businessId,
     };
 
     final ref = FirebaseFirestore.instance
@@ -145,9 +177,17 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
         .collection('events');
 
     if (widget.eventId == null) {
-      await ref.add(data);
+      await ref.add({
+        ...common,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
     } else {
-      await ref.doc(widget.eventId).set(data, SetOptions(merge: true));
+      // Do not overwrite createdAt on updates; only touch updatedAt
+      await ref.doc(widget.eventId).set({
+        ...common,
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
     }
 
     setState(() => _saving = false);
@@ -204,6 +244,21 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _cityCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'City (optional)',
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _tagsCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'Tags (comma-separated, optional)',
+                        helperText: 'e.g., wildlife, ocean, sunset, tour',
+                      ),
+                    ),
+                    const SizedBox(height: 12),
                     Row(
                       children: [
                         Expanded(
@@ -221,7 +276,9 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Discount % (0–100)',
                             ),
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
                           ),
                         ),
                       ],
