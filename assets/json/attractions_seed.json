@@ -10,7 +10,7 @@
         "view",
         "hike"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Sigiriya%20Rock%20Fortress,sri%20lanka",
+      "photo": "https://files.catbox.moe/zgnplx.jpg",
       "description": "Ancient rock citadel with frescoes and sweeping views.",
       "location": {
         "lat": 7.9569,
@@ -30,7 +30,7 @@
         "art",
         "history"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Dambulla%20Cave%20Temple,sri%20lanka",
+      "photo": "https://files.catbox.moe/rkpgon.jpg",
       "description": "Rock cave complex with Buddhist murals and statues.",
       "location": {
         "lat": 7.8568,
@@ -50,7 +50,7 @@
         "hike",
         "view"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Pidurangala%20Rock%20(Lion's%20Rock%20Viewpoint),sri%20lanka",
+      "photo": "https://files.catbox.moe/9d77ey.jpg",
       "description": "Popular sunrise hike facing Sigiriya.",
       "location": {
         "lat": 7.9564,
@@ -70,7 +70,7 @@
         "unesco",
         "history"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Ancient%20City%20of%20Polonnaruwa,sri%20lanka",
+      "photo": "https://files.catbox.moe/5ai0i9.png",
       "description": "UNESCO ruin city with well‑preserved temples and pools.",
       "location": {
         "lat": 7.9396,
@@ -90,7 +90,7 @@
         "history",
         "unesco"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Sacred%20City%20of%20Anuradhapura,sri%20lanka",
+      "photo": "https://files.catbox.moe/aa85g4.jpg",
       "description": "Ancient stupas, bodhi tree and monastic ruins.",
       "location": {
         "lat": 8.3114,
@@ -110,7 +110,7 @@
         "view",
         "history"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Mihintale,sri%20lanka",
+      "photo": "https://files.catbox.moe/il0qqz.jpg",
       "description": "Hilltop complex known as birthplace of Buddhism in Sri Lanka.",
       "location": {
         "lat": 8.3508,
@@ -130,7 +130,7 @@
         "forest",
         "hike"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Ritigala%20Forest%20Monastery,sri%20lanka",
+      "photo": "https://files.catbox.moe/maq58k.jpg",
       "description": "Mysterious ruins hidden in a strict nature reserve.",
       "location": {
         "lat": 8.1211,
@@ -150,7 +150,7 @@
         "safari",
         "wildlife"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Minneriya%20National%20Park%20(Elephant%20Gathering),sri%20lanka",
+      "photo": "https://files.catbox.moe/fvwisi.jpg",
       "description": "Seasonal elephant gathering around Minneriya tank.",
       "location": {
         "lat": 8.0392,
@@ -170,7 +170,7 @@
         "safari",
         "wildlife"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Kaudulla%20National%20Park,sri%20lanka",
+      "photo": "https://files.catbox.moe/kdx36a.png",
       "description": "Adjacent park with elephant herds and birdlife.",
       "location": {
         "lat": 8.1219,
@@ -189,7 +189,7 @@
         "culture",
         "history"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Temple%20of%20the%20Tooth,sri%20lanka",
+      "photo": "https://files.catbox.moe/3n52xs.jpg",
       "description": "Buddhist temple housing the sacred tooth relic.",
       "location": {
         "lat": 7.2949,
@@ -209,7 +209,7 @@
         "city",
         "relax"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Kandy%20Lake%20Walk,sri%20lanka",
+      "photo": "https://files.catbox.moe/svul8q.png",
       "description": "Scenic loop around the heart‑shaped Kandy Lake.",
       "location": {
         "lat": 7.2901,
@@ -229,7 +229,7 @@
         "orchids",
         "walk"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Peradeniya%20Royal%20Botanical%20Gardens,sri%20lanka",
+      "photo": "https://files.catbox.moe/kq5c5f.png",
       "description": "Expansive gardens with orchids and giant palms.",
       "location": {
         "lat": 7.2715,
@@ -248,7 +248,7 @@
         "elephants",
         "family"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Pinnawala%20Elephant%20Orphanage,sri%20lanka",
+      "photo": "https://files.catbox.moe/83e9vm.png",
       "description": "Elephant care center with river bathing times.",
       "location": {
         "lat": 7.2975,
@@ -268,7 +268,7 @@
         "nature",
         "view"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Knuckles%20Mountain%20Range,sri%20lanka",
+      "photo": "https://files.catbox.moe/fkpap5.png",
       "description": "Cloud forests and rugged peaks with village trails.",
       "location": {
         "lat": 7.4656,
@@ -288,7 +288,7 @@
         "photo",
         "hike"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Nine%20Arches%20Bridge,sri%20lanka",
+      "photo": "https://files.catbox.moe/619awb.png",
       "description": "Iconic stone bridge — best at train time.",
       "location": {
         "lat": 6.8761,
@@ -307,7 +307,7 @@
         "hike",
         "view"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Little%20Adam's%20Peak,sri%20lanka",
+      "photo": "https://files.catbox.moe/iuftif.png",
       "description": "Short, rewarding ridge walk near Ella.",
       "location": {
         "lat": 6.8611,
@@ -326,7 +326,7 @@
         "hike",
         "view"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Ella%20Rock,sri%20lanka",
+      "photo": "https://files.catbox.moe/mdk6dy.png",
       "description": "Longer hike with dramatic valley views.",
       "location": {
         "lat": 6.8396,
@@ -345,7 +345,7 @@
         "train",
         "engineering"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Demodara%20Loop,sri%20lanka",
+      "photo": "https://files.catbox.moe/nf0m4o.jpg",
       "description": "Railway loop where the track passes under itself.",
       "location": {
         "lat": 6.874,
@@ -365,7 +365,7 @@
         "view",
         "sunrise"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Lipton's%20Seat,sri%20lanka",
+      "photo": "https://files.catbox.moe/n1jj72.png",
       "description": "Sunrise lookout over rolling tea estates.",
       "location": {
         "lat": 6.7617,
@@ -385,7 +385,7 @@
         "factory",
         "culture"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Halpewatte%20Tea%20Factory%20Tour,sri%20lanka",
+      "photo": "https://files.catbox.moe/8z45t4.jpg",
       "description": "Guided tea processing tour and tasting.",
       "location": {
         "lat": 6.8685,
@@ -404,7 +404,7 @@
         "waterfall",
         "photo"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Ravana%20Falls,sri%20lanka",
+      "photo": "https://files.catbox.moe/tn094x.png",
       "description": "Roadside cascade popular for photo stops.",
       "location": {
         "lat": 6.8399,
@@ -424,7 +424,7 @@
         "view",
         "nature"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Horton%20Plains%20/%20World's%20End,sri%20lanka",
+      "photo": "https://files.catbox.moe/2l0at1.jpg",
       "description": "High‑plateau trek with sheer cliff viewpoint.",
       "location": {
         "lat": 6.8029,
@@ -443,7 +443,7 @@
         "waterfall",
         "hike"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Baker's%20Falls,sri%20lanka",
+      "photo": "https://files.catbox.moe/vnc48m.png",
       "description": "Forest waterfall along the Horton loop trail.",
       "location": {
         "lat": 6.807,
@@ -463,7 +463,7 @@
         "relax",
         "family"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Gregory%20Lake%20Park,sri%20lanka",
+      "photo": "https://files.catbox.moe/njc2q1.jpg",
       "description": "Boating, pony rides and lakeside strolls.",
       "location": {
         "lat": 6.9571,
@@ -483,7 +483,7 @@
         "hike",
         "sunrise"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Sri%20Pada%20(Adam's%20Peak),sri%20lanka",
+      "photo": "https://files.catbox.moe/yw1e2a.jpg",
       "description": "Night climb to a sacred summit and sunrise.",
       "location": {
         "lat": 6.8098,
@@ -502,7 +502,7 @@
         "waterfall",
         "view"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Devon%20Falls,sri%20lanka",
+      "photo": "https://files.catbox.moe/o6k4el.jpg",
       "description": "Tall cascade visible from the A7.",
       "location": {
         "lat": 6.966,
@@ -521,7 +521,7 @@
         "waterfall",
         "view"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?St.%20Clair's%20Falls,sri%20lanka",
+      "photo": "https://files.catbox.moe/azy8x9.png",
       "description": "‘Little Niagara’ of Sri Lanka near tea estates.",
       "location": {
         "lat": 6.9565,
@@ -541,7 +541,7 @@
         "hike",
         "swim"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Diyaluma%20Falls,sri%20lanka",
+      "photo": "https://files.catbox.moe/5uxuii.png",
       "description": "Tiered waterfall with natural infinity pools.",
       "location": {
         "lat": 6.7631,
@@ -561,7 +561,7 @@
         "temple",
         "culture"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Seetha%20Amman%20Temple,sri%20lanka",
+      "photo": "https://files.catbox.moe/ae8rrq.jpg",
       "description": "Hindu temple tied to the Ramayana legend.",
       "location": {
         "lat": 6.9728,
@@ -581,7 +581,7 @@
         "sunset",
         "walk"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Galle%20Fort,sri%20lanka",
+      "photo": "https://files.catbox.moe/435u29.jpg",
       "description": "UNESCO sea fort with cafes, boutiques and sunsets.",
       "location": {
         "lat": 6.026,
@@ -600,7 +600,7 @@
         "beach",
         "swim"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Unawatuna%20Beach,sri%20lanka",
+      "photo": "https://files.catbox.moe/zr8eda.jpg",
       "description": "Sheltered bay popular with families.",
       "location": {
         "lat": 6.0106,
@@ -619,7 +619,7 @@
         "beach",
         "sunset"
       ],
-      "photo": "https://source.unsplash.com/featured/800x500/?Mirissa%20Beach,sri%20lanka",
+      "photo": "https://files.catbox.moe/xvia2l.jpg",
       "description": "Chilled bay; whale watching in season.",
       "location": {
         "lat": 5.9485,

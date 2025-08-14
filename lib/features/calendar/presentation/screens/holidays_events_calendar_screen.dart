@@ -1,5 +1,3 @@
-// FILE: lib/features/calendar/presentation/screens/holidays_events_calendar_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:table_calendar/table_calendar.dart';

@@ -183,8 +183,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               title: 'Sigiriya Rock',
                               subtitle: 'Cultural Triangle',
                               backgroundColor: Colors.orange.shade300,
-                              imageUrl:
-                                  'https://picsum.photos/seed/temple/800/500',
+                              imageUrl: 'https://files.catbox.moe/zgnplx.jpg',
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
@@ -199,8 +198,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               title: 'Ella Train Ride',
                               subtitle: 'Central Highlands',
                               backgroundColor: Colors.green.shade300,
-                              imageUrl:
-                                  'https://picsum.photos/seed/beach/800/500',
+                              imageUrl: 'https://files.catbox.moe/stnoku.jpg',
                               onTap: () {
                                 // Navigate to Ella details
                               },
@@ -213,8 +211,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               title: 'Galle Fort',
                               subtitle: 'Southern Coast',
                               backgroundColor: Colors.blue.shade300,
-                              imageUrl:
-                                  'https://picsum.photos/seed/wildlife/800/500',
+                              imageUrl: 'https://files.catbox.moe/435u29.jpg',
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
