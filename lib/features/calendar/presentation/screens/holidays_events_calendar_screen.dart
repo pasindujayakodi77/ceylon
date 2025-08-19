@@ -41,7 +41,8 @@ class _HolidaysEventsCalendarScreenState
   // UI state
   bool _isLoading = true;
   String? _errorMessage;
-  String _selectedFilter = 'All';
+  // Support multi-select filters via chips and CSV input
+  final Set<String> _selectedFilters = <String>{};
 
   final List<String> _filterOptions = [
     'All',
@@ -51,12 +52,67 @@ class _HolidaysEventsCalendarScreenState
     'Outdoor',
   ];
 
+  bool _routeFiltersApplied = false;
+
+  // Normalize various input aliases to our canonical filter names
+  String? _normalizeFilterLabel(String raw) {
+    final key = raw.trim().toLowerCase();
+    if (key.isEmpty) return null;
+    switch (key) {
+      case 'all':
+        return 'All';
+      case 'promotion':
+      case 'promotions':
+      case 'promo':
+        return 'Promotions';
+      case 'free':
+        return 'Free';
+      case 'family':
+        return 'Family';
+      case 'outdoor':
+      case 'outdoors':
+        return 'Outdoor';
+      default:
+        return null;
+    }
+  }
+
+  void _applyFiltersFromCsv(String csv) {
+    final parts = csv.split(',');
+    final normalized = parts
+        .map((p) => _normalizeFilterLabel(p))
+        .whereType<String>()
+        .toSet();
+    setState(() {
+      _selectedFilters
+        ..clear()
+        ..addAll(normalized);
+      // If 'All' is present with others, keep only 'All'
+      if (_selectedFilters.contains('All') && _selectedFilters.length > 1) {
+        _selectedFilters
+          ..clear()
+          ..add('All');
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _eventsRepository = EventsRepository();
     _holidaysRepository = HolidaysRepository();
     _loadDataForMonth(_focusedMonth);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_routeFiltersApplied) return;
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Map && args['filters'] is String) {
+      _applyFiltersFromCsv(args['filters'] as String);
+    }
+    _routeFiltersApplied = true;
   }
 
   Future<void> _loadDataForMonth(DateTime month) async {
@@ -111,33 +167,41 @@ class _HolidaysEventsCalendarScreenState
   }
 
   List<CalendarEvent> _getFilteredEvents() {
-    switch (_selectedFilter) {
-      case 'Promotions':
-        return _monthEvents
-            .where(
-              (event) =>
-                  (event.promoCode != null && event.promoCode!.isNotEmpty) ||
-                  (event.discountPct != null && event.discountPct! > 0),
-            )
-            .toList();
-      case 'Free':
-        return _monthEvents
-            .where(
-              (event) =>
-                  event.tags.contains('free') || event.discountPct == 100,
-            )
-            .toList();
-      case 'Family':
-        return _monthEvents
-            .where((event) => event.tags.contains('family'))
-            .toList();
-      case 'Outdoor':
-        return _monthEvents
-            .where((event) => event.tags.contains('outdoor'))
-            .toList();
-      default:
-        return _monthEvents;
+    // If no filter or 'All' selected, show all
+    if (_selectedFilters.isEmpty || _selectedFilters.contains('All')) {
+      return _monthEvents;
     }
+
+    bool matchesAnySelected(CalendarEvent event) {
+      final isPromotion =
+          (event.promoCode != null && event.promoCode!.isNotEmpty) ||
+          (event.discountPct != null && event.discountPct! > 0);
+      final isFree =
+          event.tags.contains('free') ||
+          (event.discountPct != null && event.discountPct! >= 100);
+      final isFamily = event.tags.contains('family');
+      final isOutdoor = event.tags.contains('outdoor');
+
+      for (final f in _selectedFilters) {
+        switch (f) {
+          case 'Promotions':
+            if (isPromotion) return true;
+            break;
+          case 'Free':
+            if (isFree) return true;
+            break;
+          case 'Family':
+            if (isFamily) return true;
+            break;
+          case 'Outdoor':
+            if (isOutdoor) return true;
+            break;
+        }
+      }
+      return false;
+    }
+
+    return _monthEvents.where(matchesAnySelected).toList();
   }
 
   List<dynamic> _getEventsForDay(DateTime day) {
@@ -831,13 +895,33 @@ class _HolidaysEventsCalendarScreenState
                                 const SizedBox(width: 8),
                             itemBuilder: (context, index) {
                               final option = _filterOptions[index];
-                              final isSelected = _selectedFilter == option;
+                              final bool isSelected = option == 'All'
+                                  ? (_selectedFilters.isEmpty ||
+                                        _selectedFilters.contains('All'))
+                                  : _selectedFilters.contains(option);
                               return FilterChip(
                                 label: Text(option),
                                 selected: isSelected,
                                 onSelected: (selected) {
                                   setState(() {
-                                    _selectedFilter = option;
+                                    if (option == 'All') {
+                                      // Selecting 'All' clears other selections
+                                      _selectedFilters
+                                        ..clear()
+                                        ..add('All');
+                                    } else {
+                                      // Toggle this option
+                                      if (_selectedFilters.contains(option)) {
+                                        _selectedFilters.remove(option);
+                                      } else {
+                                        _selectedFilters.add(option);
+                                      }
+                                      // If any specific filters are selected, 'All' should not be selected
+                                      if (_selectedFilters.isNotEmpty) {
+                                        _selectedFilters.remove('All');
+                                      }
+                                      // If nothing is selected, treat as 'All' (empty set is fine)
+                                    }
                                   });
                                 },
                               );
@@ -868,23 +952,23 @@ class _HolidaysEventsCalendarScreenState
       ..sort((a, b) => a.startsAt.compareTo(b.startsAt));
 
     if (filteredEvents.isEmpty) {
+      final bool showingAll =
+          _selectedFilters.isEmpty || _selectedFilters.contains('All');
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              _selectedFilter == 'All'
-                  ? Icons.calendar_month_outlined
-                  : Icons.event_busy,
+              showingAll ? Icons.calendar_month_outlined : Icons.event_busy,
               size: 64,
               color: Colors.grey[400],
             ),
             const SizedBox(height: 16),
             Flexible(
               child: Text(
-                _selectedFilter == 'All'
+                showingAll
                     ? 'No events scheduled this month'
-                    : 'No $_selectedFilter events this month',
+                    : 'No selected-filter events this month',
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
