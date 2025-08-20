@@ -1,0 +1,20 @@
+# Localization Configuration for ceylon app
+# 
+# How to regenerate localization files:
+#   Run: flutter gen-l10n
+#
+# Common issues:
+#   1. Wrong import path - ensure you're using:
+#      import 'package:ceylon/l10n/app_localizations.dart'
+#   2. Missing delegates - ensure you have:
+#      localizationsDelegates: AppLocalizations.localizationsDelegates
+#      supportedLocales: AppLocalizations.supportedLocales 
+#   3. Unsupported locale - ensure your locale is in the supportedLocales list
+#   4. Run flutter clean if facing rebuild issues
+
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+nullable-getter: false
+untranslated-messages-file: build/l10n_missing.txt

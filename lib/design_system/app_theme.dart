@@ -274,30 +274,42 @@ class AppTheme {
     );
   }
 
-  /// Build text theme using Inter font family
+  /// Build text theme using Inter font family with multilingual support
   static TextTheme _buildTextTheme() {
-    final interTextTheme = GoogleFonts.interTextTheme();
-    // For fallback, we'll use Noto Sans in case of languages that Inter doesn't support
-    // Uncomment if needed for specific language support
-    // final notoSansTextTheme = GoogleFonts.notoSansTextTheme();
+    // Create a list of font fallbacks for multilingual support
+    final fontFamilyFallback = <String>[
+      'Noto Sans', // General script coverage
+      'Noto Sans Devanagari', // For Hindi support
+      'Noto Sans Sinhala', // For Sinhala support
+      'Noto Sans Thaana', // For Dhivehi/Thaana script support
+    ];
 
-    return interTextTheme.copyWith(
-      // Use notoSansTextTheme's displayLarge as fallback if needed
-      displayLarge: interTextTheme.displayLarge,
-      displayMedium: interTextTheme.displayMedium,
-      displaySmall: interTextTheme.displaySmall,
-      headlineLarge: interTextTheme.headlineLarge,
-      headlineMedium: interTextTheme.headlineMedium,
-      headlineSmall: interTextTheme.headlineSmall,
-      titleLarge: interTextTheme.titleLarge,
-      titleMedium: interTextTheme.titleMedium,
-      titleSmall: interTextTheme.titleSmall,
-      bodyLarge: interTextTheme.bodyLarge,
-      bodyMedium: interTextTheme.bodyMedium,
-      bodySmall: interTextTheme.bodySmall,
-      labelLarge: interTextTheme.labelLarge,
-      labelMedium: interTextTheme.labelMedium,
-      labelSmall: interTextTheme.labelSmall,
+    // Get Google's Inter text theme as base
+    final interTextTheme = GoogleFonts.interTextTheme();
+
+    // Helper function to apply font fallbacks to any TextStyle
+    TextStyle applyFallbacks(TextStyle? style) {
+      if (style == null) return const TextStyle();
+      return style.copyWith(fontFamilyFallback: fontFamilyFallback);
+    }
+
+    // Apply our fallbacks to all text styles
+    return TextTheme(
+      displayLarge: applyFallbacks(interTextTheme.displayLarge),
+      displayMedium: applyFallbacks(interTextTheme.displayMedium),
+      displaySmall: applyFallbacks(interTextTheme.displaySmall),
+      headlineLarge: applyFallbacks(interTextTheme.headlineLarge),
+      headlineMedium: applyFallbacks(interTextTheme.headlineMedium),
+      headlineSmall: applyFallbacks(interTextTheme.headlineSmall),
+      titleLarge: applyFallbacks(interTextTheme.titleLarge),
+      titleMedium: applyFallbacks(interTextTheme.titleMedium),
+      titleSmall: applyFallbacks(interTextTheme.titleSmall),
+      bodyLarge: applyFallbacks(interTextTheme.bodyLarge),
+      bodyMedium: applyFallbacks(interTextTheme.bodyMedium),
+      bodySmall: applyFallbacks(interTextTheme.bodySmall),
+      labelLarge: applyFallbacks(interTextTheme.labelLarge),
+      labelMedium: applyFallbacks(interTextTheme.labelMedium),
+      labelSmall: applyFallbacks(interTextTheme.labelSmall),
     );
   }
 }

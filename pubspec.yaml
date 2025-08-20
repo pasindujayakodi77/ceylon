@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -57,9 +60,8 @@ dependencies:
   printing: ^5.13.4
   firebase_messaging: ^16.0.0
   flutter_local_notifications: ^19.4.0
-  flutter_localizations:
-    sdk: flutter
-  intl: ^0.20.2
+  
+  # Localization dependencies
   flutter_rating_bar: ^4.0.1
   fl_chart: ^1.0.0
   qr_flutter: ^4.1.0
@@ -92,15 +94,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
-  # flutter_localizations should only be in dependencies, not dev_dependencies
   intl_utils: ^2.8.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-
 flutter:
+  # Enable generation of localized strings from arb files
   generate: true
 
   # The following line ensures that the Material Icons font is

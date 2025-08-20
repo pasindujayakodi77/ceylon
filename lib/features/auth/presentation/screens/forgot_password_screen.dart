@@ -1,6 +1,7 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/design_system/widgets/ceylon_app_bar.dart';
 import 'package:ceylon/design_system/widgets/ceylon_button.dart';
+import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,7 +55,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         // Show success snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text("Reset link sent to your email"),
+            content: Text(AppLocalizations.of(context).emailSent),
             backgroundColor: Theme.of(context).colorScheme.primary,
             behavior: SnackBarBehavior.floating,
           ),
@@ -84,7 +85,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: CeylonAppBar(title: "Reset Password", centerTitle: true),
+      appBar: CeylonAppBar(
+        title: AppLocalizations.of(context).resetPassword,
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -95,7 +99,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
               // Header section
               Text(
-                "Forgot your password?",
+                AppLocalizations.of(context).forgotPasswordQuestion,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   color: colorScheme.onBackground,
                   fontWeight: FontWeight.bold,
@@ -109,7 +113,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: CeylonTokens.spacing8),
 
               Text(
-                    "Enter your email address and we'll send you a link to reset your password.",
+                    AppLocalizations.of(context).resetPasswordInstructions,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -124,8 +128,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email address',
-                      hintText: 'Enter your email address',
+                      labelText: AppLocalizations.of(context).emailAddress,
+                      hintText: AppLocalizations.of(context).email,
                       prefixIcon: const Icon(Icons.email_outlined),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(
@@ -149,7 +153,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               // Submit button
               CeylonButton.primary(
                     onPressed: _isLoading ? null : _sendResetEmail,
-                    label: _isLoading ? "Sending..." : "Send Reset Link",
+                    label: _isLoading
+                        ? "Sending..."
+                        : AppLocalizations.of(context).sendResetLink,
                     leadingIcon: _isLoading ? null : Icons.send,
                     isLoading: _isLoading,
                     isFullWidth: true,
@@ -182,7 +188,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           const SizedBox(width: CeylonTokens.spacing8),
                           Text(
-                            "Email sent",
+                            AppLocalizations.of(context).emailSent,
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
                                   color: colorScheme.onPrimaryContainer,
@@ -193,7 +199,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       const SizedBox(height: CeylonTokens.spacing8),
                       Text(
-                        "If an account exists with this email, you'll receive a password reset link shortly. Please check your email inbox and spam folder.",
+                        AppLocalizations.of(context).resetEmailSentMessage,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onPrimaryContainer,
                         ),

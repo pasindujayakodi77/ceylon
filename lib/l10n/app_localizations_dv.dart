@@ -9,13 +9,13 @@ class AppLocalizationsDv extends AppLocalizations {
   AppLocalizationsDv([String locale = 'dv']) : super(locale);
 
   @override
-  String get appTitle => 'ސީލޮން';
+  String get appName => 'ސީލޯން';
 
   @override
-  String get login => 'ލޮގިން';
+  String get login => 'ވަންނަން';
 
   @override
-  String get signup => 'ސައިން އަޕް';
+  String get signup => 'ރަޖިސްޓްރީ ވާން';
 
   @override
   String get email => 'އީމެއިލް';
@@ -24,68 +24,197 @@ class AppLocalizationsDv extends AppLocalizations {
   String get password => 'ޕާސްވޯޑް';
 
   @override
-  String get forgotPassword => 'ޕާސްވޯޑް ނަމަވެއްޖެ؟';
+  String get forgotPassword => 'ޕާސްވޯޑް ހަނދާން ނެތުނީތަ؟';
 
   @override
-  String get createAccount => 'އެކައުންޓް ހެދުމަށް';
+  String get continueWithGoogle => 'ގޫގުލް އާއެކު ކުރިއަށް ދާށެވެ';
 
   @override
-  String get name => 'ފުރަތަމަ ނަން';
+  String get logout => 'ނިކުންނަން';
 
   @override
-  String get country => 'ރަށު';
+  String get settings => 'ސެޓިންގްސް';
 
   @override
-  String get saveChanges => 'ބަދަލުތައް ސޭވްކުރޭ';
+  String get language => 'ބަސް';
 
   @override
-  String get logout => 'ލޮގައުޓް';
+  String get theme => 'ތީމް';
 
   @override
-  String get myProfile => 'މައި ޕްރޮފައިލް';
+  String get darkMode => 'އަނދިރި މޯޑް';
 
   @override
-  String get favorites => 'ފޭވަރެޓްތައް';
+  String get save => 'ރައްކާކުރޭ';
 
   @override
-  String get noFavoritesYet => 'އެބަހުރި ފޭވަރެޓްތައް ނެތް';
+  String get cancel => 'ކެންސަލް';
 
   @override
-  String get tripTitle => 'ސަރަހައްދު ސަފްހާ';
+  String get home => 'މައި ޞަފްޙާ';
 
   @override
-  String get addDay => 'ދުވަހަ އިތުރު';
+  String get map => 'ޗާޓު';
 
   @override
-  String get saveItinerary => 'ސަރަހައްދު ސޭވްކުރޭ';
+  String get itinerary => 'ދަތުރު ޕްލޭން';
 
   @override
-  String get myTrips => 'މައި ސަރަހައްދުތައް';
+  String get favorites => 'ފޭވަރިޓްސް';
 
   @override
-  String get viewAttractionsMap => 'އަޓްރެކްޝަން މެޕް ބަލާ';
+  String get profile => 'ޕްރޮފައިލް';
 
   @override
-  String get share => 'ސެއްރެވް ކުރޭ';
+  String get business => 'ވިޔަފާރި';
 
   @override
-  String get getDirections => 'މަސައްކަތުތައް ބަލާ';
+  String get reviews => 'ރިވިއުތައް';
 
   @override
-  String get removeFavorite => 'ފޭވަރެޓް ފޮހެލާ';
+  String get analytics => 'އެނަލިޓިކްސް';
 
   @override
-  String get saveFavorite => 'ފޭވަރެޓް ސޭވްކުރޭ';
+  String get events => 'އިވެންޓްތައް';
 
   @override
-  String get flutterGenL10n => 'flutter gen-l10n';
+  String get directions => 'މަގުތައް';
 
   @override
-  String get homeScreenTitle => '🏡 Home Screen — Logged In';
+  String get addToItinerary => 'ދަތުރަށް އިތުރުކުރޭ';
 
   @override
-  String get viewFavorites => '❤️ View Favorites';
+  String get addReview => 'ރިވިއު އިތުރުކުރޭ';
 
   @override
-  String get hello => 'Hello';
+  String get submit => 'ފޮނުވާ';
+
+  @override
+  String get emptyStateNoData => 'މަޢުލޫމާތެއް ނެތް';
+
+  @override
+  String get retry => 'އަލުން މަސައްކަތްކުރޭ';
+
+  @override
+  String get today => 'މިއަދު';
+
+  @override
+  String get upcomingThisMonth => 'މި މަހު އަންނަނިވި';
+
+  @override
+  String get filterAll => 'އެންމެހައި';
+
+  @override
+  String get filterPromotions => 'ޕްރޮމޯޝަންތައް';
+
+  @override
+  String get filterFree => 'ހިލޭ';
+
+  @override
+  String get filterFamily => 'އާއިލާ';
+
+  @override
+  String get filterOutdoor => 'އައުޓްޑޯ';
+
+  @override
+  String get welcomeToCeylon => 'ސީލޯނަށް މަރުޙަބާ';
+
+  @override
+  String get signInToContinue => 'ކުރިއަށް ދިއުމަށް ސައިން އިން ކުރޭ';
+
+  @override
+  String get rememberMe => 'ފަހުން ހަނދާން ބަހައްޓާ';
+
+  @override
+  String get or => 'ނުވަތަ';
+
+  @override
+  String get signInWithGoogle => 'ގޫގުލް އާއެކު ސައިން އިން ކުރޭ';
+
+  @override
+  String get dontHaveAccount => 'އެކައުންޓެއް ނެތްތަ؟';
+
+  @override
+  String get createAccount => 'އެކައުންޓް ހަދާ';
+
+  @override
+  String get createYourAccount => 'އެކައުންޓެއް ހަދާ';
+
+  @override
+  String get fillDetailsBelow => 'ފެށުމަށް ތިރީގައިވާ މަޢުލޫމާތު ފުރިހަމަ ކުރޭ';
+
+  @override
+  String get personalInformation => 'އަމިއްލަ މަޢުލޫމާތު';
+
+  @override
+  String get fullName => 'ފުރިހަމަ ނަން';
+
+  @override
+  String get country => 'ޤައުމު';
+
+  @override
+  String get preferredLanguage => 'ބޭނުންވާ ބަސް';
+
+  @override
+  String get accountInformation => 'އެކައުންޓް މަޢުލޫމާތު';
+
+  @override
+  String get confirmPassword => 'ޕާސްވޯޑް ޔަޤީން ކުރޭ';
+
+  @override
+  String get selectRole => 'ރޯލް އިޚްތިޔާރުކުރޭ';
+
+  @override
+  String get tourist => 'ފަތުރުވެރިޔާ';
+
+  @override
+  String get resetPassword => 'ޕާސްވޯޑް ރީސެޓް ކުރޭ';
+
+  @override
+  String get forgotPasswordQuestion => 'ޕާސްވޯޑް ހަނދާން ނެތުނީތަ؟';
+
+  @override
+  String get resetPasswordInstructions =>
+      'އީމެއިލް އެޑްރެސް ޖައްސާ. އަޅުގަނޑުމެން ޕާސްވޯޑް ރީސެޓް ކުރުމުގެ ލިންކެއް ފޮނުވާނަން.';
+
+  @override
+  String get emailAddress => 'އީމެއިލް އެޑްރެސް';
+
+  @override
+  String get sendResetLink => 'ރީސެޓް ލިންކް ފޮނުވާ';
+
+  @override
+  String get emailSent => 'އީމެއިލް ފޮނުވިއްޖެ';
+
+  @override
+  String get resetEmailSentMessage =>
+      'މި އީމެއިލްއާއެކު އެކައުންޓެއް ވާނަމަ، ޕާސްވޯޑް ރީސެޓް ލިންކެއް ލިބިވަޑައިގަންނަވާނެ. އީމެއިލް އިންބޮކްސް އަދި ސްޕޭމް ފޯލްޑަރ ޗެކްކުރޭ.';
+
+  @override
+  String get loginSuccessful => 'ވަނުން ކާމިޔާބުވެއްޖެ';
+
+  @override
+  String get accountCreatedSuccessfully =>
+      'އެކައުންޓް ކާމިޔާބުކަމާއެކު އުފެއްދިއްޖެ';
+
+  @override
+  String get saveFavorite => 'ފޭވަރިޓްސްއަށް ރައްކާކުރޭ';
+
+  @override
+  String get removeFavorite => 'ފޭވަރިޓްސްއިން ނައްތާލާ';
+
+  @override
+  String get updated => 'އަޕްޑޭޓް ކުރެވިއްޖެ';
+
+  @override
+  String get myProfile => 'އަހަރެންގެ ޕްރޮފައިލް';
+
+  @override
+  String get name => 'ނަން';
+
+  @override
+  String get saveChanges => 'ބަދަލުތައް ރައްކާކުރޭ';
+
+  @override
+  String get noFavoritesYet => 'އަދި ފޭވަރިޓްސް ނެތް';
 }

@@ -9,10 +9,10 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Ceylan';
+  String get appName => 'Ceylon';
 
   @override
-  String get login => 'Se connecter';
+  String get login => 'Connexion';
 
   @override
   String get signup => 'S\'inscrire';
@@ -27,65 +27,194 @@ class AppLocalizationsFr extends AppLocalizations {
   String get forgotPassword => 'Mot de passe oublié ?';
 
   @override
-  String get createAccount => 'Créer un compte';
+  String get continueWithGoogle => 'Continuer avec Google';
 
   @override
-  String get name => 'Nom complet';
+  String get logout => 'Déconnexion';
 
   @override
-  String get country => 'Pays';
+  String get settings => 'Paramètres';
 
   @override
-  String get saveChanges => 'Enregistrer les modifications';
+  String get language => 'Langue';
 
   @override
-  String get logout => 'Se déconnecter';
+  String get theme => 'Thème';
 
   @override
-  String get myProfile => 'Mon profil';
+  String get darkMode => 'Mode sombre';
+
+  @override
+  String get save => 'Enregistrer';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get home => 'Accueil';
+
+  @override
+  String get map => 'Carte';
+
+  @override
+  String get itinerary => 'Itinéraire';
 
   @override
   String get favorites => 'Favoris';
 
   @override
-  String get noFavoritesYet => 'Pas encore de favoris';
+  String get profile => 'Profil';
 
   @override
-  String get tripTitle => 'Titre du voyage';
+  String get business => 'Entreprise';
 
   @override
-  String get addDay => 'Ajouter un jour';
+  String get reviews => 'Avis';
 
   @override
-  String get saveItinerary => 'Enregistrer l’itinéraire';
+  String get analytics => 'Analytique';
 
   @override
-  String get myTrips => 'Mes voyages';
+  String get events => 'Événements';
 
   @override
-  String get viewAttractionsMap => 'Voir la carte des attractions';
+  String get directions => 'Directions';
 
   @override
-  String get share => 'Partager';
+  String get addToItinerary => 'Ajouter à l\'itinéraire';
 
   @override
-  String get getDirections => 'Obtenir l’itinéraire';
+  String get addReview => 'Ajouter un avis';
 
   @override
-  String get removeFavorite => 'Retirer des favoris';
+  String get submit => 'Soumettre';
+
+  @override
+  String get emptyStateNoData => 'Aucune donnée disponible';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get today => 'Aujourd\'hui';
+
+  @override
+  String get upcomingThisMonth => 'À venir ce mois-ci';
+
+  @override
+  String get filterAll => 'Tous';
+
+  @override
+  String get filterPromotions => 'Promotions';
+
+  @override
+  String get filterFree => 'Gratuit';
+
+  @override
+  String get filterFamily => 'Famille';
+
+  @override
+  String get filterOutdoor => 'Plein air';
+
+  @override
+  String get welcomeToCeylon => 'Bienvenue à Ceylon';
+
+  @override
+  String get signInToContinue => 'Connectez-vous pour continuer';
+
+  @override
+  String get rememberMe => 'Se souvenir de moi';
+
+  @override
+  String get or => 'OU';
+
+  @override
+  String get signInWithGoogle => 'Se connecter avec Google';
+
+  @override
+  String get dontHaveAccount => 'Vous n\'avez pas de compte ?';
+
+  @override
+  String get createAccount => 'Créer un compte';
+
+  @override
+  String get createYourAccount => 'Créez votre compte';
+
+  @override
+  String get fillDetailsBelow =>
+      'Veuillez remplir les détails ci-dessous pour commencer';
+
+  @override
+  String get personalInformation => 'Informations personnelles';
+
+  @override
+  String get fullName => 'Nom complet';
+
+  @override
+  String get country => 'Pays';
+
+  @override
+  String get preferredLanguage => 'Langue préférée';
+
+  @override
+  String get accountInformation => 'Informations du compte';
+
+  @override
+  String get confirmPassword => 'Confirmer le mot de passe';
+
+  @override
+  String get selectRole => 'Sélectionner un rôle';
+
+  @override
+  String get tourist => 'Touriste';
+
+  @override
+  String get resetPassword => 'Réinitialiser le mot de passe';
+
+  @override
+  String get forgotPasswordQuestion => 'Mot de passe oublié ?';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.';
+
+  @override
+  String get emailAddress => 'Adresse e-mail';
+
+  @override
+  String get sendResetLink => 'Envoyer le lien de réinitialisation';
+
+  @override
+  String get emailSent => 'E-mail envoyé';
+
+  @override
+  String get resetEmailSentMessage =>
+      'Si un compte existe avec cet e-mail, vous recevrez bientôt un lien de réinitialisation du mot de passe. Veuillez vérifier votre boîte de réception et votre dossier spam.';
+
+  @override
+  String get loginSuccessful => 'Connexion réussie';
+
+  @override
+  String get accountCreatedSuccessfully => 'Compte créé avec succès';
 
   @override
   String get saveFavorite => 'Ajouter aux favoris';
 
   @override
-  String get flutterGenL10n => 'flutter gen-l10n';
+  String get removeFavorite => 'Retirer des favoris';
 
   @override
-  String get homeScreenTitle => '🏡 Home Screen — Logged In';
+  String get updated => 'Mis à jour';
 
   @override
-  String get viewFavorites => '❤️ View Favorites';
+  String get myProfile => 'Mon profil';
 
   @override
-  String get hello => 'Hello';
+  String get name => 'Nom';
+
+  @override
+  String get saveChanges => 'Sauvegarder les modifications';
+
+  @override
+  String get noFavoritesYet => 'Pas encore de favoris';
 }

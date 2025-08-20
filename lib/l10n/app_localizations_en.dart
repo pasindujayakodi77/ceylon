@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'CEYLON';
+  String get appName => 'Ceylon';
 
   @override
   String get login => 'Login';
@@ -27,65 +27,624 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot Password?';
 
   @override
-  String get createAccount => 'Create Account';
-
-  @override
-  String get name => 'Full Name';
-
-  @override
-  String get country => 'Country';
-
-  @override
-  String get saveChanges => 'Save Changes';
+  String get continueWithGoogle => 'Continue with Google';
 
   @override
   String get logout => 'Logout';
 
   @override
-  String get myProfile => 'My Profile';
+  String get settings => 'Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get map => 'Map';
+
+  @override
+  String get itinerary => 'Itinerary';
 
   @override
   String get favorites => 'Favorites';
 
   @override
-  String get noFavoritesYet => 'No favorites yet';
+  String get profile => 'Profile';
 
   @override
-  String get tripTitle => 'Trip Title';
+  String get business => 'Business';
 
   @override
-  String get addDay => 'Add Day';
+  String get reviews => 'Reviews';
 
   @override
-  String get saveItinerary => 'Save Itinerary';
+  String get analytics => 'Analytics';
 
   @override
-  String get myTrips => 'My Trips';
+  String get events => 'Events';
 
   @override
-  String get viewAttractionsMap => 'View Attractions Map';
+  String get directions => 'Directions';
 
   @override
-  String get share => 'Share';
+  String get addToItinerary => 'Add to Itinerary';
 
   @override
-  String get getDirections => 'Get Directions';
+  String get addReview => 'Add Review';
 
   @override
-  String get removeFavorite => 'Remove from Favorites';
+  String get submit => 'Submit';
+
+  @override
+  String get emptyStateNoData => 'No data available';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get upcomingThisMonth => 'Upcoming this Month';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterPromotions => 'Promotions';
+
+  @override
+  String get filterFree => 'Free';
+
+  @override
+  String get filterFamily => 'Family';
+
+  @override
+  String get filterOutdoor => 'Outdoor';
+
+  @override
+  String get welcomeToCeylon => 'Welcome to Ceylon';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get or => 'OR';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get createYourAccount => 'Create your account';
+
+  @override
+  String get fillDetailsBelow =>
+      'Please fill in the details below to get started';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get preferredLanguage => 'Preferred Language';
+
+  @override
+  String get accountInformation => 'Account Information';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get selectRole => 'Select Role';
+
+  @override
+  String get tourist => 'Tourist';
+
+  @override
+  String get resetPassword => 'Reset Password';
+
+  @override
+  String get forgotPasswordQuestion => 'Forgot your password?';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Enter your email address and we\'ll send you a link to reset your password.';
+
+  @override
+  String get emailAddress => 'Email address';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get emailSent => 'Email sent';
+
+  @override
+  String get resetEmailSentMessage =>
+      'If an account exists with this email, you\'ll receive a password reset link shortly. Please check your email inbox and spam folder.';
+
+  @override
+  String get loginSuccessful => 'Login successful';
+
+  @override
+  String get accountCreatedSuccessfully => 'Account created successfully';
 
   @override
   String get saveFavorite => 'Save to Favorites';
 
   @override
-  String get flutterGenL10n => 'flutter gen-l10n';
+  String get removeFavorite => 'Remove from Favorites';
 
   @override
-  String get homeScreenTitle => '🏡 Home Screen — Logged In';
+  String get updated => 'updated';
 
   @override
-  String get viewFavorites => '❤️ View Favorites';
+  String get myProfile => 'My Profile';
 
   @override
-  String get hello => 'Hello';
+  String get name => 'Name';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get noFavoritesYet => 'No favorites yet';
+}
+
+/// The translations for English, as used in Australia (`en_AU`).
+class AppLocalizationsEnAu extends AppLocalizationsEn {
+  AppLocalizationsEnAu() : super('en_AU');
+
+  @override
+  String get appName => 'Ceylon';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get signup => 'Sign Up';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get forgotPassword => 'Forgot Password?';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get logout => 'Log Out';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get map => 'Map';
+
+  @override
+  String get itinerary => 'Itinerary';
+
+  @override
+  String get favorites => 'Favourites';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get business => 'Business';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String get analytics => 'Analytics';
+
+  @override
+  String get events => 'Events';
+
+  @override
+  String get directions => 'Directions';
+
+  @override
+  String get addToItinerary => 'Add to Itinerary';
+
+  @override
+  String get addReview => 'Add Review';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get emptyStateNoData => 'No data available';
+
+  @override
+  String get retry => 'Try Again';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get upcomingThisMonth => 'Coming Up This Month';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterPromotions => 'Specials';
+
+  @override
+  String get filterFree => 'Free';
+
+  @override
+  String get filterFamily => 'Family';
+
+  @override
+  String get filterOutdoor => 'Outdoor';
+
+  @override
+  String get welcomeToCeylon => 'G\'day and Welcome to Ceylon';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get or => 'OR';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get createYourAccount => 'Create your account';
+
+  @override
+  String get fillDetailsBelow =>
+      'Please fill in the details below to get started';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get preferredLanguage => 'Preferred Language';
+
+  @override
+  String get accountInformation => 'Account Information';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get selectRole => 'Select Role';
+
+  @override
+  String get tourist => 'Tourist';
+
+  @override
+  String get resetPassword => 'Reset Password';
+
+  @override
+  String get forgotPasswordQuestion => 'Forgot your password?';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Enter your email address and we\'ll send you a link to reset your password.';
+
+  @override
+  String get emailAddress => 'Email address';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get emailSent => 'Email sent';
+
+  @override
+  String get resetEmailSentMessage =>
+      'If an account exists with this email, you\'ll receive a password reset link shortly. Please check your email inbox and spam folder.';
+
+  @override
+  String get loginSuccessful => 'Beauty! You\'re logged in';
+
+  @override
+  String get accountCreatedSuccessfully => 'Account created successfully';
+
+  @override
+  String get saveFavorite => 'Save to Favourites';
+
+  @override
+  String get removeFavorite => 'Remove from Favourites';
+
+  @override
+  String get updated => 'updated';
+
+  @override
+  String get myProfile => 'My Profile';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get noFavoritesYet => 'No favourites yet, mate';
+}
+
+/// The translations for English, as used in the United Kingdom (`en_GB`).
+class AppLocalizationsEnGb extends AppLocalizationsEn {
+  AppLocalizationsEnGb() : super('en_GB');
+
+  @override
+  String get appName => 'Ceylon';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get signup => 'Sign Up';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get forgotPassword => 'Forgotten Password?';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get map => 'Map';
+
+  @override
+  String get itinerary => 'Itinerary';
+
+  @override
+  String get favorites => 'Favourites';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get business => 'Business';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String get analytics => 'Analytics';
+
+  @override
+  String get events => 'Events';
+
+  @override
+  String get directions => 'Directions';
+
+  @override
+  String get addToItinerary => 'Add to Itinerary';
+
+  @override
+  String get addReview => 'Add Review';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get emptyStateNoData => 'No data available';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get upcomingThisMonth => 'Upcoming this Month';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterPromotions => 'Promotions';
+
+  @override
+  String get filterFree => 'Free';
+
+  @override
+  String get filterFamily => 'Family';
+
+  @override
+  String get filterOutdoor => 'Outdoor';
+
+  @override
+  String get welcomeToCeylon => 'Welcome to Ceylon';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get or => 'OR';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get createYourAccount => 'Create your account';
+
+  @override
+  String get fillDetailsBelow =>
+      'Please fill in the details below to get started';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get preferredLanguage => 'Preferred Language';
+
+  @override
+  String get accountInformation => 'Account Information';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get selectRole => 'Select Role';
+
+  @override
+  String get tourist => 'Tourist';
+
+  @override
+  String get resetPassword => 'Reset Password';
+
+  @override
+  String get forgotPasswordQuestion => 'Forgotten your password?';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Enter your email address and we\'ll send you a link to reset your password.';
+
+  @override
+  String get emailAddress => 'Email address';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get emailSent => 'Email sent';
+
+  @override
+  String get resetEmailSentMessage =>
+      'If an account exists with this email, you\'ll receive a password reset link shortly. Please check your email inbox and spam folder.';
+
+  @override
+  String get loginSuccessful => 'Login successful';
+
+  @override
+  String get accountCreatedSuccessfully => 'Account created successfully';
+
+  @override
+  String get saveFavorite => 'Save to Favourites';
+
+  @override
+  String get removeFavorite => 'Remove from Favourites';
+
+  @override
+  String get updated => 'updated';
+
+  @override
+  String get myProfile => 'My Profile';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get noFavoritesYet => 'No favourites yet';
 }

@@ -6,18 +6,39 @@ import 'package:flutter/material.dart';
 class ProfileFormFields extends StatelessWidget {
   final TextEditingController nameController;
   final String selectedCountry;
-  final String selectedLang;
-  final Function(String) onLanguageChanged;
+  final String? selectedLang;
   final Function() onCountryPickerTap;
 
   const ProfileFormFields({
     Key? key,
     required this.nameController,
     required this.selectedCountry,
-    required this.selectedLang,
-    required this.onLanguageChanged,
+    this.selectedLang,
     required this.onCountryPickerTap,
   }) : super(key: key);
+
+  String _getLanguageDisplay(String code) {
+    switch (code) {
+      case 'en':
+        return 'English (US)';
+      case 'hi':
+        return 'हिंदी (Hindi)';
+      case 'dv':
+        return 'ދިވެހި (Dhivehi)';
+      case 'ru':
+        return 'Русский (Russian)';
+      case 'de':
+        return 'Deutsch (German)';
+      case 'fr':
+        return 'Français (French)';
+      case 'si':
+        return 'සිංහල (Sinhala)';
+      case 'nl':
+        return 'Nederlands (Dutch)';
+      default:
+        return code;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,24 +82,19 @@ class ProfileFormFields extends StatelessWidget {
         ),
         const SizedBox(height: CeylonTokens.spacing16),
 
-        // Language dropdown
-        DropdownButtonFormField<String>(
-          value: selectedLang,
+        // Language field (read-only)
+        TextField(
+          controller: TextEditingController(
+            text: selectedLang != null
+                ? _getLanguageDisplay(selectedLang!)
+                : '',
+          ),
+          enabled: false,
           decoration: InputDecoration(
             labelText: 'Preferred Language',
             prefixIcon: const Icon(Icons.language),
             filled: true,
           ),
-          items: const [
-            DropdownMenuItem(value: 'en', child: Text("English")),
-            DropdownMenuItem(value: 'hi', child: Text("हिंदी")),
-            DropdownMenuItem(value: 'dv', child: Text("ދިވެހި")),
-            DropdownMenuItem(value: 'ru', child: Text("Русский")),
-            DropdownMenuItem(value: 'de', child: Text("Deutsch")),
-            DropdownMenuItem(value: 'fr', child: Text("Français")),
-            DropdownMenuItem(value: 'nl', child: Text("Nederlands")),
-          ],
-          onChanged: (val) => onLanguageChanged(val!),
         ),
       ],
     );

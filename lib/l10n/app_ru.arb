@@ -1,129 +1,78 @@
-
 {
   "@@locale": "ru",
-  "appTitle": "Цейлон",
-  "@appTitle": {
-    "description": "The title of the application, shown in the app bar and launcher.",
-    "type": "text"
+  "appName": "Цейлон",
+  "@appName": {
+    "description": "The name of the application"
   },
   "login": "Войти",
   "@login": {
-    "description": "Label for the login button or screen.",
-    "type": "text"
+    "description": "Label for the login button or screen"
   },
-  "signup": "Зарегистрироваться",
-  "@signup": {
-    "description": "Label for the signup button or screen.",
-    "type": "text"
-  },
-  "noFavoritesYet": "Нет избранного",
-  "@noFavoritesYet": {
-    "description": "Message shown when the user has no favorites yet.",
-    "type": "text"
-  },
-  "email": "Электронная почта",
-  "@email": {
-    "description": "Label for the email input field.",
-    "type": "text"
-  },
+  "signup": "Регистрация",
+  "email": "Эл. почта",
   "password": "Пароль",
-  "@password": {
-    "description": "Label for the password input field.",
-    "type": "text"
-  },
   "forgotPassword": "Забыли пароль?",
-  "@forgotPassword": {
-    "description": "Link or button for forgotten password recovery.",
-    "type": "text"
-  },
-  "createAccount": "Создать аккаунт",
-  "@createAccount": {
-    "description": "Button or link to create a new account.",
-    "type": "text"
-  },
-  "name": "Полное имя",
-  "@name": {
-    "description": "Label for the name input field.",
-    "type": "text"
-  },
-  "country": "Страна",
-  "@country": {
-    "description": "Label for the country input field or selector.",
-    "type": "text"
-  },
-  "saveChanges": "Сохранить изменения",
-  "@saveChanges": {
-    "description": "Button to save changes made by the user.",
-    "type": "text"
-  },
+  "continueWithGoogle": "Продолжить с Google",
   "logout": "Выйти",
-  "@logout": {
-    "description": "Button or action to log out the user.",
-    "type": "text"
-  },
-  "myProfile": "Мой профиль",
-  "@myProfile": {
-    "description": "Label for the user's profile section.",
-    "type": "text"
-  },
+  "settings": "Настройки",
+  "language": "Язык",
+  "theme": "Тема",
+  "darkMode": "Тёмный режим",
+  "save": "Сохранить",
+  "cancel": "Отмена",
+  "home": "Главная",
+  "map": "Карта",
+  "itinerary": "Маршрут",
   "favorites": "Избранное",
-  "@favorites": {
-    "description": "Label for the favorites section or button.",
-    "type": "text"
-  },
-  "noFavorites": "Нет избранного",
-  "@noFavorites": {
-    "description": "Message shown when there are no favorites.",
-    "type": "text"
-  },
-  "tripTitle": "Название поездки",
-  "@tripTitle": {
-    "description": "Label for the trip title field.",
-    "type": "text"
-  },
-  "addDay": "Добавить день",
-  "@addDay": {
-    "description": "Button to add a new day to the itinerary.",
-    "type": "text"
-  },
-  "saveItinerary": "Сохранить маршрут",
-  "@saveItinerary": {
-    "description": "Button to save the itinerary.",
-    "type": "text"
-  },
-  "myTrips": "Мои поездки",
-  "@myTrips": {
-    "description": "Label for the user's trips section.",
-    "type": "text"
-  },
-  "viewAttractionsMap": "Посмотреть карту достопримечательностей",
-  "@viewAttractionsMap": {
-    "description": "Button to view the attractions map.",
-    "type": "text"
-  },
-  "share": "Поделиться",
-  "@share": {
-    "description": "Button to share content.",
-    "type": "text"
-  },
-  "getDirections": "Получить маршрут",
-  "@getDirections": {
-    "description": "Button to get directions.",
-    "type": "text"
-  },
-  "removeFavorite": "Удалить из избранного",
-  "@removeFavorite": {
-    "description": "Button to remove an item from favorites.",
-    "type": "text"
-  },
-  "saveFavorite": "Добавить в избранное"
-  ,"@saveFavorite": {
-    "description": "Button to save an item as favorite.",
-    "type": "text"
-  }
-  ,"flutterGenL10n": "flutter gen-l10n"
-  ,"@flutterGenL10n": {
-    "description": "Technical string for flutter localization generation.",
-    "type": "text"
-  }
+  "profile": "Профиль",
+  "business": "Бизнес",
+  "reviews": "Отзывы",
+  "analytics": "Аналитика",
+  "events": "События",
+  "directions": "Направления",
+  "addToItinerary": "Добавить в маршрут",
+  "addReview": "Добавить отзыв",
+  "submit": "Отправить",
+  "emptyStateNoData": "Нет данных",
+  "retry": "Повторить",
+  "today": "Сегодня",
+  "upcomingThisMonth": "Предстоящие в этом месяце",
+  "filterAll": "Все",
+  "filterPromotions": "Акции",
+  "filterFree": "Бесплатно",
+  "filterFamily": "Для семьи",
+  "filterOutdoor": "На открытом воздухе",
+  "welcomeToCeylon": "Добро пожаловать в Цейлон",
+  "signInToContinue": "Войдите, чтобы продолжить",
+  "rememberMe": "Запомнить меня",
+  "or": "ИЛИ",
+  "signInWithGoogle": "Войти через Google",
+  "dontHaveAccount": "Нет аккаунта?",
+  "createAccount": "Создать аккаунт",
+  "createYourAccount": "Создайте свой аккаунт",
+  "fillDetailsBelow": "Пожалуйста, заполните данные ниже, чтобы начать",
+  "personalInformation": "Личная информация",
+  "fullName": "Полное имя",
+  "country": "Страна",
+  "preferredLanguage": "Предпочитаемый язык",
+  "accountInformation": "Информация об аккаунте",
+  "confirmPassword": "Подтвердите пароль",
+  "selectRole": "Выберите роль",
+  "tourist": "Турист",
+  "resetPassword": "Сбросить пароль",
+  "forgotPasswordQuestion": "Забыли пароль?",
+  "resetPasswordInstructions": "Введите ваш адрес электронной почты, и мы отправим вам ссылку для сброса пароля.",
+  "emailAddress": "Адрес электронной почты",
+  "sendResetLink": "Отправить ссылку для сброса",
+  "emailSent": "Письмо отправлено",
+  "resetEmailSentMessage": "Если аккаунт с этим адресом электронной почты существует, вы вскоре получите ссылку для сброса пароля. Пожалуйста, проверьте вашу электронную почту и папку со спамом.",
+  "loginSuccessful": "Успешный вход",
+  "accountCreatedSuccessfully": "Аккаунт успешно создан",
+  "saveFavorite": "Сохранить в Избранное",
+  "removeFavorite": "Удалить из Избранного",
+  "updated": "обновлено",
+  "myProfile": "Мой профиль",
+  "name": "Имя",
+  "saveChanges": "Сохранить изменения",
+  "noFavoritesYet": "Нет избранного"
 }

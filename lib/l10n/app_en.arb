@@ -1,138 +1,279 @@
 {
   "@@locale": "en",
-  "appTitle": "CEYLON",
-  "@appTitle": {
-    "description": "The title of the application, shown in the app bar and launcher.",
-    "type": "text"
+  "appName": "Ceylon",
+  "@appName": {
+    "description": "The name of the application"
   },
   "login": "Login",
   "@login": {
-    "description": "Label for the login button or screen.",
-    "type": "text"
+    "description": "Label for the login button or screen"
   },
   "signup": "Sign Up",
   "@signup": {
-    "description": "Label for the signup button or screen.",
-    "type": "text"
+    "description": "Label for the signup button or screen"
   },
   "email": "Email",
   "@email": {
-    "description": "Label for the email input field.",
-    "type": "text"
+    "description": "Label for the email input field"
   },
   "password": "Password",
   "@password": {
-    "description": "Label for the password input field.",
-    "type": "text"
+    "description": "Label for the password input field"
   },
   "forgotPassword": "Forgot Password?",
   "@forgotPassword": {
-    "description": "Link or button for forgotten password recovery.",
-    "type": "text"
+    "description": "Link or button for forgotten password recovery"
   },
-  "createAccount": "Create Account",
-  "@createAccount": {
-    "description": "Button or link to create a new account.",
-    "type": "text"
-  },
-  "name": "Full Name",
-  "@name": {
-    "description": "Label for the name input field.",
-    "type": "text"
-  },
-  "country": "Country",
-  "@country": {
-    "description": "Label for the country input field or selector.",
-    "type": "text"
-  },
-  "saveChanges": "Save Changes",
-  "@saveChanges": {
-    "description": "Button to save changes made by the user.",
-    "type": "text"
+  "continueWithGoogle": "Continue with Google",
+  "@continueWithGoogle": {
+    "description": "Button for signing in with Google"
   },
   "logout": "Logout",
   "@logout": {
-    "description": "Button or action to log out the user.",
-    "type": "text"
+    "description": "Button or action to log out the user"
   },
-  "myProfile": "My Profile",
-  "@myProfile": {
-    "description": "Label for the user's profile section.",
-    "type": "text"
+  "settings": "Settings",
+  "@settings": {
+    "description": "Label for settings screen or section"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Label for language selection option"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Label for theme selection option"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Label for dark mode toggle"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Label for save button"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Label for cancel button"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Label for home screen or tab"
+  },
+  "map": "Map",
+  "@map": {
+    "description": "Label for map screen or tab"
+  },
+  "itinerary": "Itinerary",
+  "@itinerary": {
+    "description": "Label for itinerary screen or section"
   },
   "favorites": "Favorites",
   "@favorites": {
-    "description": "Label for the favorites section or button.",
-    "type": "text"
+    "description": "Label for favorites screen or section"
   },
-  "noFavoritesYet": "No favorites yet",
-  "@noFavoritesYet": {
-    "description": "Message shown when the user has no favorites yet.",
-    "type": "text"
+  "profile": "Profile",
+  "@profile": {
+    "description": "Label for user profile screen or section"
   },
-  "tripTitle": "Trip Title",
-  "@tripTitle": {
-    "description": "Label for the trip title field.",
-    "type": "text"
+  "business": "Business",
+  "@business": {
+    "description": "Label for business section or type"
   },
-  "addDay": "Add Day",
-  "@addDay": {
-    "description": "Button to add a new day to the itinerary.",
-    "type": "text"
+  "reviews": "Reviews",
+  "@reviews": {
+    "description": "Label for reviews section"
   },
-  "saveItinerary": "Save Itinerary",
-  "@saveItinerary": {
-    "description": "Button to save the itinerary.",
-    "type": "text"
+  "analytics": "Analytics",
+  "@analytics": {
+    "description": "Label for analytics section"
   },
-  "myTrips": "My Trips",
-  "@myTrips": {
-    "description": "Label for the user's trips section.",
-    "type": "text"
+  "events": "Events",
+  "@events": {
+    "description": "Label for events section or calendar"
   },
-  "viewAttractionsMap": "View Attractions Map",
-  "@viewAttractionsMap": {
-    "description": "Button to view the attractions map.",
-    "type": "text"
+  "directions": "Directions",
+  "@directions": {
+    "description": "Label for directions or navigation"
   },
-  "share": "Share",
-  "@share": {
-    "description": "Button to share content.",
-    "type": "text"
+  "addToItinerary": "Add to Itinerary",
+  "@addToItinerary": {
+    "description": "Button to add item to itinerary"
   },
-  "getDirections": "Get Directions",
-  "@getDirections": {
-    "description": "Button to get directions.",
-    "type": "text"
+  "addReview": "Add Review",
+  "@addReview": {
+    "description": "Button to add a review"
   },
-  "removeFavorite": "Remove from Favorites",
-  "@removeFavorite": {
-    "description": "Button to remove an item from favorites.",
-    "type": "text"
+  "submit": "Submit",
+  "@submit": {
+    "description": "Label for submit button"
+  },
+  "emptyStateNoData": "No data available",
+  "@emptyStateNoData": {
+    "description": "Message shown when no data is available"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Label for retry button"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Label for current day"
+  },
+  "upcomingThisMonth": "Upcoming this Month",
+  "@upcomingThisMonth": {
+    "description": "Label for events upcoming in the current month"
+  },
+  "filterAll": "All",
+  "@filterAll": {
+    "description": "Filter option to show all items"
+  },
+  "filterPromotions": "Promotions",
+  "@filterPromotions": {
+    "description": "Filter option to show promotions"
+  },
+  "filterFree": "Free",
+  "@filterFree": {
+    "description": "Filter option to show free items"
+  },
+  "filterFamily": "Family",
+  "@filterFamily": {
+    "description": "Filter option to show family-friendly items"
+  },
+  "filterOutdoor": "Outdoor",
+  "@filterOutdoor": {
+    "description": "Filter option to show outdoor activities"
+  },
+  "welcomeToCeylon": "Welcome to Ceylon",
+  "@welcomeToCeylon": {
+    "description": "Welcome message on login screen"
+  },
+  "signInToContinue": "Sign in to continue",
+  "@signInToContinue": {
+    "description": "Subtitle on login screen"
+  },
+  "rememberMe": "Remember me",
+  "@rememberMe": {
+    "description": "Label for remember me checkbox"
+  },
+  "or": "OR",
+  "@or": {
+    "description": "Divider text between login options"
+  },
+  "signInWithGoogle": "Sign in with Google",
+  "@signInWithGoogle": {
+    "description": "Label for Google sign-in button"
+  },
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Text prompting user to sign up"
+  },
+  "createAccount": "Create Account",
+  "@createAccount": {
+    "description": "Label for create account button"
+  },
+  "createYourAccount": "Create your account",
+  "@createYourAccount": {
+    "description": "Header text on signup screen"
+  },
+  "fillDetailsBelow": "Please fill in the details below to get started",
+  "@fillDetailsBelow": {
+    "description": "Instruction text on signup screen"
+  },
+  "personalInformation": "Personal Information",
+  "@personalInformation": {
+    "description": "Section title for personal information"
+  },
+  "fullName": "Full Name",
+  "@fullName": {
+    "description": "Label for full name input field"
+  },
+  "country": "Country",
+  "@country": {
+    "description": "Label for country input field"
+  },
+  "preferredLanguage": "Preferred Language",
+  "@preferredLanguage": {
+    "description": "Label for language selection dropdown"
+  },
+  "accountInformation": "Account Information",
+  "@accountInformation": {
+    "description": "Section title for account information"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Label for password confirmation field"
+  },
+  "selectRole": "Select Role",
+  "@selectRole": {
+    "description": "Label for role selection dropdown"
+  },
+  "tourist": "Tourist",
+  "@tourist": {
+    "description": "Label for tourist role option"
+  },
+  "resetPassword": "Reset Password",
+  "@resetPassword": {
+    "description": "Title for password reset screen"
+  },
+  "forgotPasswordQuestion": "Forgot your password?",
+  "@forgotPasswordQuestion": {
+    "description": "Header text on forgot password screen"
+  },
+  "resetPasswordInstructions": "Enter your email address and we'll send you a link to reset your password.",
+  "@resetPasswordInstructions": {
+    "description": "Instructions for password reset"
+  },
+  "emailAddress": "Email address",
+  "@emailAddress": {
+    "description": "Label for email address input"
+  },
+  "sendResetLink": "Send Reset Link",
+  "@sendResetLink": {
+    "description": "Button text for sending password reset link"
+  },
+  "emailSent": "Email sent",
+  "@emailSent": {
+    "description": "Confirmation message after sending reset email"
+  },
+  "resetEmailSentMessage": "If an account exists with this email, you'll receive a password reset link shortly. Please check your email inbox and spam folder.",
+  "@resetEmailSentMessage": {
+    "description": "Detailed message after sending reset email"
+  },
+  "loginSuccessful": "Login successful",
+  "@loginSuccessful": {
+    "description": "Success message after login"
+  },
+  "accountCreatedSuccessfully": "Account created successfully",
+  "@accountCreatedSuccessfully": {
+    "description": "Success message after account creation"
   },
   "saveFavorite": "Save to Favorites",
   "@saveFavorite": {
-    "description": "Button to save an item as favorite.",
-    "type": "text"
+    "description": "Button text to save an item to favorites"
   },
-  "flutterGenL10n": "flutter gen-l10n",
-  "@flutterGenL10n": {
-    "description": "Technical string for flutter localization generation.",
-    "type": "text"
+  "removeFavorite": "Remove from Favorites",
+  "@removeFavorite": {
+    "description": "Button text to remove an item from favorites"
   },
-  "homeScreenTitle": "🏡 Home Screen — Logged In",
-  "@homeScreenTitle": {
-    "description": "Title for the home screen when the user is logged in.",
-    "type": "text"
+  "updated": "updated",
+  "@updated": {
+    "description": "Status message after an item is updated"
   },
-  "viewFavorites": "❤️ View Favorites",
-  "@viewFavorites": {
-    "description": "Button label to view favorites.",
-    "type": "text"
+  "myProfile": "My Profile",
+  "@myProfile": {
+    "description": "Title for the profile screen"
   },
-  "hello": "Hello",
-  "@hello": {
-    "description": "A greeting message.",
-    "type": "text"
+  "name": "Name",
+  "@name": {
+    "description": "Label for name input field"
+  },
+  "saveChanges": "Save Changes",
+  "@saveChanges": {
+    "description": "Button text for saving changes"
+  },
+  "noFavoritesYet": "No favorites yet",
+  "@noFavoritesYet": {
+    "description": "Message shown when favorites list is empty"
   }
 }

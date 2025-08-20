@@ -1,129 +1,78 @@
-
 {
   "@@locale": "fr",
-  "appTitle": "Ceylan",
-  "@appTitle": {
-    "description": "The title of the application, shown in the app bar and launcher.",
-    "type": "text"
+  "appName": "Ceylon",
+  "@appName": {
+    "description": "The name of the application"
   },
-  "login": "Se connecter",
+  "login": "Connexion",
   "@login": {
-    "description": "Label for the login button or screen.",
-    "type": "text"
+    "description": "Label for the login button or screen"
   },
   "signup": "S'inscrire",
-  "@signup": {
-    "description": "Label for the signup button or screen.",
-    "type": "text"
-  },
-  "noFavoritesYet": "Pas encore de favoris",
-  "@noFavoritesYet": {
-    "description": "Message shown when the user has no favorites yet.",
-    "type": "text"
-  },
   "email": "E-mail",
-  "@email": {
-    "description": "Label for the email input field.",
-    "type": "text"
-  },
   "password": "Mot de passe",
-  "@password": {
-    "description": "Label for the password input field.",
-    "type": "text"
-  },
   "forgotPassword": "Mot de passe oublié ?",
-  "@forgotPassword": {
-    "description": "Link or button for forgotten password recovery.",
-    "type": "text"
-  },
-  "createAccount": "Créer un compte",
-  "@createAccount": {
-    "description": "Button or link to create a new account.",
-    "type": "text"
-  },
-  "name": "Nom complet",
-  "@name": {
-    "description": "Label for the name input field.",
-    "type": "text"
-  },
-  "country": "Pays",
-  "@country": {
-    "description": "Label for the country input field or selector.",
-    "type": "text"
-  },
-  "saveChanges": "Enregistrer les modifications",
-  "@saveChanges": {
-    "description": "Button to save changes made by the user.",
-    "type": "text"
-  },
-  "logout": "Se déconnecter",
-  "@logout": {
-    "description": "Button or action to log out the user.",
-    "type": "text"
-  },
-  "myProfile": "Mon profil",
-  "@myProfile": {
-    "description": "Label for the user's profile section.",
-    "type": "text"
-  },
+  "continueWithGoogle": "Continuer avec Google",
+  "logout": "Déconnexion",
+  "settings": "Paramètres",
+  "language": "Langue",
+  "theme": "Thème",
+  "darkMode": "Mode sombre",
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "home": "Accueil",
+  "map": "Carte",
+  "itinerary": "Itinéraire",
   "favorites": "Favoris",
-  "@favorites": {
-    "description": "Label for the favorites section or button.",
-    "type": "text"
-  },
-  "noFavorites": "Aucun favori",
-  "@noFavorites": {
-    "description": "Message shown when there are no favorites.",
-    "type": "text"
-  },
-  "tripTitle": "Titre du voyage",
-  "@tripTitle": {
-    "description": "Label for the trip title field.",
-    "type": "text"
-  },
-  "addDay": "Ajouter un jour",
-  "@addDay": {
-    "description": "Button to add a new day to the itinerary.",
-    "type": "text"
-  },
-  "saveItinerary": "Enregistrer l’itinéraire",
-  "@saveItinerary": {
-    "description": "Button to save the itinerary.",
-    "type": "text"
-  },
-  "myTrips": "Mes voyages",
-  "@myTrips": {
-    "description": "Label for the user's trips section.",
-    "type": "text"
-  },
-  "viewAttractionsMap": "Voir la carte des attractions",
-  "@viewAttractionsMap": {
-    "description": "Button to view the attractions map.",
-    "type": "text"
-  },
-  "share": "Partager",
-  "@share": {
-    "description": "Button to share content.",
-    "type": "text"
-  },
-  "getDirections": "Obtenir l’itinéraire",
-  "@getDirections": {
-    "description": "Button to get directions.",
-    "type": "text"
-  },
+  "profile": "Profil",
+  "business": "Entreprise",
+  "reviews": "Avis",
+  "analytics": "Analytique",
+  "events": "Événements",
+  "directions": "Directions",
+  "addToItinerary": "Ajouter à l'itinéraire",
+  "addReview": "Ajouter un avis",
+  "submit": "Soumettre",
+  "emptyStateNoData": "Aucune donnée disponible",
+  "retry": "Réessayer",
+  "today": "Aujourd'hui",
+  "upcomingThisMonth": "À venir ce mois-ci",
+  "filterAll": "Tous",
+  "filterPromotions": "Promotions",
+  "filterFree": "Gratuit",
+  "filterFamily": "Famille",
+  "filterOutdoor": "Plein air",
+  "updated": "Mis à jour",
+  "welcomeToCeylon": "Bienvenue à Ceylon",
+  "signInToContinue": "Connectez-vous pour continuer",
+  "rememberMe": "Se souvenir de moi",
+  "or": "OU",
+  "signInWithGoogle": "Se connecter avec Google",
+  "dontHaveAccount": "Vous n'avez pas de compte ?",
+  "createAccount": "Créer un compte",
+  "createYourAccount": "Créez votre compte",
+  "fillDetailsBelow": "Veuillez remplir les détails ci-dessous pour commencer",
+  "personalInformation": "Informations personnelles",
+  "fullName": "Nom complet",
+  "country": "Pays",
+  "preferredLanguage": "Langue préférée",
+  "accountInformation": "Informations du compte",
+  "confirmPassword": "Confirmer le mot de passe",
+  "selectRole": "Sélectionner un rôle",
+  "tourist": "Touriste",
+  "resetPassword": "Réinitialiser le mot de passe",
+  "forgotPasswordQuestion": "Mot de passe oublié ?",
+  "resetPasswordInstructions": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+  "emailAddress": "Adresse e-mail",
+  "sendResetLink": "Envoyer le lien de réinitialisation",
+  "emailSent": "E-mail envoyé",
+  "resetEmailSentMessage": "Si un compte existe avec cet e-mail, vous recevrez bientôt un lien de réinitialisation du mot de passe. Veuillez vérifier votre boîte de réception et votre dossier spam.",
+  "loginSuccessful": "Connexion réussie",
+  "accountCreatedSuccessfully": "Compte créé avec succès",
+  "saveFavorite": "Ajouter aux favoris",
   "removeFavorite": "Retirer des favoris",
-  "@removeFavorite": {
-    "description": "Button to remove an item from favorites.",
-    "type": "text"
-  },
-  "saveFavorite": "Ajouter aux favoris"
-  ,"@saveFavorite": {
-    "description": "Button to save an item as favorite.",
-    "type": "text"
-  }
-  ,"flutterGenL10n": "flutter gen-l10n"
-  ,"@flutterGenL10n": {
-    "description": "Technical string for flutter localization generation.",
-    "type": "text"
-  }
+  "myProfile": "Mon profil",
+  "name": "Nom",
+  "saveChanges": "Sauvegarder les modifications",
+  "noFavoritesYet": "Pas encore de favoris"
 }

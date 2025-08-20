@@ -9,16 +9,16 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'Цейлон';
+  String get appName => 'Цейлон';
 
   @override
   String get login => 'Войти';
 
   @override
-  String get signup => 'Зарегистрироваться';
+  String get signup => 'Регистрация';
 
   @override
-  String get email => 'Электронная почта';
+  String get email => 'Эл. почта';
 
   @override
   String get password => 'Пароль';
@@ -27,65 +27,194 @@ class AppLocalizationsRu extends AppLocalizations {
   String get forgotPassword => 'Забыли пароль?';
 
   @override
-  String get createAccount => 'Создать аккаунт';
-
-  @override
-  String get name => 'Полное имя';
-
-  @override
-  String get country => 'Страна';
-
-  @override
-  String get saveChanges => 'Сохранить изменения';
+  String get continueWithGoogle => 'Продолжить с Google';
 
   @override
   String get logout => 'Выйти';
 
   @override
-  String get myProfile => 'Мой профиль';
+  String get settings => 'Настройки';
+
+  @override
+  String get language => 'Язык';
+
+  @override
+  String get theme => 'Тема';
+
+  @override
+  String get darkMode => 'Тёмный режим';
+
+  @override
+  String get save => 'Сохранить';
+
+  @override
+  String get cancel => 'Отмена';
+
+  @override
+  String get home => 'Главная';
+
+  @override
+  String get map => 'Карта';
+
+  @override
+  String get itinerary => 'Маршрут';
 
   @override
   String get favorites => 'Избранное';
 
   @override
+  String get profile => 'Профиль';
+
+  @override
+  String get business => 'Бизнес';
+
+  @override
+  String get reviews => 'Отзывы';
+
+  @override
+  String get analytics => 'Аналитика';
+
+  @override
+  String get events => 'События';
+
+  @override
+  String get directions => 'Направления';
+
+  @override
+  String get addToItinerary => 'Добавить в маршрут';
+
+  @override
+  String get addReview => 'Добавить отзыв';
+
+  @override
+  String get submit => 'Отправить';
+
+  @override
+  String get emptyStateNoData => 'Нет данных';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get today => 'Сегодня';
+
+  @override
+  String get upcomingThisMonth => 'Предстоящие в этом месяце';
+
+  @override
+  String get filterAll => 'Все';
+
+  @override
+  String get filterPromotions => 'Акции';
+
+  @override
+  String get filterFree => 'Бесплатно';
+
+  @override
+  String get filterFamily => 'Для семьи';
+
+  @override
+  String get filterOutdoor => 'На открытом воздухе';
+
+  @override
+  String get welcomeToCeylon => 'Добро пожаловать в Цейлон';
+
+  @override
+  String get signInToContinue => 'Войдите, чтобы продолжить';
+
+  @override
+  String get rememberMe => 'Запомнить меня';
+
+  @override
+  String get or => 'ИЛИ';
+
+  @override
+  String get signInWithGoogle => 'Войти через Google';
+
+  @override
+  String get dontHaveAccount => 'Нет аккаунта?';
+
+  @override
+  String get createAccount => 'Создать аккаунт';
+
+  @override
+  String get createYourAccount => 'Создайте свой аккаунт';
+
+  @override
+  String get fillDetailsBelow =>
+      'Пожалуйста, заполните данные ниже, чтобы начать';
+
+  @override
+  String get personalInformation => 'Личная информация';
+
+  @override
+  String get fullName => 'Полное имя';
+
+  @override
+  String get country => 'Страна';
+
+  @override
+  String get preferredLanguage => 'Предпочитаемый язык';
+
+  @override
+  String get accountInformation => 'Информация об аккаунте';
+
+  @override
+  String get confirmPassword => 'Подтвердите пароль';
+
+  @override
+  String get selectRole => 'Выберите роль';
+
+  @override
+  String get tourist => 'Турист';
+
+  @override
+  String get resetPassword => 'Сбросить пароль';
+
+  @override
+  String get forgotPasswordQuestion => 'Забыли пароль?';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Введите ваш адрес электронной почты, и мы отправим вам ссылку для сброса пароля.';
+
+  @override
+  String get emailAddress => 'Адрес электронной почты';
+
+  @override
+  String get sendResetLink => 'Отправить ссылку для сброса';
+
+  @override
+  String get emailSent => 'Письмо отправлено';
+
+  @override
+  String get resetEmailSentMessage =>
+      'Если аккаунт с этим адресом электронной почты существует, вы вскоре получите ссылку для сброса пароля. Пожалуйста, проверьте вашу электронную почту и папку со спамом.';
+
+  @override
+  String get loginSuccessful => 'Успешный вход';
+
+  @override
+  String get accountCreatedSuccessfully => 'Аккаунт успешно создан';
+
+  @override
+  String get saveFavorite => 'Сохранить в Избранное';
+
+  @override
+  String get removeFavorite => 'Удалить из Избранного';
+
+  @override
+  String get updated => 'обновлено';
+
+  @override
+  String get myProfile => 'Мой профиль';
+
+  @override
+  String get name => 'Имя';
+
+  @override
+  String get saveChanges => 'Сохранить изменения';
+
+  @override
   String get noFavoritesYet => 'Нет избранного';
-
-  @override
-  String get tripTitle => 'Название поездки';
-
-  @override
-  String get addDay => 'Добавить день';
-
-  @override
-  String get saveItinerary => 'Сохранить маршрут';
-
-  @override
-  String get myTrips => 'Мои поездки';
-
-  @override
-  String get viewAttractionsMap => 'Посмотреть карту достопримечательностей';
-
-  @override
-  String get share => 'Поделиться';
-
-  @override
-  String get getDirections => 'Получить маршрут';
-
-  @override
-  String get removeFavorite => 'Удалить из избранного';
-
-  @override
-  String get saveFavorite => 'Добавить в избранное';
-
-  @override
-  String get flutterGenL10n => 'flutter gen-l10n';
-
-  @override
-  String get homeScreenTitle => '🏡 Home Screen — Logged In';
-
-  @override
-  String get viewFavorites => '❤️ View Favorites';
-
-  @override
-  String get hello => 'Hello';
 }

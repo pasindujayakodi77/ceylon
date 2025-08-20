@@ -1,13 +1,13 @@
+import 'package:ceylon/core/l10n/locale_controller.dart';
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/design_system/widgets/ceylon_app_bar.dart';
 import 'package:ceylon/design_system/widgets/ceylon_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ceylon/features/auth/presentation/screens/role_router.dart';
-import 'package:ceylon/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
@@ -126,7 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: colorScheme.background,
       appBar: CeylonAppBar.medium(
-        title: AppLocalizations.of(context)!.signup,
+        title: AppLocalizations.of(context).signup,
         centerTitle: false,
         elevation: 0,
       ),
@@ -144,17 +144,18 @@ class _SignupScreenState extends State<SignupScreen> {
           if (state is AuthSuccess) {
             () async {
               final uid = FirebaseAuth.instance.currentUser!.uid;
-              final doc = await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .get();
-              final data = doc.data();
-              final langCode = data?['language'] ?? 'en';
-              MyApp.setLocale(context, Locale(langCode));
+              // Load language preference from Firestore
+              final localeController = Provider.of<LocaleController>(
+                context,
+                listen: false,
+              );
+              await localeController.loadFromFirestore(uid);
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text("Account created successfully"),
+                  content: Text(
+                    AppLocalizations.of(context).accountCreatedSuccessfully,
+                  ),
                   backgroundColor: colorScheme.primary,
                   behavior: SnackBarBehavior.floating,
                 ),
@@ -182,7 +183,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "Create your account",
+                      AppLocalizations.of(context).createYourAccount,
                       style: textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onBackground,
@@ -194,7 +195,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: CeylonTokens.spacing8),
 
                     Text(
-                      "Please fill in the details below to get started",
+                      AppLocalizations.of(context).fillDetailsBelow,
                       style: textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -208,7 +209,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     // Personal Information
                     _buildSectionTitle(
                       context,
-                      "Personal Information",
+                      AppLocalizations.of(context).personalInformation,
                     ).animate().fadeIn(
                       duration: const Duration(milliseconds: 600),
                       delay: const Duration(milliseconds: 200),
@@ -220,7 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: _name,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.name,
+                        labelText: AppLocalizations.of(context).fullName,
                         prefixIcon: Icon(
                           Icons.person_outline,
                           color: colorScheme.primary,
@@ -245,7 +246,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: _country,
                       decoration: InputDecoration(
-                        labelText: 'Country',
+                        labelText: AppLocalizations.of(context).country,
                         prefixIcon: Icon(
                           Icons.public,
                           color: colorScheme.primary,
@@ -270,7 +271,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     DropdownButtonFormField<String>(
                       value: _selectedLang,
                       decoration: InputDecoration(
-                        labelText: 'Preferred Language',
+                        labelText: AppLocalizations.of(
+                          context,
+                        ).preferredLanguage,
                         prefixIcon: Icon(
                           Icons.language,
                           color: colorScheme.primary,
@@ -281,16 +284,38 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'en', child: Text("English")),
-                        DropdownMenuItem(value: 'hi', child: Text("हिंदी")),
-                        DropdownMenuItem(value: 'dv', child: Text("ދިވެހި")),
-                        DropdownMenuItem(value: 'ru', child: Text("Русский")),
-                        DropdownMenuItem(value: 'de', child: Text("Deutsch")),
-                        DropdownMenuItem(value: 'fr', child: Text("Français")),
+                      items: [
+                        DropdownMenuItem(
+                          value: 'en',
+                          child: Text("English (US)"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'hi',
+                          child: Text("हिंदී (Hindi)"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'dv',
+                          child: Text("ދިވެހި (Dhivehi)"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'ru',
+                          child: Text("Русский (Russian)"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'de',
+                          child: Text("Deutsch (German)"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'fr',
+                          child: Text("Français (French)"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'si',
+                          child: Text("සිංහල (Sinhala)"),
+                        ),
                         DropdownMenuItem(
                           value: 'nl',
-                          child: Text("Nederlands"),
+                          child: Text("Nederlands (Dutch)"),
                         ),
                       ],
                       onChanged: (val) => setState(() => _selectedLang = val!),
@@ -304,7 +329,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     // Account Information
                     _buildSectionTitle(
                       context,
-                      "Account Information",
+                      AppLocalizations.of(context).accountInformation,
                     ).animate().fadeIn(
                       duration: const Duration(milliseconds: 600),
                       delay: const Duration(milliseconds: 400),
@@ -316,7 +341,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: _email,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.email,
+                        labelText: AppLocalizations.of(context).email,
                         prefixIcon: Icon(
                           Icons.email_outlined,
                           color: colorScheme.primary,
@@ -343,7 +368,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       controller: _password,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.password,
+                        labelText: AppLocalizations.of(context).password,
                         prefixIcon: Icon(
                           Icons.lock_outline,
                           color: colorScheme.primary,
@@ -382,7 +407,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       controller: _confirmPassword,
                       obscureText: _obscureConfirmPassword,
                       decoration: InputDecoration(
-                        labelText: "Confirm Password",
+                        labelText: AppLocalizations.of(context).confirmPassword,
                         prefixIcon: Icon(
                           Icons.lock_outline,
                           color: colorScheme.primary,
@@ -421,7 +446,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     DropdownButtonFormField<String>(
                       value: _selectedRole,
                       decoration: InputDecoration(
-                        labelText: 'Select Role',
+                        labelText: AppLocalizations.of(context).selectRole,
                         prefixIcon: Icon(
                           Icons.badge_outlined,
                           color: colorScheme.primary,
@@ -432,14 +457,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                           value: 'tourist',
-                          child: Text('Tourist'),
+                          child: Text(AppLocalizations.of(context).tourist),
                         ),
                         DropdownMenuItem(
                           value: 'business',
-                          child: Text('Business'),
+                          child: Text(AppLocalizations.of(context).business),
                         ),
                       ],
                       onChanged: (val) => setState(() => _selectedRole = val!),
@@ -452,7 +477,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     // Sign up button
                     CeylonButton.primary(
-                      label: AppLocalizations.of(context)!.createAccount,
+                      label: AppLocalizations.of(context).createAccount,
                       onPressed: state is AuthLoading ? null : _signUp,
                       isLoading: state is AuthLoading,
                       isFullWidth: true,

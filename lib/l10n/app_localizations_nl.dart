@@ -9,13 +9,13 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get appTitle => 'Ceylon';
+  String get appName => 'Ceylon';
 
   @override
   String get login => 'Inloggen';
 
   @override
-  String get signup => 'Aanmelden';
+  String get signup => 'Registreren';
 
   @override
   String get email => 'E-mail';
@@ -27,65 +27,194 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forgotPassword => 'Wachtwoord vergeten?';
 
   @override
-  String get createAccount => 'Account aanmaken';
-
-  @override
-  String get name => 'Volledige naam';
-
-  @override
-  String get country => 'Land';
-
-  @override
-  String get saveChanges => 'Wijzigingen opslaan';
+  String get continueWithGoogle => 'Doorgaan met Google';
 
   @override
   String get logout => 'Uitloggen';
 
   @override
-  String get myProfile => 'Mijn profiel';
+  String get settings => 'Instellingen';
+
+  @override
+  String get language => 'Taal';
+
+  @override
+  String get theme => 'Thema';
+
+  @override
+  String get darkMode => 'Donkere modus';
+
+  @override
+  String get save => 'Opslaan';
+
+  @override
+  String get cancel => 'Annuleren';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get map => 'Kaart';
+
+  @override
+  String get itinerary => 'Reisplan';
 
   @override
   String get favorites => 'Favorieten';
 
   @override
-  String get noFavoritesYet => 'Nog geen favorieten';
+  String get profile => 'Profiel';
 
   @override
-  String get tripTitle => 'Reistitel';
+  String get business => 'Zakelijk';
 
   @override
-  String get addDay => 'Dag toevoegen';
+  String get reviews => 'Beoordelingen';
 
   @override
-  String get saveItinerary => 'Reisschema opslaan';
+  String get analytics => 'Analyses';
 
   @override
-  String get myTrips => 'Mijn reizen';
+  String get events => 'Evenementen';
 
   @override
-  String get viewAttractionsMap => 'Toeristische kaart bekijken';
+  String get directions => 'Routebeschrijving';
 
   @override
-  String get share => 'Delen';
+  String get addToItinerary => 'Toevoegen aan reisplan';
 
   @override
-  String get getDirections => 'Routebeschrijving';
+  String get addReview => 'Beoordeling toevoegen';
+
+  @override
+  String get submit => 'Versturen';
+
+  @override
+  String get emptyStateNoData => 'Geen gegevens beschikbaar';
+
+  @override
+  String get retry => 'Opnieuw proberen';
+
+  @override
+  String get today => 'Vandaag';
+
+  @override
+  String get upcomingThisMonth => 'Aankomend deze maand';
+
+  @override
+  String get filterAll => 'Alle';
+
+  @override
+  String get filterPromotions => 'Promoties';
+
+  @override
+  String get filterFree => 'Gratis';
+
+  @override
+  String get filterFamily => 'Familie';
+
+  @override
+  String get filterOutdoor => 'Buiten';
+
+  @override
+  String get welcomeToCeylon => 'Welkom bij Ceylon';
+
+  @override
+  String get signInToContinue => 'Log in om door te gaan';
+
+  @override
+  String get rememberMe => 'Onthoud mij';
+
+  @override
+  String get or => 'OF';
+
+  @override
+  String get signInWithGoogle => 'Inloggen met Google';
+
+  @override
+  String get dontHaveAccount => 'Heb je nog geen account?';
+
+  @override
+  String get createAccount => 'Account aanmaken';
+
+  @override
+  String get createYourAccount => 'Maak je account aan';
+
+  @override
+  String get fillDetailsBelow =>
+      'Vul de onderstaande gegevens in om te beginnen';
+
+  @override
+  String get personalInformation => 'Persoonlijke informatie';
+
+  @override
+  String get fullName => 'Volledige naam';
+
+  @override
+  String get country => 'Land';
+
+  @override
+  String get preferredLanguage => 'Voorkeurstaal';
+
+  @override
+  String get accountInformation => 'Account informatie';
+
+  @override
+  String get confirmPassword => 'Bevestig wachtwoord';
+
+  @override
+  String get selectRole => 'Selecteer rol';
+
+  @override
+  String get tourist => 'Toerist';
+
+  @override
+  String get resetPassword => 'Wachtwoord resetten';
+
+  @override
+  String get forgotPasswordQuestion => 'Wachtwoord vergeten?';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Voer je e-mailadres in en we sturen je een link om je wachtwoord te resetten.';
+
+  @override
+  String get emailAddress => 'E-mailadres';
+
+  @override
+  String get sendResetLink => 'Reset link versturen';
+
+  @override
+  String get emailSent => 'E-mail verstuurd';
+
+  @override
+  String get resetEmailSentMessage =>
+      'Als er een account bestaat met dit e-mailadres, ontvang je binnenkort een link om je wachtwoord te resetten. Controleer je inbox en spam-map.';
+
+  @override
+  String get loginSuccessful => 'Inloggen geslaagd';
+
+  @override
+  String get accountCreatedSuccessfully => 'Account succesvol aangemaakt';
+
+  @override
+  String get saveFavorite => 'Opslaan in favorieten';
 
   @override
   String get removeFavorite => 'Verwijderen uit favorieten';
 
   @override
-  String get saveFavorite => 'Toevoegen aan favorieten';
+  String get updated => 'bijgewerkt';
 
   @override
-  String get flutterGenL10n => 'flutter gen-l10n';
+  String get myProfile => 'Mijn profiel';
 
   @override
-  String get homeScreenTitle => '🏡 Home Screen — Logged In';
+  String get name => 'Naam';
 
   @override
-  String get viewFavorites => '❤️ View Favorites';
+  String get saveChanges => 'Wijzigingen opslaan';
 
   @override
-  String get hello => 'Hello';
+  String get noFavoritesYet => 'Nog geen favorieten';
 }

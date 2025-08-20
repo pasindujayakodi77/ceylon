@@ -1,3 +1,4 @@
+import 'package:ceylon/core/l10n/locale_controller.dart';
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/design_system/widgets/ceylon_button.dart';
 import 'package:ceylon/features/auth/presentation/screens/forgot_password_screen.dart';
@@ -6,15 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../data/auth_repository.dart';
+import 'package:provider/provider.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import 'signup_screen.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ceylon/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -89,17 +88,16 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is AuthSuccess) {
             () async {
               final uid = FirebaseAuth.instance.currentUser!.uid;
-              final doc = await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .get();
-              final data = doc.data();
-              final langCode = data?['language'] ?? 'en';
-              MyApp.setLocale(context, Locale(langCode));
+              // Load language preference from Firestore
+              final localeController = Provider.of<LocaleController>(
+                context,
+                listen: false,
+              );
+              await localeController.loadFromFirestore(uid);
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text("Login successful"),
+                  content: Text(AppLocalizations.of(context).loginSuccessful),
                   backgroundColor: colorScheme.primary,
                   behavior: SnackBarBehavior.floating,
                 ),
@@ -152,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Welcome title
                     Text(
-                      "Welcome to Ceylon",
+                      AppLocalizations.of(context).welcomeToCeylon,
                       style: textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onBackground,
@@ -166,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: CeylonTokens.spacing8),
 
                     Text(
-                      "Sign in to continue",
+                      AppLocalizations.of(context).signInToContinue,
                       style: textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -182,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       controller: _email,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.email,
+                        labelText: AppLocalizations.of(context).email,
                         prefixIcon: Icon(
                           Icons.email_outlined,
                           color: colorScheme.primary,
@@ -209,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _password,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.password,
+                        labelText: AppLocalizations.of(context).password,
                         prefixIcon: Icon(
                           Icons.lock_outline,
                           color: colorScheme.primary,
@@ -259,7 +257,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                             ),
-                            Text("Remember me", style: textTheme.bodySmall),
+                            Text(
+                              AppLocalizations.of(context).rememberMe,
+                              style: textTheme.bodySmall,
+                            ),
                           ],
                         ),
 
@@ -274,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                           child: Text(
-                            AppLocalizations.of(context)!.forgotPassword,
+                            AppLocalizations.of(context).forgotPassword,
                           ),
                         ),
                       ],
@@ -287,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Sign in button
                     CeylonButton.primary(
-                      label: AppLocalizations.of(context)!.login,
+                      label: AppLocalizations.of(context).login,
                       onPressed: state is AuthLoading ? null : _signIn,
                       isLoading: state is AuthLoading,
                       isFullWidth: true,
@@ -309,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             horizontal: CeylonTokens.spacing16,
                           ),
                           child: Text(
-                            "OR",
+                            AppLocalizations.of(context).or,
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
@@ -328,7 +329,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Google sign in button
                     CeylonButton.secondary(
-                      label: "Sign in with Google",
+                      label: AppLocalizations.of(context).signInWithGoogle,
                       onPressed: state is AuthLoading
                           ? null
                           : () => context.read<AuthBloc>().add(
@@ -348,7 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account? ",
+                          AppLocalizations.of(context).dontHaveAccount,
                           style: textTheme.bodyMedium,
                         ),
                         TextButton(
@@ -361,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                           child: Text(
-                            AppLocalizations.of(context)!.signup,
+                            AppLocalizations.of(context).signup,
                             style: textTheme.bodyMedium?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.bold,

@@ -1,129 +1,72 @@
-
 {
   "@@locale": "dv",
-  "appTitle": "ސީލޮން",
-  "@appTitle": {
-    "description": "The title of the application, shown in the app bar and launcher.",
-    "type": "text"
-  },
-  "login": "ލޮގިން",
-  "@login": {
-    "description": "Label for the login button or screen.",
-    "type": "text"
-  },
-  "signup": "ސައިން އަޕް",
-  "@signup": {
-    "description": "Label for the signup button or screen.",
-    "type": "text"
-  },
-  "noFavoritesYet": "އެބަހުރި ފޭވަރެޓްތައް ނެތް",
-  "@noFavoritesYet": {
-    "description": "Message shown when the user has no favorites yet.",
-    "type": "text"
-  },
+  "appName": "ސީލޯން",
+  "login": "ވަންނަން",
+  "signup": "ރަޖިސްޓްރީ ވާން",
   "email": "އީމެއިލް",
-  "@email": {
-    "description": "Label for the email input field.",
-    "type": "text"
-  },
   "password": "ޕާސްވޯޑް",
-  "@password": {
-    "description": "Label for the password input field.",
-    "type": "text"
-  },
-  "forgotPassword": "ޕާސްވޯޑް ނަމަވެއްޖެ؟",
-  "@forgotPassword": {
-    "description": "Link or button for forgotten password recovery.",
-    "type": "text"
-  },
-  "createAccount": "އެކައުންޓް ހެދުމަށް",
-  "@createAccount": {
-    "description": "Button or link to create a new account.",
-    "type": "text"
-  },
-  "name": "ފުރަތަމަ ނަން",
-  "@name": {
-    "description": "Label for the name input field.",
-    "type": "text"
-  },
-  "country": "ރަށު",
-  "@country": {
-    "description": "Label for the country input field or selector.",
-    "type": "text"
-  },
-  "saveChanges": "ބަދަލުތައް ސޭވްކުރޭ",
-  "@saveChanges": {
-    "description": "Button to save changes made by the user.",
-    "type": "text"
-  },
-  "logout": "ލޮގައުޓް",
-  "@logout": {
-    "description": "Button or action to log out the user.",
-    "type": "text"
-  },
-  "myProfile": "މައި ޕްރޮފައިލް",
-  "@myProfile": {
-    "description": "Label for the user's profile section.",
-    "type": "text"
-  },
-  "favorites": "ފޭވަރެޓްތައް",
-  "@favorites": {
-    "description": "Label for the favorites section or button.",
-    "type": "text"
-  },
-  "noFavorites": "އެއްޗެއް ފޭވަރެޓް ނެތް",
-  "@noFavorites": {
-    "description": "Message shown when there are no favorites.",
-    "type": "text"
-  },
-  "tripTitle": "ސަރަހައްދު ސަފްހާ",
-  "@tripTitle": {
-    "description": "Label for the trip title field.",
-    "type": "text"
-  },
-  "addDay": "ދުވަހަ އިތުރު",
-  "@addDay": {
-    "description": "Button to add a new day to the itinerary.",
-    "type": "text"
-  },
-  "saveItinerary": "ސަރަހައްދު ސޭވްކުރޭ",
-  "@saveItinerary": {
-    "description": "Button to save the itinerary.",
-    "type": "text"
-  },
-  "myTrips": "މައި ސަރަހައްދުތައް",
-  "@myTrips": {
-    "description": "Label for the user's trips section.",
-    "type": "text"
-  },
-  "viewAttractionsMap": "އަޓްރެކްޝަން މެޕް ބަލާ",
-  "@viewAttractionsMap": {
-    "description": "Button to view the attractions map.",
-    "type": "text"
-  },
-  "share": "ސެއްރެވް ކުރޭ",
-  "@share": {
-    "description": "Button to share content.",
-    "type": "text"
-  },
-  "getDirections": "މަސައްކަތުތައް ބަލާ",
-  "@getDirections": {
-    "description": "Button to get directions.",
-    "type": "text"
-  },
-  "removeFavorite": "ފޭވަރެޓް ފޮހެލާ",
-  "@removeFavorite": {
-    "description": "Button to remove an item from favorites.",
-    "type": "text"
-  },
-  "saveFavorite": "ފޭވަރެޓް ސޭވްކުރޭ"
-  ,"@saveFavorite": {
-    "description": "Button to save an item as favorite.",
-    "type": "text"
-  }
-  ,"flutterGenL10n": "flutter gen-l10n"
-  ,"@flutterGenL10n": {
-    "description": "Technical string for flutter localization generation.",
-    "type": "text"
-  }
+  "forgotPassword": "ޕާސްވޯޑް ހަނދާން ނެތުނީތަ؟",
+  "continueWithGoogle": "ގޫގުލް އާއެކު ކުރިއަށް ދާށެވެ",
+  "logout": "ނިކުންނަން",
+  "settings": "ސެޓިންގްސް",
+  "language": "ބަސް",
+  "theme": "ތީމް",
+  "darkMode": "އަނދިރި މޯޑް",
+  "save": "ރައްކާކުރޭ",
+  "cancel": "ކެންސަލް",
+  "home": "މައި ޞަފްޙާ",
+  "map": "ޗާޓު",
+  "itinerary": "ދަތުރު ޕްލޭން",
+  "favorites": "ފޭވަރިޓްސް",
+  "profile": "ޕްރޮފައިލް",
+  "business": "ވިޔަފާރި",
+  "reviews": "ރިވިއުތައް",
+  "analytics": "އެނަލިޓިކްސް",
+  "events": "އިވެންޓްތައް",
+  "directions": "މަގުތައް",
+  "addToItinerary": "ދަތުރަށް އިތުރުކުރޭ",
+  "addReview": "ރިވިއު އިތުރުކުރޭ",
+  "submit": "ފޮނުވާ",
+  "emptyStateNoData": "މަޢުލޫމާތެއް ނެތް",
+  "retry": "އަލުން މަސައްކަތްކުރޭ",
+  "today": "މިއަދު",
+  "upcomingThisMonth": "މި މަހު އަންނަނިވި",
+  "filterAll": "އެންމެހައި",
+  "filterPromotions": "ޕްރޮމޯޝަންތައް",
+  "filterFree": "ހިލޭ",
+  "filterFamily": "އާއިލާ",
+  "filterOutdoor": "އައުޓްޑޯ",
+  "updated": "އަޕްޑޭޓް ކުރެވިއްޖެ",
+  "welcomeToCeylon": "ސީލޯނަށް މަރުޙަބާ",
+  "signInToContinue": "ކުރިއަށް ދިއުމަށް ސައިން އިން ކުރޭ",
+  "rememberMe": "ފަހުން ހަނދާން ބަހައްޓާ",
+  "or": "ނުވަތަ",
+  "signInWithGoogle": "ގޫގުލް އާއެކު ސައިން އިން ކުރޭ",
+  "dontHaveAccount": "އެކައުންޓެއް ނެތްތަ؟",
+  "createAccount": "އެކައުންޓް ހަދާ",
+  "createYourAccount": "އެކައުންޓެއް ހަދާ",
+  "fillDetailsBelow": "ފެށުމަށް ތިރީގައިވާ މަޢުލޫމާތު ފުރިހަމަ ކުރޭ",
+  "personalInformation": "އަމިއްލަ މަޢުލޫމާތު",
+  "fullName": "ފުރިހަމަ ނަން",
+  "country": "ޤައުމު",
+  "preferredLanguage": "ބޭނުންވާ ބަސް",
+  "accountInformation": "އެކައުންޓް މަޢުލޫމާތު",
+  "confirmPassword": "ޕާސްވޯޑް ޔަޤީން ކުރޭ",
+  "selectRole": "ރޯލް އިޚްތިޔާރުކުރޭ",
+  "tourist": "ފަތުރުވެރިޔާ",
+  "resetPassword": "ޕާސްވޯޑް ރީސެޓް ކުރޭ",
+  "forgotPasswordQuestion": "ޕާސްވޯޑް ހަނދާން ނެތުނީތަ؟",
+  "resetPasswordInstructions": "އީމެއިލް އެޑްރެސް ޖައްސާ. އަޅުގަނޑުމެން ޕާސްވޯޑް ރީސެޓް ކުރުމުގެ ލިންކެއް ފޮނުވާނަން.",
+  "emailAddress": "އީމެއިލް އެޑްރެސް",
+  "sendResetLink": "ރީސެޓް ލިންކް ފޮނުވާ",
+  "emailSent": "އީމެއިލް ފޮނުވިއްޖެ",
+  "resetEmailSentMessage": "މި އީމެއިލްއާއެކު އެކައުންޓެއް ވާނަމަ، ޕާސްވޯޑް ރީސެޓް ލިންކެއް ލިބިވަޑައިގަންނަވާނެ. އީމެއިލް އިންބޮކްސް އަދި ސްޕޭމް ފޯލްޑަރ ޗެކްކުރޭ.",
+  "loginSuccessful": "ވަނުން ކާމިޔާބުވެއްޖެ",
+  "accountCreatedSuccessfully": "އެކައުންޓް ކާމިޔާބުކަމާއެކު އުފެއްދިއްޖެ",
+  "saveFavorite": "ފޭވަރިޓްސްއަށް ރައްކާކުރޭ",
+  "removeFavorite": "ފޭވަރިޓްސްއިން ނައްތާލާ",
+  "myProfile": "އަހަރެންގެ ޕްރޮފައިލް",
+  "name": "ނަން",
+  "saveChanges": "ބަދަލުތައް ރައްކާކުރޭ",
+  "noFavoritesYet": "އަދި ފޭވަރިޓްސް ނެތް"
 }

@@ -12,6 +12,7 @@ import 'app_localizations_fr.dart';
 import 'app_localizations_hi.dart';
 import 'app_localizations_nl.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_si.dart';
 
 // ignore_for_file: type=lint
 
@@ -67,15 +68,17 @@ import 'app_localizations_ru.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
-  static AppLocalizations? of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -87,188 +90,445 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('de'),
     Locale('dv'),
     Locale('en'),
+    Locale('en', 'AU'),
+    Locale('en', 'GB'),
     Locale('fr'),
     Locale('hi'),
     Locale('nl'),
-    Locale('ru')
+    Locale('ru'),
+    Locale('si'),
   ];
 
-  /// The title of the application, shown in the app bar and launcher.
+  /// The name of the application
   ///
   /// In en, this message translates to:
-  /// **'CEYLON'**
-  String get appTitle;
+  /// **'Ceylon'**
+  String get appName;
 
-  /// Label for the login button or screen.
+  /// Label for the login button or screen
   ///
   /// In en, this message translates to:
   /// **'Login'**
   String get login;
 
-  /// Label for the signup button or screen.
+  /// Label for the signup button or screen
   ///
   /// In en, this message translates to:
   /// **'Sign Up'**
   String get signup;
 
-  /// Label for the email input field.
+  /// Label for the email input field
   ///
   /// In en, this message translates to:
   /// **'Email'**
   String get email;
 
-  /// Label for the password input field.
+  /// Label for the password input field
   ///
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
 
-  /// Link or button for forgotten password recovery.
+  /// Link or button for forgotten password recovery
   ///
   /// In en, this message translates to:
   /// **'Forgot Password?'**
   String get forgotPassword;
 
-  /// Button or link to create a new account.
+  /// Button for signing in with Google
   ///
   /// In en, this message translates to:
-  /// **'Create Account'**
-  String get createAccount;
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
 
-  /// Label for the name input field.
-  ///
-  /// In en, this message translates to:
-  /// **'Full Name'**
-  String get name;
-
-  /// Label for the country input field or selector.
-  ///
-  /// In en, this message translates to:
-  /// **'Country'**
-  String get country;
-
-  /// Button to save changes made by the user.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Changes'**
-  String get saveChanges;
-
-  /// Button or action to log out the user.
+  /// Button or action to log out the user
   ///
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
 
-  /// Label for the user's profile section.
+  /// Label for settings screen or section
   ///
   /// In en, this message translates to:
-  /// **'My Profile'**
-  String get myProfile;
+  /// **'Settings'**
+  String get settings;
 
-  /// Label for the favorites section or button.
+  /// Label for language selection option
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// Label for theme selection option
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// Label for dark mode toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// Label for save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// Label for cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Label for home screen or tab
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// Label for map screen or tab
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get map;
+
+  /// Label for itinerary screen or section
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary'**
+  String get itinerary;
+
+  /// Label for favorites screen or section
   ///
   /// In en, this message translates to:
   /// **'Favorites'**
   String get favorites;
 
-  /// Message shown when the user has no favorites yet.
+  /// Label for user profile screen or section
   ///
   /// In en, this message translates to:
-  /// **'No favorites yet'**
-  String get noFavoritesYet;
+  /// **'Profile'**
+  String get profile;
 
-  /// Label for the trip title field.
+  /// Label for business section or type
   ///
   /// In en, this message translates to:
-  /// **'Trip Title'**
-  String get tripTitle;
+  /// **'Business'**
+  String get business;
 
-  /// Button to add a new day to the itinerary.
+  /// Label for reviews section
   ///
   /// In en, this message translates to:
-  /// **'Add Day'**
-  String get addDay;
+  /// **'Reviews'**
+  String get reviews;
 
-  /// Button to save the itinerary.
+  /// Label for analytics section
   ///
   /// In en, this message translates to:
-  /// **'Save Itinerary'**
-  String get saveItinerary;
+  /// **'Analytics'**
+  String get analytics;
 
-  /// Label for the user's trips section.
+  /// Label for events section or calendar
   ///
   /// In en, this message translates to:
-  /// **'My Trips'**
-  String get myTrips;
+  /// **'Events'**
+  String get events;
 
-  /// Button to view the attractions map.
+  /// Label for directions or navigation
   ///
   /// In en, this message translates to:
-  /// **'View Attractions Map'**
-  String get viewAttractionsMap;
+  /// **'Directions'**
+  String get directions;
 
-  /// Button to share content.
+  /// Button to add item to itinerary
   ///
   /// In en, this message translates to:
-  /// **'Share'**
-  String get share;
+  /// **'Add to Itinerary'**
+  String get addToItinerary;
 
-  /// Button to get directions.
+  /// Button to add a review
   ///
   /// In en, this message translates to:
-  /// **'Get Directions'**
-  String get getDirections;
+  /// **'Add Review'**
+  String get addReview;
 
-  /// Button to remove an item from favorites.
+  /// Label for submit button
   ///
   /// In en, this message translates to:
-  /// **'Remove from Favorites'**
-  String get removeFavorite;
+  /// **'Submit'**
+  String get submit;
 
-  /// Button to save an item as favorite.
+  /// Message shown when no data is available
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get emptyStateNoData;
+
+  /// Label for retry button
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// Label for current day
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Label for events upcoming in the current month
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming this Month'**
+  String get upcomingThisMonth;
+
+  /// Filter option to show all items
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// Filter option to show promotions
+  ///
+  /// In en, this message translates to:
+  /// **'Promotions'**
+  String get filterPromotions;
+
+  /// Filter option to show free items
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get filterFree;
+
+  /// Filter option to show family-friendly items
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get filterFamily;
+
+  /// Filter option to show outdoor activities
+  ///
+  /// In en, this message translates to:
+  /// **'Outdoor'**
+  String get filterOutdoor;
+
+  /// Welcome message on login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Ceylon'**
+  String get welcomeToCeylon;
+
+  /// Subtitle on login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to continue'**
+  String get signInToContinue;
+
+  /// Label for remember me checkbox
+  ///
+  /// In en, this message translates to:
+  /// **'Remember me'**
+  String get rememberMe;
+
+  /// Divider text between login options
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or;
+
+  /// Label for Google sign-in button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get signInWithGoogle;
+
+  /// Text prompting user to sign up
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAccount;
+
+  /// Label for create account button
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// Header text on signup screen
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get createYourAccount;
+
+  /// Instruction text on signup screen
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the details below to get started'**
+  String get fillDetailsBelow;
+
+  /// Section title for personal information
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// Label for full name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// Label for country input field
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
+
+  /// Label for language selection dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Language'**
+  String get preferredLanguage;
+
+  /// Section title for account information
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get accountInformation;
+
+  /// Label for password confirmation field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// Label for role selection dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Select Role'**
+  String get selectRole;
+
+  /// Label for tourist role option
+  ///
+  /// In en, this message translates to:
+  /// **'Tourist'**
+  String get tourist;
+
+  /// Title for password reset screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
+  /// Header text on forgot password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get forgotPasswordQuestion;
+
+  /// Instructions for password reset
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a link to reset your password.'**
+  String get resetPasswordInstructions;
+
+  /// Label for email address input
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get emailAddress;
+
+  /// Button text for sending password reset link
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// Confirmation message after sending reset email
+  ///
+  /// In en, this message translates to:
+  /// **'Email sent'**
+  String get emailSent;
+
+  /// Detailed message after sending reset email
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists with this email, you\'ll receive a password reset link shortly. Please check your email inbox and spam folder.'**
+  String get resetEmailSentMessage;
+
+  /// Success message after login
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful'**
+  String get loginSuccessful;
+
+  /// Success message after account creation
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully'**
+  String get accountCreatedSuccessfully;
+
+  /// Button text to save an item to favorites
   ///
   /// In en, this message translates to:
   /// **'Save to Favorites'**
   String get saveFavorite;
 
-  /// Technical string for flutter localization generation.
+  /// Button text to remove an item from favorites
   ///
   /// In en, this message translates to:
-  /// **'flutter gen-l10n'**
-  String get flutterGenL10n;
+  /// **'Remove from Favorites'**
+  String get removeFavorite;
 
-  /// Title for the home screen when the user is logged in.
+  /// Status message after an item is updated
   ///
   /// In en, this message translates to:
-  /// **'🏡 Home Screen — Logged In'**
-  String get homeScreenTitle;
+  /// **'updated'**
+  String get updated;
 
-  /// Button label to view favorites.
+  /// Title for the profile screen
   ///
   /// In en, this message translates to:
-  /// **'❤️ View Favorites'**
-  String get viewFavorites;
+  /// **'My Profile'**
+  String get myProfile;
 
-  /// A greeting message.
+  /// Label for name input field
   ///
   /// In en, this message translates to:
-  /// **'Hello'**
-  String get hello;
+  /// **'Name'**
+  String get name;
+
+  /// Button text for saving changes
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// Message shown when favorites list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get noFavoritesYet;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -277,30 +537,60 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'dv', 'en', 'fr', 'hi', 'nl', 'ru'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+    'de',
+    'dv',
+    'en',
+    'fr',
+    'hi',
+    'nl',
+    'ru',
+    'si',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'en':
+      {
+        switch (locale.countryCode) {
+          case 'AU':
+            return AppLocalizationsEnAu();
+          case 'GB':
+            return AppLocalizationsEnGb();
+        }
+        break;
+      }
+  }
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'de': return AppLocalizationsDe();
-    case 'dv': return AppLocalizationsDv();
-    case 'en': return AppLocalizationsEn();
-    case 'fr': return AppLocalizationsFr();
-    case 'hi': return AppLocalizationsHi();
-    case 'nl': return AppLocalizationsNl();
-    case 'ru': return AppLocalizationsRu();
+    case 'de':
+      return AppLocalizationsDe();
+    case 'dv':
+      return AppLocalizationsDv();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'hi':
+      return AppLocalizationsHi();
+    case 'nl':
+      return AppLocalizationsNl();
+    case 'ru':
+      return AppLocalizationsRu();
+    case 'si':
+      return AppLocalizationsSi();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

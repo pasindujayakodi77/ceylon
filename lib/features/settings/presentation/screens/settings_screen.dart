@@ -1,7 +1,7 @@
+import 'package:ceylon/core/l10n/locale_controller.dart';
 import 'package:ceylon/design_system/app_theme.dart';
-import 'package:ceylon/design_system/tokens.dart';
-import 'package:ceylon/main.dart';
 import 'package:ceylon/features/auth/data/auth_repository.dart';
+import 'package:ceylon/features/settings/data/language_codes.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _locationTrackingEnabled = true;
   bool _savingOfflineMaps = false;
-  String _selectedLanguage = 'en';
+  Locale _selectedLocale = const Locale('en');
   String _selectedCurrency = 'LKR';
   String _selectedDistanceUnit = 'km';
   String _appVersion = '1.0.0';
@@ -43,13 +43,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
+    final localeController = Provider.of<LocaleController>(
+      context,
+      listen: false,
+    );
 
     setState(() {
       _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
       _locationTrackingEnabled =
           prefs.getBool('location_tracking_enabled') ?? true;
       _savingOfflineMaps = prefs.getBool('saving_offline_maps') ?? false;
-      _selectedLanguage = prefs.getString('language') ?? 'en';
+      if (localeController.current != null) {
+        _selectedLocale = localeController.current!;
+      }
       _selectedCurrency = prefs.getString('currency') ?? 'LKR';
       _selectedDistanceUnit = prefs.getString('distance_unit') ?? 'km';
     });
@@ -57,23 +63,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
+    final localeController = Provider.of<LocaleController>(
+      context,
+      listen: false,
+    );
 
     await prefs.setBool('notifications_enabled', _notificationsEnabled);
     await prefs.setBool('location_tracking_enabled', _locationTrackingEnabled);
     await prefs.setBool('saving_offline_maps', _savingOfflineMaps);
-    await prefs.setString('language', _selectedLanguage);
     await prefs.setString('currency', _selectedCurrency);
     await prefs.setString('distance_unit', _selectedDistanceUnit);
 
-    // Update app locale
-    if (context.mounted) {
-      MyApp.setLocale(context, Locale(_selectedLanguage));
+    // Update app locale - already saved by the controller
+    await localeController.setLocale(_selectedLocale);
+
+    // Save language to Firestore if user is logged in
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await localeController.saveToFirestore(user.uid);
     }
 
     if (context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('✅ Settings saved')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).save)),
+      );
     }
   }
 
@@ -93,27 +106,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void _changeTheme() {
+  void _changeTheme() async {
     final themeManager = Provider.of<ThemeManager>(context, listen: false);
     themeManager.toggleTheme();
 
     // Save theme mode to shared preferences
-    saveThemeMode(themeManager.themeMode);
+    final prefs = await SharedPreferences.getInstance();
+    String themeModeString;
+
+    switch (themeManager.themeMode) {
+      case ThemeMode.light:
+        themeModeString = 'light';
+        break;
+      case ThemeMode.dark:
+        themeModeString = 'dark';
+        break;
+      default:
+        themeModeString = 'system';
+    }
+
+    await prefs.setString('theme_mode', themeModeString);
   }
 
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    final colorScheme = Theme.of(context).colorScheme;
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context).settings),
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
-            tooltip: 'Save settings',
+            tooltip: AppLocalizations.of(context).save,
             onPressed: _saveSettings,
           ),
         ],
@@ -185,8 +211,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Language
           ListTile(
             leading: const Icon(Icons.language),
-            title: const Text('Language'),
-            subtitle: Text(_getLanguageName(_selectedLanguage)),
+            title: Text(AppLocalizations.of(context).language),
+            subtitle: Text(_getLanguageName(_selectedLocale)),
             onTap: _showLanguageDialog,
           ),
 
@@ -336,44 +362,149 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showLanguageDialog() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Select Language'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+        return DraggableScrollableSheet(
+          initialChildSize: 0.7,
+          minChildSize: 0.5,
+          maxChildSize: 0.9,
+          expand: false,
+          builder: (context, scrollController) {
+            return Column(
               children: [
-                _buildLanguageOption('en', 'English'),
-                _buildLanguageOption('hi', 'हिंदी (Hindi)'),
-                _buildLanguageOption('ru', 'Русский (Russian)'),
-                _buildLanguageOption('de', 'Deutsch (German)'),
-                _buildLanguageOption('fr', 'Français (French)'),
-                _buildLanguageOption('nl', 'Nederlands (Dutch)'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurfaceVariant.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).language,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(),
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: LanguageCodes.getLanguageGroups().length,
+                    itemBuilder: (context, index) {
+                      final group = LanguageCodes.getLanguageGroups()[index];
+                      final String groupName = group['name'] as String;
+                      final List<Locale> locales =
+                          group['locales'] as List<Locale>;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                            child: Text(
+                              groupName,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ),
+                          ...locales.map(
+                            (locale) => _buildLanguageOption(
+                              locale,
+                              LanguageCodes.getLanguageName(locale),
+                            ),
+                          ),
+                          if (index <
+                              LanguageCodes.getLanguageGroups().length - 1)
+                            const Divider(height: 16),
+                        ],
+                      );
+                    },
+                  ),
+                ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-          ],
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildLanguageOption(String code, String name) {
-    return RadioListTile<String>(
-      title: Text(name),
-      value: code,
-      groupValue: _selectedLanguage,
-      onChanged: (value) {
-        setState(() => _selectedLanguage = value!);
+  Widget _buildLanguageOption(Locale locale, String name) {
+    final bool isRtl = LanguageCodes.isRtlLanguage(locale);
+    final bool isSelected =
+        _selectedLocale.languageCode == locale.languageCode &&
+        _selectedLocale.countryCode == locale.countryCode;
+
+    return RadioListTile<Locale>(
+      title: Text(
+        name,
+        textAlign: isRtl ? TextAlign.right : TextAlign.left,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      value: locale,
+      groupValue: _selectedLocale,
+      onChanged: (value) async {
+        setState(() => _selectedLocale = value!);
         Navigator.pop(context);
+
+        // Apply the language change immediately
+        final localeController = Provider.of<LocaleController>(
+          context,
+          listen: false,
+        );
+        await localeController.setLocale(value);
+
+        // Save language to Firestore if user is logged in
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await localeController.saveToFirestore(user.uid);
+        }
+
+        // Show a confirmation message
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
+              ),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
       },
+      secondary: isRtl
+          ? const Icon(Icons.format_textdirection_r_to_l)
+          : locale.countryCode != null
+          ? const Icon(Icons.flag_outlined)
+          : null,
     );
   }
 
@@ -528,22 +659,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  String _getLanguageName(String code) {
-    switch (code) {
-      case 'en':
-        return 'English';
-      case 'hi':
-        return 'हिंदी (Hindi)';
-      case 'ru':
-        return 'Русский (Russian)';
-      case 'de':
-        return 'Deutsch (German)';
-      case 'fr':
-        return 'Français (French)';
-      case 'nl':
-        return 'Nederlands (Dutch)';
-      default:
-        return 'English';
-    }
+  String _getLanguageName(Locale locale) {
+    return LanguageCodes.getLanguageName(locale);
   }
 }
