@@ -6,7 +6,7 @@ import 'package:ceylon/features/home/presentation/widgets/section_header.dart';
 import 'package:ceylon/features/home/presentation/widgets/weather_widget.dart';
 import 'package:ceylon/features/business/presentation/widgets/promoted_businesses_carousel.dart';
 import 'package:ceylon/features/map/presentation/screens/attractions_map_screen_new.dart';
-import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
+import 'package:ceylon/features/profile/presentation/screens/profile_screen_v2.dart';
 import 'package:ceylon/features/journal/presentation/screens/trip_journal_screen.dart';
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
 import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.dart';
@@ -92,7 +92,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                MaterialPageRoute(builder: (_) => const ProfileScreenV2()),
               );
             },
           ),

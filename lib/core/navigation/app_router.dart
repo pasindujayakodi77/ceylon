@@ -1,7 +1,7 @@
 import 'package:ceylon/features/itinerary/presentation/routes/itinerary_routes.dart';
 import 'package:ceylon/features/map/presentation/routes/map_routes.dart';
 import 'package:ceylon/features/settings/presentation/screens/settings_screen.dart';
-import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
+import 'package:ceylon/features/profile/presentation/screens/profile_screen_v2.dart';
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_home_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_dashboard_screen.dart';
@@ -30,7 +30,7 @@ class AppRouter {
     ...MapRoutes.routes,
     // Add other static routes here
     '/settings': (_) => const SettingsScreen(),
-    '/profile': (_) => const ProfileScreen(),
+    '/profile': (_) => const ProfileScreenV2(),
     '/login': (_) => const LoginScreen(),
     '/calendar': (_) => const HolidaysEventsCalendarScreen(),
 

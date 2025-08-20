@@ -53,8 +53,7 @@ class LocaleController extends ChangeNotifier {
     // Handle languages that need special treatment
     switch (locale.languageCode) {
       case 'dv': // Dhivehi
-      case 'si': // Sinhala
-        // Fall back to English since these aren't supported by Material/Cupertino yet
+        // Fall back to English for Dhivehi since it isn't fully supported by Material/Cupertino yet
         return const Locale('en');
       case 'en':
         // Only support 'en' without country code for consistency

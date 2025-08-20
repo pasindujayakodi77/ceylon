@@ -2,7 +2,7 @@ import 'package:ceylon/features/business/presentation/screens/business_analytics
 import 'package:ceylon/features/business/presentation/screens/business_events_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
 import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
-import 'package:ceylon/features/profile/presentation/screens/profile_screen.dart';
+import 'package:ceylon/features/profile/presentation/screens/profile_screen_v2.dart';
 import 'package:ceylon/features/business/presentation/widgets/request_verification_sheet.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -198,7 +198,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
             icon: const Icon(Icons.person),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              MaterialPageRoute(builder: (_) => const ProfileScreenV2()),
             ),
           ),
           IconButton(icon: const Icon(Icons.logout), onPressed: _logout),
