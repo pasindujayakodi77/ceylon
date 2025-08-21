@@ -219,72 +219,74 @@ class AppLocalizationsNl extends AppLocalizations {
   String get noFavoritesYet => 'Nog geen favorieten';
 
   @override
-  String get editProfile => 'Edit Profile';
+  String get editProfile => 'Profiel bewerken';
 
   @override
-  String get appPreferences => 'App Preferences';
+  String get appPreferences => 'App-voorkeuren';
 
   @override
-  String get lightMode => 'Light Mode';
+  String get lightMode => 'Lichte modus';
 
   @override
-  String get currency => 'Currency';
+  String get currency => 'Valuta';
 
   @override
-  String get distanceUnit => 'Distance Unit';
+  String get distanceUnit => 'Afstandseenheid';
 
   @override
-  String get privacyAndPermissions => 'Privacy & Permissions';
+  String get privacyAndPermissions => 'Privacy en machtigingen';
 
   @override
-  String get saveMapsOffline => 'Save Maps Offline';
+  String get saveMapsOffline => 'Kaarten offline opslaan';
 
   @override
-  String get saveMapsOfflineSubtitle => 'Download maps for offline use';
+  String get saveMapsOfflineSubtitle =>
+      'Kaarten downloaden voor offline gebruik';
 
   @override
-  String get aboutAndSupport => 'About & Support';
+  String get aboutAndSupport => 'Over & ondersteuning';
 
   @override
-  String get appVersion => 'App Version';
+  String get appVersion => 'App-versie';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Servicevoorwaarden';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Privacybeleid';
 
   @override
-  String get contactSupport => 'Contact Support';
+  String get contactSupport => 'Contact opnemen met support';
 
   @override
-  String get sendFeedback => 'Send Feedback';
+  String get sendFeedback => 'Feedback verzenden';
 
   @override
-  String get accountManagement => 'Account Management';
+  String get accountManagement => 'Accountbeheer';
 
   @override
-  String get deleteMyData => 'Delete My Data';
+  String get deleteMyData => 'Mijn gegevens verwijderen';
 
   @override
   String get deleteMyDataSubtitle =>
-      'Remove all your personal data from the app';
+      'Verwijder al je persoonlijke gegevens uit de app';
 
   @override
-  String get signOut => 'Sign Out';
+  String get signOut => 'Afmelden';
 
   @override
-  String get pushNotifications => 'Push Notifications';
+  String get pushNotifications => 'Pushmeldingen';
 
   @override
-  String get pushNotificationsSubtitle => 'Get travel updates and alerts';
+  String get pushNotificationsSubtitle => 'Ontvang reisupdates en -meldingen';
 
   @override
-  String get locationServices => 'Location Services';
+  String get locationServices => 'Locatiediensten';
 
   @override
-  String get locationServicesSubtitle => 'Allow app to access your location';
+  String get locationServicesSubtitle =>
+      'Sta toe dat de app je locatie gebruikt';
 
   @override
-  String get traveler => 'Traveler';
+  String get traveler => 'Reiziger';
 }

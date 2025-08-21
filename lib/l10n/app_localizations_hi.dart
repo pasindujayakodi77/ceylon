@@ -219,72 +219,73 @@ class AppLocalizationsHi extends AppLocalizations {
   String get noFavoritesYet => 'अभी तक कोई पसंदीदा नहीं';
 
   @override
-  String get editProfile => 'Edit Profile';
+  String get editProfile => 'प्रोफ़ाइल संपादित करें';
 
   @override
-  String get appPreferences => 'App Preferences';
+  String get appPreferences => 'ऐप वरीयताएँ';
 
   @override
-  String get lightMode => 'Light Mode';
+  String get lightMode => 'लाइट मोड';
 
   @override
-  String get currency => 'Currency';
+  String get currency => 'मुद्रा';
 
   @override
-  String get distanceUnit => 'Distance Unit';
+  String get distanceUnit => 'दूरी की इकाई';
 
   @override
-  String get privacyAndPermissions => 'Privacy & Permissions';
+  String get privacyAndPermissions => 'गोपनीयता और अनुमतियाँ';
 
   @override
-  String get saveMapsOffline => 'Save Maps Offline';
+  String get saveMapsOffline => 'मैप्स ऑफ़लाइन सहेजें';
 
   @override
-  String get saveMapsOfflineSubtitle => 'Download maps for offline use';
+  String get saveMapsOfflineSubtitle =>
+      'ऑफ़लाइन उपयोग के लिए मानचित्र डाउनलोड करें';
 
   @override
-  String get aboutAndSupport => 'About & Support';
+  String get aboutAndSupport => 'जानकारी और सहायता';
 
   @override
-  String get appVersion => 'App Version';
+  String get appVersion => 'ऐप संस्करण';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'सेवा की शर्तें';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'गोपनीयता नीति';
 
   @override
-  String get contactSupport => 'Contact Support';
+  String get contactSupport => 'सहायता से संपर्क करें';
 
   @override
-  String get sendFeedback => 'Send Feedback';
+  String get sendFeedback => 'प्रतिपुष्टि भेजें';
 
   @override
-  String get accountManagement => 'Account Management';
+  String get accountManagement => 'खाता प्रबंधन';
 
   @override
-  String get deleteMyData => 'Delete My Data';
+  String get deleteMyData => 'मेरा डेटा हटाएँ';
 
   @override
-  String get deleteMyDataSubtitle =>
-      'Remove all your personal data from the app';
+  String get deleteMyDataSubtitle => 'ऐप से आपका सारा व्यक्तिगत डेटा हटाएँ';
 
   @override
-  String get signOut => 'Sign Out';
+  String get signOut => 'साइन आउट';
 
   @override
-  String get pushNotifications => 'Push Notifications';
+  String get pushNotifications => 'पुश सूचनाएँ';
 
   @override
-  String get pushNotificationsSubtitle => 'Get travel updates and alerts';
+  String get pushNotificationsSubtitle => 'यात्रा अपडेट और अलर्ट प्राप्त करें';
 
   @override
-  String get locationServices => 'Location Services';
+  String get locationServices => 'स्थान सेवाएँ';
 
   @override
-  String get locationServicesSubtitle => 'Allow app to access your location';
+  String get locationServicesSubtitle =>
+      'ऐप को आपके स्थान तक पहुँचने की अनुमति दें';
 
   @override
-  String get traveler => 'Traveler';
+  String get traveler => 'यात्री';
 }

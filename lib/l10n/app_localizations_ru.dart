@@ -219,72 +219,75 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noFavoritesYet => 'Нет избранного';
 
   @override
-  String get editProfile => 'Edit Profile';
+  String get editProfile => 'Редактировать профиль';
 
   @override
-  String get appPreferences => 'App Preferences';
+  String get appPreferences => 'Настройки приложения';
 
   @override
-  String get lightMode => 'Light Mode';
+  String get lightMode => 'Светлый режим';
 
   @override
-  String get currency => 'Currency';
+  String get currency => 'Валюта';
 
   @override
-  String get distanceUnit => 'Distance Unit';
+  String get distanceUnit => 'Единица расстояния';
 
   @override
-  String get privacyAndPermissions => 'Privacy & Permissions';
+  String get privacyAndPermissions => 'Конфиденциальность и разрешения';
 
   @override
-  String get saveMapsOffline => 'Save Maps Offline';
+  String get saveMapsOffline => 'Сохранять карты офлайн';
 
   @override
-  String get saveMapsOfflineSubtitle => 'Download maps for offline use';
+  String get saveMapsOfflineSubtitle =>
+      'Загружайте карты для использования без интернета';
 
   @override
-  String get aboutAndSupport => 'About & Support';
+  String get aboutAndSupport => 'О приложении и поддержка';
 
   @override
-  String get appVersion => 'App Version';
+  String get appVersion => 'Версия приложения';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Условия использования';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Политика конфиденциальности';
 
   @override
-  String get contactSupport => 'Contact Support';
+  String get contactSupport => 'Связаться с поддержкой';
 
   @override
-  String get sendFeedback => 'Send Feedback';
+  String get sendFeedback => 'Отправить отзыв';
 
   @override
-  String get accountManagement => 'Account Management';
+  String get accountManagement => 'Управление аккаунтом';
 
   @override
-  String get deleteMyData => 'Delete My Data';
+  String get deleteMyData => 'Удалить мои данные';
 
   @override
   String get deleteMyDataSubtitle =>
-      'Remove all your personal data from the app';
+      'Удалить все ваши персональные данные из приложения';
 
   @override
-  String get signOut => 'Sign Out';
+  String get signOut => 'Выйти из системы';
 
   @override
-  String get pushNotifications => 'Push Notifications';
+  String get pushNotifications => 'Пуш-уведомления';
 
   @override
-  String get pushNotificationsSubtitle => 'Get travel updates and alerts';
+  String get pushNotificationsSubtitle =>
+      'Получайте обновления и оповещения о поездках';
 
   @override
-  String get locationServices => 'Location Services';
+  String get locationServices => 'Службы определения местоположения';
 
   @override
-  String get locationServicesSubtitle => 'Allow app to access your location';
+  String get locationServicesSubtitle =>
+      'Разрешить приложению доступ к вашему местоположению';
 
   @override
-  String get traveler => 'Traveler';
+  String get traveler => 'Путешественник';
 }

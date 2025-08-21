@@ -218,72 +218,75 @@ class AppLocalizationsSi extends AppLocalizations {
   String get noFavoritesYet => 'තවම ප්‍රියතම ඒවා නැත';
 
   @override
-  String get editProfile => 'Edit Profile';
+  String get editProfile => 'පැතිකඩ සංස්කරණය කරන්න';
 
   @override
-  String get appPreferences => 'App Preferences';
+  String get appPreferences => 'යෙදුම් අභිරුචි';
 
   @override
-  String get lightMode => 'Light Mode';
+  String get lightMode => 'ආලෝකිත මාදිලිය';
 
   @override
-  String get currency => 'Currency';
+  String get currency => 'ව්‍යවහාර මුදල';
 
   @override
-  String get distanceUnit => 'Distance Unit';
+  String get distanceUnit => 'දුර ඒකකය';
 
   @override
-  String get privacyAndPermissions => 'Privacy & Permissions';
+  String get privacyAndPermissions => 'පෞද්ගලිකත්වය සහ අවසර';
 
   @override
-  String get saveMapsOffline => 'Save Maps Offline';
+  String get saveMapsOffline => 'සිතියම් අන්තර්ජාලයකින් තොරව සුරකින්න';
 
   @override
-  String get saveMapsOfflineSubtitle => 'Download maps for offline use';
+  String get saveMapsOfflineSubtitle =>
+      'අන්තර්ජාලයක් නොමැතත් භාවිතයට සිතියම් බාගන්න';
 
   @override
-  String get aboutAndSupport => 'About & Support';
+  String get aboutAndSupport => 'කෙටි විස්තර සහ പിന്തുണ';
 
   @override
-  String get appVersion => 'App Version';
+  String get appVersion => 'යෙදුම් අනුවාදය';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'සේවා නියමයන්';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'රහස්‍යතා ප්‍රතිපාදන';
 
   @override
-  String get contactSupport => 'Contact Support';
+  String get contactSupport => 'සහාය කණ්ඩායම අමතන්න';
 
   @override
-  String get sendFeedback => 'Send Feedback';
+  String get sendFeedback => 'ප්‍රතිචාරය යවන්න';
 
   @override
-  String get accountManagement => 'Account Management';
+  String get accountManagement => 'ගිණුම් කළමනාකරණය';
 
   @override
-  String get deleteMyData => 'Delete My Data';
+  String get deleteMyData => 'මගේ දත්ත මකන්න';
 
   @override
   String get deleteMyDataSubtitle =>
-      'Remove all your personal data from the app';
+      'යෙදුමෙන් ඔබගේ සියළු ආත්මීය දත්ත ඉවත් කරන්න';
 
   @override
-  String get signOut => 'Sign Out';
+  String get signOut => 'පිටවන්න';
 
   @override
-  String get pushNotifications => 'Push Notifications';
+  String get pushNotifications => 'පිඹුරු දැනුම්දීම්';
 
   @override
-  String get pushNotificationsSubtitle => 'Get travel updates and alerts';
+  String get pushNotificationsSubtitle =>
+      'ගමන්ගමන යාවත්කාලීන කිරීම් සහ ඇඟවීම් ලබාගන්න';
 
   @override
-  String get locationServices => 'Location Services';
+  String get locationServices => 'ස්ථාන සේවා';
 
   @override
-  String get locationServicesSubtitle => 'Allow app to access your location';
+  String get locationServicesSubtitle =>
+      'යෙදුමට ඔබගේ ස්ථානයට ප්‍රවේශ වීමට අවසර දෙන්න';
 
   @override
-  String get traveler => 'Traveler';
+  String get traveler => 'ගමනකාරයා';
 }

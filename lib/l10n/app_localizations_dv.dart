@@ -234,7 +234,7 @@ class AppLocalizationsDv extends AppLocalizations {
   String get distanceUnit => 'Distance Unit';
 
   @override
-  String get privacyAndPermissions => 'Privacy & Permissions';
+  String get privacyAndPermissions => 'Privacy and Permissions';
 
   @override
   String get saveMapsOffline => 'Save Maps Offline';
@@ -243,7 +243,7 @@ class AppLocalizationsDv extends AppLocalizations {
   String get saveMapsOfflineSubtitle => 'Download maps for offline use';
 
   @override
-  String get aboutAndSupport => 'About & Support';
+  String get aboutAndSupport => 'About and Support';
 
   @override
   String get appVersion => 'App Version';
@@ -267,8 +267,7 @@ class AppLocalizationsDv extends AppLocalizations {
   String get deleteMyData => 'Delete My Data';
 
   @override
-  String get deleteMyDataSubtitle =>
-      'Remove all your personal data from the app';
+  String get deleteMyDataSubtitle => 'Permanently delete all my data';
 
   @override
   String get signOut => 'Sign Out';
@@ -277,7 +276,7 @@ class AppLocalizationsDv extends AppLocalizations {
   String get pushNotifications => 'Push Notifications';
 
   @override
-  String get pushNotificationsSubtitle => 'Get travel updates and alerts';
+  String get pushNotificationsSubtitle => 'Manage push notification settings';
 
   @override
   String get locationServices => 'Location Services';
