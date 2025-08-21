@@ -276,4 +276,99 @@
   "@noFavoritesYet": {
     "description": "Message shown when favorites list is empty"
   }
+  ,
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Button text to edit the user's profile"
+  },
+  "appPreferences": "App Preferences",
+  "@appPreferences": {
+    "description": "Section header for app preferences in settings"
+  },
+  "lightMode": "Light Mode",
+  "@lightMode": {
+    "description": "Label for light mode theme"
+  },
+  "currency": "Currency",
+  "@currency": {
+    "description": "Label for currency selection"
+  },
+  "distanceUnit": "Distance Unit",
+  "@distanceUnit": {
+    "description": "Label for distance unit selection"
+  },
+  "privacyAndPermissions": "Privacy & Permissions",
+  "@privacyAndPermissions": {
+    "description": "Section header for privacy and permissions settings"
+  },
+  "saveMapsOffline": "Save Maps Offline",
+  "@saveMapsOffline": {
+    "description": "Title for saving maps offline option"
+  },
+  "saveMapsOfflineSubtitle": "Download maps for offline use",
+  "@saveMapsOfflineSubtitle": {
+    "description": "Subtitle explaining offline maps option"
+  },
+  "aboutAndSupport": "About & Support",
+  "@aboutAndSupport": {
+    "description": "Section header for about and support"
+  },
+  "appVersion": "App Version",
+  "@appVersion": {
+    "description": "Label for the application version"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Link label to view the terms of service"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Link label to view the privacy policy"
+  },
+  "contactSupport": "Contact Support",
+  "@contactSupport": {
+    "description": "Label for contacting support"
+  },
+  "sendFeedback": "Send Feedback",
+  "@sendFeedback": {
+    "description": "Label for sending feedback via email"
+  },
+  "accountManagement": "Account Management",
+  "@accountManagement": {
+    "description": "Section header for account management options"
+  },
+  "deleteMyData": "Delete My Data",
+  "@deleteMyData": {
+    "description": "Action label to delete the user's data"
+  },
+  "deleteMyDataSubtitle": "Remove all your personal data from the app",
+  "@deleteMyDataSubtitle": {
+    "description": "Subtitle explaining data deletion"
+  },
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "Label for signing out of the app"
+  }
+  ,
+  "pushNotifications": "Push Notifications",
+  "@pushNotifications": {
+    "description": "Title for push notifications toggle"
+  },
+  "pushNotificationsSubtitle": "Get travel updates and alerts",
+  "@pushNotificationsSubtitle": {
+    "description": "Subtitle for push notifications explaining purpose"
+  },
+  "locationServices": "Location Services",
+  "@locationServices": {
+    "description": "Title for location services toggle"
+  },
+  "locationServicesSubtitle": "Allow app to access your location",
+  "@locationServicesSubtitle": {
+    "description": "Subtitle explaining location access"
+  }
+  ,
+  "traveler": "Traveler",
+  "@traveler": {
+    "description": "Fallback display name for anonymous users"
+  }
 }

@@ -46,7 +46,8 @@ class EmptyState extends StatelessWidget {
             Icon(
                   icon,
                   size: iconSize,
-                  color: iconColor ?? colorScheme.primary.withOpacity(0.7),
+                  color:
+                      iconColor ?? colorScheme.primary.withValues(alpha: 0.7),
                 )
                 .animate()
                 .fade(duration: CeylonTokens.animationNormal)

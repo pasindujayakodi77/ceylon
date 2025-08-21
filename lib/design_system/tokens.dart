@@ -55,7 +55,7 @@ class CeylonTokens {
   // Commonly used shadows
   static final List<BoxShadow> shadowSmall = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.05),
+      color: Colors.black.withValues(alpha: 0.05),
       blurRadius: 4,
       offset: const Offset(0, 1),
     ),
@@ -63,7 +63,7 @@ class CeylonTokens {
 
   static final List<BoxShadow> shadowMedium = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.08),
+      color: Colors.black.withValues(alpha: 0.08),
       blurRadius: 8,
       offset: const Offset(0, 2),
     ),
@@ -71,7 +71,7 @@ class CeylonTokens {
 
   static final List<BoxShadow> shadowLarge = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.12),
+      color: Colors.black.withValues(alpha: 0.12),
       blurRadius: 16,
       offset: const Offset(0, 4),
     ),

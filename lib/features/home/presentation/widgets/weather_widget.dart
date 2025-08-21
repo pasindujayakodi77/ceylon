@@ -23,7 +23,7 @@ class WeatherWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(CeylonTokens.spacing16),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceVariant.withOpacity(0.5),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
       ),
       child: Row(
@@ -32,7 +32,7 @@ class WeatherWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(CeylonTokens.spacing8),
             decoration: BoxDecoration(
-              color: colorScheme.primary.withOpacity(0.1),
+              color: colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(weatherIcon, color: colorScheme.primary, size: 28),

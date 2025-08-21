@@ -42,7 +42,7 @@ class MyReviewsScreen extends StatelessWidget {
                   Image.asset(
                     'assets/images/empty_state.png',
                     height: 120,
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (context, error, stack) =>
                         const Icon(Icons.rate_review, size: 80),
                   ),
                   const SizedBox(height: 16),
@@ -112,15 +112,16 @@ class MyReviewsScreen extends StatelessWidget {
                                       width: 80,
                                       height: 80,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (_, __, ___) => Container(
-                                        width: 80,
-                                        height: 80,
-                                        color: Colors.grey[300],
-                                        child: const Icon(
-                                          Icons.image_not_supported,
-                                          size: 40,
-                                        ),
-                                      ),
+                                      errorBuilder: (context, error, stack) =>
+                                          Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: Colors.grey[300],
+                                            child: const Icon(
+                                              Icons.image_not_supported,
+                                              size: 40,
+                                            ),
+                                          ),
                                     )
                                   : Container(
                                       width: 80,
@@ -161,10 +162,11 @@ class MyReviewsScreen extends StatelessWidget {
                                     children: [
                                       RatingBarIndicator(
                                         rating: rating,
-                                        itemBuilder: (_, __) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
+                                        itemBuilder: (context, index) =>
+                                            const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
                                         itemSize: 18.0,
                                       ),
                                       const SizedBox(width: 8),

@@ -107,9 +107,11 @@ class _ReviewFormState extends State<ReviewForm> {
 
   Future<void> _submitReview() async {
     if (_commentController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter a comment')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Please enter a comment')));
+      }
       return;
     }
 

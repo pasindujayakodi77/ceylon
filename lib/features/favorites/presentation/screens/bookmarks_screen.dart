@@ -70,7 +70,9 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
           ),
           bottom: TabBar(
             labelColor: theme.colorScheme.primary,
-            unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
+            unselectedLabelColor: theme.colorScheme.onSurface.withValues(
+              alpha: 0.6,
+            ),
             indicatorColor: theme.colorScheme.primary,
             indicatorWeight: 3,
             indicatorSize: TabBarIndicatorSize.label,
@@ -127,20 +129,20 @@ class _FavoritesView extends StatelessWidget {
             Icon(
               Icons.favorite_border_outlined,
               size: 80,
-              color: theme.colorScheme.primary.withOpacity(0.5),
+              color: theme.colorScheme.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
               "No favorites yet",
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               "Places you favorite will appear here",
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),
           ],
@@ -197,7 +199,7 @@ class _FavoritesView extends StatelessWidget {
                                   width: 40,
                                   height: 4,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.3),
+                                    color: Colors.grey.withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
@@ -254,20 +256,20 @@ class _ItineraryList extends StatelessWidget {
                 Icon(
                   Icons.bookmark_border_outlined,
                   size: 80,
-                  color: theme.colorScheme.primary.withOpacity(0.5),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   "No itineraries saved",
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   "Your saved itineraries will appear here",
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
               ],
@@ -327,14 +329,16 @@ class _ItineraryList extends StatelessWidget {
                     Text(
                       "Created on $formattedDate",
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.7,
+                        ),
                       ),
                     ),
                     if (data['places'] != null && data['places'] is List)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
-                          "${(data['places'] as List).length} places",
+                          '${(data['places'] as List).length} places',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.w500,
@@ -347,7 +351,7 @@ class _ItineraryList extends StatelessWidget {
                   // Navigate to itinerary details
                   Navigator.pushNamed(
                     context,
-                    '/itineraries/${docId}',
+                    '/itineraries/$docId',
                     arguments: {'id': docId},
                   );
                 },

@@ -12,12 +12,12 @@ class PublishedEventsCarousel extends StatelessWidget {
   final bool showAsListIfFew;
 
   const PublishedEventsCarousel({
-    Key? key,
+    super.key,
     this.businessId,
     this.title = '🎟️ Upcoming Events',
     this.limit = 10,
     this.showAsListIfFew = true,
-  }) : super(key: key);
+  });
 
   Query<Map<String, dynamic>> _buildQuery() {
     final now = Timestamp.fromDate(DateTime.now());
@@ -149,7 +149,6 @@ class _EventCard extends StatelessWidget {
   final DateTime? endsAt;
 
   const _EventCard({
-    super.key,
     required this.eventId,
     required this.businessId,
     required this.title,

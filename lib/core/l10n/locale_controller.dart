@@ -41,7 +41,7 @@ class LocaleController extends ChangeNotifier {
 
       // Store both language and country code if available
       if (countryCode != null) {
-        await prefs.setString(_prefsKey, '$languageCode\_$countryCode');
+        await prefs.setString(_prefsKey, '${languageCode}_$countryCode');
       } else {
         await prefs.setString(_prefsKey, languageCode);
       }
@@ -134,7 +134,7 @@ class LocaleController extends ChangeNotifier {
     } catch (e) {
       debugPrint('Error loading language from Firestore: $e');
       // Re-throw to allow caller to handle the error (for retry logic)
-      throw e;
+      rethrow;
     }
   }
 }

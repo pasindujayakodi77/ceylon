@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import '../../data/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -30,8 +31,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthFailure("Google Sign-In failed: User is null"));
         }
       } catch (e) {
-        print("Google Sign-In bloc error: $e");
-        emit(AuthFailure("Google Sign-In failed: ${e.toString()}"));
+        debugPrint('Google Sign-In bloc error: $e');
+        emit(AuthFailure('Google Sign-In failed: ${e.toString()}'));
       }
     });
 

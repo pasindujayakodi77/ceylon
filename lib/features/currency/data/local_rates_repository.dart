@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 class LocalRatesRepository {
   static const _assetPath = 'assets/json/currency_rates.json';
@@ -8,14 +9,12 @@ class LocalRatesRepository {
   static const _prefsTo = 'currency_to';
 
   Map<String, double>? _rates; // code -> LKR per 1 unit
-  String _base = 'LKR';
 
   Future<void> load() async {
     if (_rates != null) return;
-    print('Loading asset: $_assetPath'); // Debug log
+    debugPrint('Loading asset: $_assetPath');
     final raw = await rootBundle.loadString(_assetPath);
     final data = jsonDecode(raw) as Map<String, dynamic>;
-    _base = data['base'] as String? ?? 'LKR';
     final r = (data['rates'] as Map<String, dynamic>);
     _rates = r.map((k, v) => MapEntry(k, (v as num).toDouble()));
   }

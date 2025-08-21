@@ -1,9 +1,7 @@
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:printing/printing.dart';
-import 'package:share_plus/share_plus.dart';
 
 import 'package:ceylon/features/journal/data/journal_service.dart';
 
@@ -17,7 +15,7 @@ class TripJournalScreen extends StatefulWidget {
 class _TripJournalScreenState extends State<TripJournalScreen> {
   final _picker = ImagePicker();
   bool _exporting = false;
-  List<String> _selectedIds = []; // for selective export
+  final List<String> _selectedIds = []; // for selective export
 
   Future<void> _openCreateOrEdit({
     DocumentSnapshot<Map<String, dynamic>>? doc,
@@ -83,7 +81,7 @@ class _TripJournalScreenState extends State<TripJournalScreen> {
                       final files = await _picker.pickMultiImage(
                         imageQuality: 85,
                       );
-                      if (files != null && files.isNotEmpty) {
+                      if (files.isNotEmpty) {
                         picked.addAll(files);
                         setSheet(() {}); // refresh preview count
                       }
@@ -111,8 +109,9 @@ class _TripJournalScreenState extends State<TripJournalScreen> {
                       onPressed: () async {
                         final title = titleCtrl.text.trim();
                         final note = noteCtrl.text.trim();
-                        if (title.isEmpty && note.isEmpty && picked.isEmpty)
+                        if (title.isEmpty && note.isEmpty && picked.isEmpty) {
                           return;
+                        }
 
                         if (doc == null) {
                           await JournalService.instance.addEntry(
@@ -133,10 +132,13 @@ class _TripJournalScreenState extends State<TripJournalScreen> {
                           );
                         }
 
-                        if (mounted) Navigator.pop(ctx);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('✅ Saved')),
-                        );
+                        if (!ctx.mounted) return;
+                        Navigator.pop(ctx);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('✅ Saved')),
+                          );
+                        }
                       },
                       icon: const Icon(Icons.check),
                       label: const Text('Save'),
@@ -177,7 +179,7 @@ class _TripJournalScreenState extends State<TripJournalScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('🗑 Deleted')));
+        ).showSnackBar(const SnackBar(content: Text('🗑️ Deleted')));
       }
     }
   }
@@ -276,7 +278,8 @@ class _TripJournalScreenState extends State<TripJournalScreen> {
                 child: ListView.separated(
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
                   itemCount: docs.length,
-                  separatorBuilder: (_, __) => const Divider(height: 0),
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 0),
                   itemBuilder: (_, i) {
                     final d = docs[i];
                     final data = d.data();
@@ -360,7 +363,7 @@ class _TripJournalScreenState extends State<TripJournalScreen> {
                                   child: ListView.separated(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: photos.length,
-                                    separatorBuilder: (_, __) =>
+                                    separatorBuilder: (context, index) =>
                                         const SizedBox(width: 6),
                                     itemBuilder: (_, idx) => ClipRRect(
                                       borderRadius: BorderRadius.circular(6),

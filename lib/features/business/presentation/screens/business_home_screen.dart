@@ -17,7 +17,6 @@ class BusinessHomeScreen extends StatefulWidget {
 
 class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   String? _businessName;
-  String? _businessId;
   bool _isLoading = true;
   int _currentIndex = 0;
 
@@ -45,10 +44,10 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           .limit(1)
           .get();
 
+      if (!mounted) return;
       if (snapshot.docs.isNotEmpty) {
         final doc = snapshot.docs.first;
         setState(() {
-          _businessId = doc.id;
           _businessName = doc.data()['name'] ?? 'My Business';
           _isLoading = false;
         });
@@ -59,7 +58,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
         });
       }
     } catch (e) {
-      print('Error loading business info: $e');
+      debugPrint('Error loading business info: $e');
+      if (!mounted) return;
       setState(() {
         _businessName = 'Error Loading';
         _isLoading = false;
@@ -141,7 +141,7 @@ class BusinessFeatureTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(CeylonTokens.radiusSmall),
                 ),
                 child: Icon(icon, color: color),

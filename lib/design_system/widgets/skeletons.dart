@@ -33,8 +33,9 @@ class SkeletonBox extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         borderRadius: effectiveBorderRadius,
-        color: colorScheme.surfaceVariant.withOpacity(
-          theme.brightness == Brightness.dark ? 0.3 : 0.5,
+        // Use surfaceContainerHighest and adjust alpha
+        color: colorScheme.surfaceContainerHighest.withValues(
+          alpha: theme.brightness == Brightness.dark ? 0.3 : 0.5,
         ),
       ),
       child: _buildShimmerEffect(context),
@@ -46,10 +47,9 @@ class SkeletonBox extends StatelessWidget {
       blendMode: BlendMode.srcATop,
       shaderCallback: (bounds) {
         final colorScheme = Theme.of(context).colorScheme;
-        final baseColor = colorScheme.surfaceVariant;
-        final highlightColor = Theme.of(context).brightness == Brightness.dark
-            ? baseColor.withOpacity(0.05)
-            : baseColor.withOpacity(0.2);
+        final baseColor = colorScheme.surfaceContainerHighest;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final highlightColor = baseColor.withValues(alpha: isDark ? 0.05 : 0.2);
 
         return LinearGradient(
           begin: const Alignment(-1.0, -0.5),

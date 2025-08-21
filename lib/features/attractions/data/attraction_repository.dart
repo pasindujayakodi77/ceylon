@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 
 class AttractionRepository {
   /// Loads attractions from the local JSON file
@@ -18,7 +19,7 @@ class AttractionRepository {
       // Convert JSON to Attraction objects
       return items.map((json) => Attraction.fromJson(json)).toList();
     } catch (e) {
-      print('Error loading attractions: $e');
+      debugPrint('Error loading attractions: $e');
       return [];
     }
   }

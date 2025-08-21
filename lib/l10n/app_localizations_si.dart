@@ -216,4 +216,74 @@ class AppLocalizationsSi extends AppLocalizations {
 
   @override
   String get noFavoritesYet => 'තවම ප්‍රියතම ඒවා නැත';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get appPreferences => 'App Preferences';
+
+  @override
+  String get lightMode => 'Light Mode';
+
+  @override
+  String get currency => 'Currency';
+
+  @override
+  String get distanceUnit => 'Distance Unit';
+
+  @override
+  String get privacyAndPermissions => 'Privacy & Permissions';
+
+  @override
+  String get saveMapsOffline => 'Save Maps Offline';
+
+  @override
+  String get saveMapsOfflineSubtitle => 'Download maps for offline use';
+
+  @override
+  String get aboutAndSupport => 'About & Support';
+
+  @override
+  String get appVersion => 'App Version';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get contactSupport => 'Contact Support';
+
+  @override
+  String get sendFeedback => 'Send Feedback';
+
+  @override
+  String get accountManagement => 'Account Management';
+
+  @override
+  String get deleteMyData => 'Delete My Data';
+
+  @override
+  String get deleteMyDataSubtitle =>
+      'Remove all your personal data from the app';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get pushNotifications => 'Push Notifications';
+
+  @override
+  String get pushNotificationsSubtitle => 'Get travel updates and alerts';
+
+  @override
+  String get locationServices => 'Location Services';
+
+  @override
+  String get locationServicesSubtitle => 'Allow app to access your location';
+
+  @override
+  String get traveler => 'Traveler';
 }

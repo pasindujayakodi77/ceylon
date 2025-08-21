@@ -75,10 +75,12 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
       lastDate: DateTime(now.year + 3),
     );
     if (date == null) return;
+    if (!mounted) return;
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_start ?? now),
     );
+    if (!mounted) return;
     setState(
       () => _start = DateTime(
         date.year,
@@ -99,12 +101,14 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
       lastDate: DateTime(base.year + 3),
     );
     if (date == null) return;
+    if (!mounted) return;
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(
         _end ?? base.add(const Duration(hours: 2)),
       ),
     );
+    if (!mounted) return;
     setState(
       () => _end = DateTime(
         date.year,
@@ -119,15 +123,19 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
     if (_start == null || _end == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Select start and end time')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Select start and end time')),
+        );
+      }
       return;
     }
     if (_end!.isBefore(_start!)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('End time must be after start time')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('End time must be after start time')),
+        );
+      }
       return;
     }
 
@@ -139,12 +147,14 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
     if (discountText.isNotEmpty) {
       discount = double.tryParse(discountText);
       if (discount == null || discount < 0 || discount > 100) {
-        setState(() => _saving = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Discount % must be a number between 0 and 100'),
-          ),
-        );
+        if (mounted) {
+          setState(() => _saving = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Discount % must be a number between 0 and 100'),
+            ),
+          );
+        }
         return;
       }
     }
@@ -190,13 +200,13 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
       }, SetOptions(merge: true));
     }
 
+    if (!mounted) return;
     setState(() => _saving = false);
-    if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('✅ Event saved')));
-      Navigator.pop(context);
-    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Event saved')));
+    Navigator.pop(context);
   }
 
   @override

@@ -63,7 +63,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
     final firstName = displayName.split(' ').first;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: CeylonAppBar(
         title: 'Ceylon',
         actions: [
@@ -119,7 +119,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: colorScheme.onBackground,
+                            color: colorScheme.onSurface,
                           ),
                     ).animate().fadeIn().slideY(begin: 0.2, end: 0),
                     const SizedBox(height: CeylonTokens.spacing8),
@@ -416,7 +416,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               gradient: LinearGradient(
                                 colors: [
                                   colorScheme.primaryContainer,
-                                  colorScheme.primary.withOpacity(0.7),
+                                  colorScheme.primary.withValues(alpha: 0.7),
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -432,7 +432,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                     CeylonTokens.spacing12,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
@@ -465,7 +465,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                                             ?.copyWith(
                                               color: colorScheme
                                                   .onPrimaryContainer
-                                                  .withOpacity(0.8),
+                                                  .withValues(alpha: 0.8),
                                             ),
                                       ),
                                     ],

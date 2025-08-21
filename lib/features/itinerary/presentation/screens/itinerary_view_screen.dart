@@ -126,7 +126,7 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
 
     buffer.writeln('Created with Ceylon - Your Travel Companion');
 
-    Share.share(buffer.toString());
+    SharePlus.instance.share(ShareParams(text: buffer.toString()));
   }
 
   Future<void> _exportToMaps() async {
@@ -164,7 +164,7 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
 
     await showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext sheetContext) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -188,7 +188,7 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
                   ),
                   title: Text(option),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(sheetContext);
                     _openInMaps(option, places);
                   },
                 ),
@@ -253,16 +253,15 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
               mode: LaunchMode.externalApplication,
             );
 
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'Apple Maps opened with the first location only. Add other locations manually.',
-                  ),
-                  duration: Duration(seconds: 5),
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Apple Maps opened with the first location only. Add other locations manually.',
                 ),
-              );
-            }
+                duration: Duration(seconds: 5),
+              ),
+            );
           }
           break;
 
@@ -271,19 +270,17 @@ class _ItineraryViewScreenState extends State<ItineraryViewScreen> {
               .map((p) => '${p.name}: ${p.lat}, ${p.lng}')
               .join('\n');
           await Clipboard.setData(ClipboardData(text: coordsText));
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Coordinates copied to clipboard')),
-            );
-          }
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Coordinates copied to clipboard')),
+          );
           break;
       }
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Failed to open maps: $e')));
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to open maps: $e')));
     }
   }
 

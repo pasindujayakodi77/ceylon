@@ -89,9 +89,9 @@ class _BusinessFeedbackSheetState extends State<BusinessFeedbackSheet> {
             spacing: 8,
             runSpacing: 8,
             children: [
-              _chip(FeedbackReason.too_far, 'Too far', Icons.directions_walk),
+              _chip(FeedbackReason.tooFar, 'Too far', Icons.directions_walk),
               _chip(
-                FeedbackReason.too_expensive,
+                FeedbackReason.tooExpensive,
                 'Too expensive',
                 Icons.attach_money,
               ),

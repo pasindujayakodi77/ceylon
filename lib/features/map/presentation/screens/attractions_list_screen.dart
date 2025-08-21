@@ -42,7 +42,7 @@ class AttractionsListScreen extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(12),
             itemCount: attractions.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final place = attractions[index];
               return Card(
@@ -128,6 +128,7 @@ class _AttractionDetailsState extends State<_AttractionDetails> {
       ),
     );
 
+    if (!mounted) return;
     if (confirmed == true) {
       await FirebaseFirestore.instance
           .collection('places')
@@ -159,7 +160,7 @@ class _AttractionDetailsState extends State<_AttractionDetails> {
               minRating: 1,
               allowHalfRating: true,
               itemCount: 5,
-              itemBuilder: (_, __) =>
+              itemBuilder: (context, index) =>
                   const Icon(Icons.star, color: Colors.amber),
               onRatingUpdate: (r) => tempRating = r,
             ),
@@ -181,7 +182,8 @@ class _AttractionDetailsState extends State<_AttractionDetails> {
                       'timestamp': FieldValue.serverTimestamp(),
                     });
                 await _updateRatingStats(widget.attraction['name']);
-                if (context.mounted) Navigator.pop(context);
+                if (!mounted) return;
+                Navigator.pop(context);
               },
               child: const Text("Save Changes"),
             ),
@@ -370,13 +372,15 @@ class _AttractionDetailsState extends State<_AttractionDetails> {
                         });
 
                     await _updateRatingStats(widget.attraction['name']);
-
+                    if (!mounted) return;
                     setState(() => _submitting = false);
                     _comment.clear();
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('✅ Review submitted')),
-                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('✅ Review submitted')),
+                      );
+                    }
                   },
             child: const Text("Submit Review"),
           ),

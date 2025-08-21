@@ -70,7 +70,7 @@ class AppTheme {
     final ColorScheme colorScheme = ColorScheme.fromSeed(
       seedColor: _seedColor,
       brightness: Brightness.light,
-      background: CeylonTokens.lightBackground,
+      // background is deprecated; rely on surface and scheme defaults
       surface: CeylonTokens.lightSurface,
     );
 
@@ -82,7 +82,7 @@ class AppTheme {
     final ColorScheme colorScheme = ColorScheme.fromSeed(
       seedColor: _seedColor,
       brightness: Brightness.dark,
-      background: CeylonTokens.darkBackground,
+      // background is deprecated; rely on surface and scheme defaults
       surface: CeylonTokens.darkSurface,
     );
 
@@ -171,7 +171,8 @@ class AppTheme {
       // Input decoration theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: colorScheme.surfaceVariant.withOpacity(0.3),
+        // surfaceVariant is deprecated; prefer surfaceContainerHighest
+        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         border: OutlineInputBorder(
           borderRadius: CeylonTokens.borderRadiusMedium,
           borderSide: BorderSide.none,

@@ -36,18 +36,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadAppVersion() async {
     final packageInfo = await PackageInfo.fromPlatform();
+    if (!mounted) return;
     setState(() {
       _appVersion = '${packageInfo.version} (${packageInfo.buildNumber})';
     });
   }
 
   Future<void> _loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
     final localeController = Provider.of<LocaleController>(
       context,
       listen: false,
     );
-
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
     setState(() {
       _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
       _locationTrackingEnabled =
@@ -62,11 +63,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _saveSettings() async {
-    final prefs = await SharedPreferences.getInstance();
     final localeController = Provider.of<LocaleController>(
       context,
       listen: false,
     );
+    final prefs = await SharedPreferences.getInstance();
 
     await prefs.setBool('notifications_enabled', _notificationsEnabled);
     await prefs.setBool('location_tracking_enabled', _locationTrackingEnabled);
@@ -83,26 +84,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await localeController.saveToFirestore(user.uid);
     }
 
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).save)),
-      );
-    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).save)));
   }
 
   Future<void> _logout() async {
     try {
-      final navigator = Navigator.of(context);
       await _authRepo.signOut();
-      if (context.mounted) {
-        navigator.pushNamedAndRemoveUntil('/login', (route) => false);
-      }
+      if (!mounted) return;
+      Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error signing out: ${e.toString()}')),
-        );
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: ${e.toString()}')),
+      );
     }
   }
 
@@ -170,7 +167,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      user.displayName ?? 'Traveler',
+                      user.displayName ?? AppLocalizations.of(context).traveler,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
@@ -182,7 +179,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/profile');
                       },
-                      child: const Text('Edit Profile'),
+                      child: Text(AppLocalizations.of(context).editProfile),
                     ),
                   ],
                 ),
@@ -190,16 +187,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
           // App Preferences
-          _buildSectionHeader(context, 'App Preferences'),
+          _buildSectionHeader(
+            context,
+            AppLocalizations.of(context).appPreferences,
+          ),
 
           // Theme
           ListTile(
             leading: Icon(
               themeManager.isDarkMode ? Icons.dark_mode : Icons.light_mode,
             ),
-            title: const Text('App Theme'),
+            title: Text(AppLocalizations.of(context).theme),
             subtitle: Text(
-              themeManager.isDarkMode ? 'Dark Mode' : 'Light Mode',
+              themeManager.isDarkMode
+                  ? AppLocalizations.of(context).darkMode
+                  : AppLocalizations.of(context).lightMode,
             ),
             onTap: _changeTheme,
             trailing: Switch(
@@ -219,7 +221,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Currency
           ListTile(
             leading: const Icon(Icons.currency_exchange),
-            title: const Text('Currency'),
+            title: Text(AppLocalizations.of(context).currency),
             subtitle: Text(_selectedCurrency),
             onTap: _showCurrencyDialog,
           ),
@@ -227,19 +229,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Distance unit
           ListTile(
             leading: const Icon(Icons.straighten),
-            title: const Text('Distance Unit'),
+            title: Text(AppLocalizations.of(context).distanceUnit),
             subtitle: Text(_selectedDistanceUnit.toUpperCase()),
             onTap: _showDistanceUnitDialog,
           ),
 
           // Privacy & Permissions
-          _buildSectionHeader(context, 'Privacy & Permissions'),
+          _buildSectionHeader(
+            context,
+            AppLocalizations.of(context).privacyAndPermissions,
+          ),
 
           // Notifications
           SwitchListTile(
             secondary: const Icon(Icons.notifications),
-            title: const Text('Push Notifications'),
-            subtitle: const Text('Get travel updates and alerts'),
+            title: Text(AppLocalizations.of(context).pushNotifications),
+            subtitle: Text(
+              AppLocalizations.of(context).pushNotificationsSubtitle,
+            ),
             value: _notificationsEnabled,
             onChanged: (value) {
               setState(() => _notificationsEnabled = value);
@@ -249,8 +256,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Location tracking
           SwitchListTile(
             secondary: const Icon(Icons.location_on),
-            title: const Text('Location Services'),
-            subtitle: const Text('Allow app to access your location'),
+            title: Text(AppLocalizations.of(context).locationServices),
+            subtitle: Text(
+              AppLocalizations.of(context).locationServicesSubtitle,
+            ),
             value: _locationTrackingEnabled,
             onChanged: (value) {
               setState(() => _locationTrackingEnabled = value);
@@ -260,8 +269,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Offline maps
           SwitchListTile(
             secondary: const Icon(Icons.map),
-            title: const Text('Save Maps Offline'),
-            subtitle: const Text('Download maps for offline use'),
+            title: Text(AppLocalizations.of(context).saveMapsOffline),
+            subtitle: Text(
+              AppLocalizations.of(context).saveMapsOfflineSubtitle,
+            ),
             value: _savingOfflineMaps,
             onChanged: (value) {
               setState(() => _savingOfflineMaps = value);
@@ -269,12 +280,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           // About & Support
-          _buildSectionHeader(context, 'About & Support'),
+          _buildSectionHeader(
+            context,
+            AppLocalizations.of(context).aboutAndSupport,
+          ),
 
           // App version
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: const Text('App Version'),
+            title: Text(AppLocalizations.of(context).appVersion),
             subtitle: Text(_appVersion),
             onTap: null,
           ),
@@ -282,7 +296,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Terms of Service
           ListTile(
             leading: const Icon(Icons.description),
-            title: const Text('Terms of Service'),
+            title: Text(AppLocalizations.of(context).termsOfService),
             onTap: () {
               _launchURL('https://ceylonapp.com/terms');
             },
@@ -291,7 +305,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Privacy Policy
           ListTile(
             leading: const Icon(Icons.privacy_tip),
-            title: const Text('Privacy Policy'),
+            title: Text(AppLocalizations.of(context).privacyPolicy),
             onTap: () {
               _launchURL('https://ceylonapp.com/privacy');
             },
@@ -300,7 +314,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Contact Support
           ListTile(
             leading: const Icon(Icons.support_agent),
-            title: const Text('Contact Support'),
+            title: Text(AppLocalizations.of(context).contactSupport),
             onTap: () {
               _launchURL('mailto:support@ceylonapp.com');
             },
@@ -309,7 +323,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Feedback
           ListTile(
             leading: const Icon(Icons.feedback),
-            title: const Text('Send Feedback'),
+            title: Text(AppLocalizations.of(context).sendFeedback),
             onTap: () {
               _launchURL(
                 'mailto:feedback@ceylonapp.com?subject=Ceylon App Feedback',
@@ -318,20 +332,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           // Account Management
-          _buildSectionHeader(context, 'Account Management'),
+          _buildSectionHeader(
+            context,
+            AppLocalizations.of(context).accountManagement,
+          ),
 
           // Delete data
           ListTile(
             leading: const Icon(Icons.delete_forever, color: Colors.orange),
-            title: const Text('Delete My Data'),
-            subtitle: const Text('Remove all your personal data from the app'),
+            title: Text(AppLocalizations.of(context).deleteMyData),
+            subtitle: Text(AppLocalizations.of(context).deleteMyDataSubtitle),
             onTap: _showDeleteDataDialog,
           ),
 
           // Sign Out
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Sign Out'),
+            title: Text(AppLocalizations.of(context).signOut),
             onTap: _showLogoutConfirmation,
           ),
 
@@ -385,7 +402,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: BoxDecoration(
                       color: Theme.of(
                         context,
-                      ).colorScheme.onSurfaceVariant.withOpacity(0.4),
+                      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
@@ -489,16 +506,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
 
         // Show a confirmation message
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
-              ),
-              behavior: SnackBarBehavior.floating,
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
             ),
-          );
-        }
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       },
       secondary: isRtl
           ? const Icon(Icons.format_textdirection_r_to_l)
@@ -648,14 +664,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _launchURL(String url) async {
-    if (await canLaunchUrlString(url)) {
+    final ok = await canLaunchUrlString(url);
+    if (!mounted) return;
+    if (ok) {
       await launchUrlString(url);
     } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Could not open $url')));
-      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not open $url')));
     }
   }
 

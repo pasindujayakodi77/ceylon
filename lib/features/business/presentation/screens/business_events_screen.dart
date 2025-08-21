@@ -62,7 +62,7 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
           return ListView.separated(
             padding: const EdgeInsets.all(12),
             itemCount: docs.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 8),
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
             itemBuilder: (_, i) {
               final doc = docs[i];
               final data = doc.data() as Map<String, dynamic>;
@@ -130,16 +130,14 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
                   ),
                   onTap: () async {
                     // Open editor in edit mode
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => EventEditorScreen(
-                          businessId: _businessId!,
-                          eventId: doc.id,
-                          initialData: data,
-                        ),
+                    final route = MaterialPageRoute(
+                      builder: (_) => EventEditorScreen(
+                        businessId: _businessId!,
+                        eventId: doc.id,
+                        initialData: data,
                       ),
                     );
+                    await Navigator.push(context, route);
                   },
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
@@ -163,18 +161,18 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
                           ],
                         ),
                       );
+                      if (!context.mounted) return;
                       if (ok == true) {
                         await FirebaseFirestore.instance
                             .collection('businesses')
-                            .doc(_businessId)
+                            .doc(_businessId!)
                             .collection('events')
                             .doc(doc.id)
                             .delete();
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('✅ Event deleted')),
-                          );
-                        }
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('✅ Event deleted')),
+                        );
                       }
                     },
                   ),
@@ -188,12 +186,10 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
         icon: const Icon(Icons.add),
         label: const Text('Add Event'),
         onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => EventEditorScreen(businessId: _businessId!),
-            ),
+          final route = MaterialPageRoute(
+            builder: (_) => EventEditorScreen(businessId: _businessId!),
           );
+          await Navigator.push(context, route);
         },
       ),
     );

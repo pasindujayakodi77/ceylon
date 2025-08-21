@@ -525,6 +525,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No favorites yet'**
   String get noFavoritesYet;
+
+  /// Button text to edit the user's profile
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// Section header for app preferences in settings
+  ///
+  /// In en, this message translates to:
+  /// **'App Preferences'**
+  String get appPreferences;
+
+  /// Label for light mode theme
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get lightMode;
+
+  /// Label for currency selection
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
+
+  /// Label for distance unit selection
+  ///
+  /// In en, this message translates to:
+  /// **'Distance Unit'**
+  String get distanceUnit;
+
+  /// Section header for privacy and permissions settings
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Permissions'**
+  String get privacyAndPermissions;
+
+  /// Title for saving maps offline option
+  ///
+  /// In en, this message translates to:
+  /// **'Save Maps Offline'**
+  String get saveMapsOffline;
+
+  /// Subtitle explaining offline maps option
+  ///
+  /// In en, this message translates to:
+  /// **'Download maps for offline use'**
+  String get saveMapsOfflineSubtitle;
+
+  /// Section header for about and support
+  ///
+  /// In en, this message translates to:
+  /// **'About & Support'**
+  String get aboutAndSupport;
+
+  /// Label for the application version
+  ///
+  /// In en, this message translates to:
+  /// **'App Version'**
+  String get appVersion;
+
+  /// Link label to view the terms of service
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// Link label to view the privacy policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// Label for contacting support
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contactSupport;
+
+  /// Label for sending feedback via email
+  ///
+  /// In en, this message translates to:
+  /// **'Send Feedback'**
+  String get sendFeedback;
+
+  /// Section header for account management options
+  ///
+  /// In en, this message translates to:
+  /// **'Account Management'**
+  String get accountManagement;
+
+  /// Action label to delete the user's data
+  ///
+  /// In en, this message translates to:
+  /// **'Delete My Data'**
+  String get deleteMyData;
+
+  /// Subtitle explaining data deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all your personal data from the app'**
+  String get deleteMyDataSubtitle;
+
+  /// Label for signing out of the app
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// Title for push notifications toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get pushNotifications;
+
+  /// Subtitle for push notifications explaining purpose
+  ///
+  /// In en, this message translates to:
+  /// **'Get travel updates and alerts'**
+  String get pushNotificationsSubtitle;
+
+  /// Title for location services toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Location Services'**
+  String get locationServices;
+
+  /// Subtitle explaining location access
+  ///
+  /// In en, this message translates to:
+  /// **'Allow app to access your location'**
+  String get locationServicesSubtitle;
+
+  /// Fallback display name for anonymous users
+  ///
+  /// In en, this message translates to:
+  /// **'Traveler'**
+  String get traveler;
 }
 
 class _AppLocalizationsDelegate

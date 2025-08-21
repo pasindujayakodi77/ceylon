@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:ceylon/core/ai/gemini_recommender.dart';
-import 'package:ceylon/features/business/presentation/screens/business_detail_screen.dart';
 
 class RecommendationsScreen extends StatefulWidget {
   const RecommendationsScreen({super.key});

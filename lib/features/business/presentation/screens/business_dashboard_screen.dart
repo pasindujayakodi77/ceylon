@@ -22,7 +22,10 @@ class BusinessDashboardScreen extends StatefulWidget {
 
 class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
   File? _imageFile;
+  // These are kept for future upload implementation.
+  // ignore: unused_field
   bool _isUploading = false;
+  // ignore: unused_field
   String? _uploadedImageUrl;
 
   final _formKey = GlobalKey<FormState>();
@@ -38,6 +41,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
   bool _loading = true;
   String? _businessId;
 
+  // ignore: unused_element
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -48,6 +52,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
     }
   }
 
+  // ignore: unused_element
   Future<void> _uploadImage() async {
     if (_imageFile == null) return;
     setState(() {
@@ -360,6 +365,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                                 lastDate: now.add(const Duration(days: 365)),
                               );
                               if (d == null) return;
+                              if (!context.mounted) return;
                               final t = await showTimePicker(
                                 context: context,
                                 initialTime: const TimeOfDay(
@@ -367,6 +373,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                                   minute: 0,
                                 ),
                               );
+                              if (!context.mounted) return;
                               setState(() {
                                 _promotedUntil = DateTime(
                                   d.year,

@@ -58,8 +58,8 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
           return ListView.separated(
             padding: const EdgeInsets.all(12),
             itemCount: docs.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 8),
-            itemBuilder: (_, i) {
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
+            itemBuilder: (context, i) {
               final doc = docs[i];
               final data = doc.data() as Map<String, dynamic>;
               final rating = (data['rating'] as num?)?.toDouble() ?? 0;

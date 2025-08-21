@@ -52,7 +52,7 @@ class FavoritesService extends ChangeNotifier {
       _initialized = true;
       notifyListeners();
     } catch (e) {
-      print('Error initializing favorites cache: $e');
+      debugPrint('Error initializing favorites cache: $e');
     }
   }
 
@@ -103,7 +103,7 @@ class FavoritesService extends ChangeNotifier {
       notifyListeners();
       return !_favoritesCache.contains(attraction.id);
     } catch (e) {
-      print('Error toggling favorite: $e');
+      debugPrint('Error toggling favorite: $e');
       return _favoritesCache.contains(attraction.id);
     }
   }
@@ -137,7 +137,7 @@ class FavoritesService extends ChangeNotifier {
         );
       }).toList();
     } catch (e) {
-      print('Error getting favorites: $e');
+      debugPrint('Error getting favorites: $e');
       return [];
     }
   }

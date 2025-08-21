@@ -13,24 +13,21 @@ class PromotedBusinessesCarousel extends StatelessWidget {
     this.limit = 12,
   });
 
+  // Deprecated single query kept for reference; using combined streams instead.
+  // ignore: unused_element
   Query<Map<String, dynamic>> _query() {
-    final now = Timestamp.fromDate(DateTime.now());
-    // promoted == true AND (no end date OR ends in future)
-    // Order by promotedWeight desc, then avg_rating desc as a tie-breaker
     return FirebaseFirestore.instance
         .collection('businesses')
         .where('promoted', isEqualTo: true)
-        .where('promotedUntil', whereIn: [null])
-        .orderBy('promotedWeight', descending: true)
-    // Firestore can't combine where field==null with order unless indexed; so we do two queries fallback if needed.
-    ;
+        .where('promotedUntil', isNull: true)
+        .orderBy('promotedWeight', descending: true);
   }
 
   // Because Firestore doesn't allow `where promotedUntil==null OR >= now` in one query,
   // we’ll fetch two streams and merge in UI: (1) no end date (null) and (2) future end date.
   Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _streamCombined() {
-    final now = Timestamp.fromDate(DateTime.now());
     final base = FirebaseFirestore.instance.collection('businesses');
+    final now = Timestamp.fromDate(DateTime.now());
 
     final qNoEnd = base
         .where('promoted', isEqualTo: true)

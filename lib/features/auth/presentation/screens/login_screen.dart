@@ -29,6 +29,32 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   bool _rememberMe = false;
 
+  Future<void> _handleAuthSuccess() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final localeController = Provider.of<LocaleController>(
+      context,
+      listen: false,
+    );
+    await localeController.loadFromFirestore(uid);
+    if (!mounted) return;
+
+    final colorScheme = Theme.of(context).colorScheme;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context).loginSuccessful),
+        backgroundColor: colorScheme.primary,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const RoleRouter()),
+    );
+  }
+
   @override
   void dispose() {
     _email.dispose();
@@ -73,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
@@ -86,30 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
           if (state is AuthSuccess) {
-            () async {
-              final uid = FirebaseAuth.instance.currentUser!.uid;
-              // Load language preference from Firestore
-              final localeController = Provider.of<LocaleController>(
-                context,
-                listen: false,
-              );
-              await localeController.loadFromFirestore(uid);
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context).loginSuccessful),
-                  backgroundColor: colorScheme.primary,
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-
-              Future.delayed(const Duration(milliseconds: 500), () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const RoleRouter()),
-                );
-              });
-            }();
+            // Move async work out to avoid using BuildContext across async gaps
+            _handleAuthSuccess();
           }
         },
         builder: (context, state) {
@@ -153,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       AppLocalizations.of(context).welcomeToCeylon,
                       style: textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: colorScheme.onBackground,
+                        color: colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
                     ).animate().fadeIn(

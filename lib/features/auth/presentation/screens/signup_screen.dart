@@ -32,6 +32,32 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  Future<void> _handleSignupSuccess() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final localeController = Provider.of<LocaleController>(
+      context,
+      listen: false,
+    );
+    await localeController.loadFromFirestore(uid);
+    if (!mounted) return;
+
+    final colorScheme = Theme.of(context).colorScheme;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context).accountCreatedSuccessfully),
+        backgroundColor: colorScheme.primary,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const RoleRouter()),
+    );
+  }
+
   @override
   void dispose() {
     _name.dispose();
@@ -124,7 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: CeylonAppBar.medium(
         title: AppLocalizations.of(context).signup,
         centerTitle: false,
@@ -142,32 +168,7 @@ class _SignupScreenState extends State<SignupScreen> {
             );
           }
           if (state is AuthSuccess) {
-            () async {
-              final uid = FirebaseAuth.instance.currentUser!.uid;
-              // Load language preference from Firestore
-              final localeController = Provider.of<LocaleController>(
-                context,
-                listen: false,
-              );
-              await localeController.loadFromFirestore(uid);
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppLocalizations.of(context).accountCreatedSuccessfully,
-                  ),
-                  backgroundColor: colorScheme.primary,
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-
-              Future.delayed(const Duration(milliseconds: 500), () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const RoleRouter()),
-                );
-              });
-            }();
+            _handleSignupSuccess();
           }
         },
         builder: (context, state) {
@@ -186,7 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       AppLocalizations.of(context).createYourAccount,
                       style: textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: colorScheme.onBackground,
+                        color: colorScheme.onSurface,
                       ),
                     ).animate().fadeIn(
                       duration: const Duration(milliseconds: 600),

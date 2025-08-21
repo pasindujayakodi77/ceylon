@@ -1217,14 +1217,17 @@ class _AddItineraryItemSheetState extends State<_AddItineraryItemSheet> {
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
-                                width: 60,
-                                height: 60,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.surfaceVariant,
-                                child: const Icon(Icons.image_not_supported),
-                              ),
+                              errorBuilder: (context, error, stack) =>
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHighest,
+                                    child: const Icon(
+                                      Icons.image_not_supported,
+                                    ),
+                                  ),
                             ),
                           )
                         else
@@ -1234,7 +1237,7 @@ class _AddItineraryItemSheetState extends State<_AddItineraryItemSheet> {
                             decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.surfaceVariant,
+                              ).colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(
                                 CeylonTokens.radiusSmall,
                               ),
@@ -1321,7 +1324,7 @@ class _AddItineraryItemSheetState extends State<_AddItineraryItemSheet> {
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
-                                    color: colorScheme.surfaceVariant,
+                                    color: colorScheme.surfaceContainerHighest,
                                     borderRadius: BorderRadius.circular(
                                       CeylonTokens.radiusSmall,
                                     ),
@@ -1337,7 +1340,7 @@ class _AddItineraryItemSheetState extends State<_AddItineraryItemSheet> {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: colorScheme.surfaceVariant,
+                            color: colorScheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(
                               CeylonTokens.radiusSmall,
                             ),
@@ -1389,7 +1392,7 @@ class _AddItineraryItemSheetState extends State<_AddItineraryItemSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Duration: ${_formatDuration(_durationMinutes)}'),
-              Text('${_durationMinutes} min'),
+              Text('$_durationMinutes min'),
             ],
           ),
           Slider(

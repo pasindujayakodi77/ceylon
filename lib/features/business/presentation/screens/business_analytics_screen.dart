@@ -1,8 +1,6 @@
 import 'package:ceylon/features/business/data/business_analytics_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class BusinessAnalyticsScreen extends StatefulWidget {
@@ -184,11 +182,12 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
               .limit(20)
               .get(),
           builder: (context, snap) {
-            if (!snap.hasData)
+            if (!snap.hasData) {
               return const Padding(
                 padding: EdgeInsets.all(16),
                 child: Center(child: CircularProgressIndicator()),
               );
+            }
             final docs = snap.data!.docs;
             if (docs.isEmpty) return const Text('No feedback yet.');
             return Column(
@@ -267,7 +266,7 @@ class _StatCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 1),
                         child: Container(
                           height: (v / max) * 40.0,
-                          color: color.withOpacity(0.35),
+                          color: color.withValues(alpha: 0.35),
                         ),
                       ),
                     ),
@@ -303,7 +302,7 @@ class _FeedbackRow extends StatelessWidget {
               value: count == 0
                   ? 0
                   : null, // indeterminate for non-zero to make it lightweight
-              backgroundColor: color.withOpacity(0.12),
+              backgroundColor: color.withValues(alpha: 0.12),
               color: color,
               minHeight: 8,
             ),

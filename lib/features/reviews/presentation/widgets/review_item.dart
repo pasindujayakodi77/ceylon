@@ -55,7 +55,7 @@ class ReviewItem extends StatelessWidget {
               children: [
                 RatingBarIndicator(
                   rating: rating,
-                  itemBuilder: (_, __) =>
+                  itemBuilder: (context, index) =>
                       const Icon(Icons.star, color: Colors.amber),
                   itemSize: 18,
                 ),

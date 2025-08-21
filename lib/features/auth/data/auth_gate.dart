@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:ceylon/core/l10n/locale_controller.dart';
 import 'package:ceylon/features/auth/data/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +12,7 @@ import 'package:provider/provider.dart';
 class AuthGate extends StatefulWidget {
   final Widget child;
 
-  const AuthGate({Key? key, required this.child}) : super(key: key);
+  const AuthGate({super.key, required this.child});
 
   @override
   State<AuthGate> createState() => _AuthGateState();

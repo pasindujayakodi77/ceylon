@@ -102,7 +102,7 @@ class _PhotoGalleryWidgetState extends State<PhotoGalleryWidget> {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                Colors.black.withOpacity(0.5),
+                                Colors.black.withValues(alpha: 0.5),
                               ],
                             ),
                           ),
@@ -129,7 +129,7 @@ class _PhotoGalleryWidgetState extends State<PhotoGalleryWidget> {
                 shape: BoxShape.circle,
                 color: _currentIndex == index
                     ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.surfaceVariant,
+                    : Theme.of(context).colorScheme.surfaceContainerHighest,
               ),
             ),
           ),

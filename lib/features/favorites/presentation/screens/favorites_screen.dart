@@ -39,7 +39,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -96,7 +96,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: BorderSide(
-                  color: theme.colorScheme.primary.withOpacity(0.2),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -172,20 +172,26 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         Icon(
                           Icons.favorite_border_outlined,
                           size: 80,
-                          color: theme.colorScheme.primary.withOpacity(0.5),
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         Text(
                           localizations.noFavoritesYet,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.7),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.7,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           "Favorite places will appear here",
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.5,
+                            ),
                           ),
                         ),
                       ],
@@ -209,7 +215,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             ),
                             child: Card(
                               elevation: 2,
-                              shadowColor: Colors.black.withOpacity(0.1),
+                              shadowColor: Colors.black.withValues(alpha: 0.1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -250,7 +256,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                                       height: 4,
                                                       decoration: BoxDecoration(
                                                         color: Colors.grey
-                                                            .withOpacity(0.3),
+                                                            .withValues(
+                                                              alpha: 0.3,
+                                                            ),
                                                         borderRadius:
                                                             BorderRadius.circular(
                                                               2,

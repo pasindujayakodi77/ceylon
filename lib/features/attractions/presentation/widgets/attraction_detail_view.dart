@@ -142,7 +142,7 @@ class AttractionDetailView extends StatelessWidget {
                     Icon(Icons.star, size: 18, color: Colors.amber),
                     const SizedBox(width: 4),
                     Text(
-                      '${attraction.rating.toStringAsFixed(1)}',
+                      attraction.rating.toStringAsFixed(1),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

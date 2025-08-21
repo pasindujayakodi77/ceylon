@@ -45,7 +45,9 @@ class FeatureCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isPrimary
                       ? colorScheme.primaryContainer
-                      : colorScheme.surfaceVariant.withOpacity(0.7),
+                      : colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.7,
+                        ),
                   borderRadius: BorderRadius.circular(CeylonTokens.radiusSmall),
                 ),
                 child: Icon(

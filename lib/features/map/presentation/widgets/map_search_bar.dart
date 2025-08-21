@@ -38,7 +38,7 @@ class MapSearchBar extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Search attractions',
                 hintStyle: TextStyle(
-                  color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                 ),
                 border: InputBorder.none,
               ),
@@ -55,7 +55,7 @@ class MapSearchBar extends StatelessWidget {
             Container(
               height: 24,
               width: 1,
-              color: colorScheme.onSurfaceVariant.withOpacity(0.2),
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
               margin: const EdgeInsets.symmetric(
                 horizontal: CeylonTokens.spacing8,
               ),

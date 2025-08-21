@@ -119,8 +119,9 @@ class GeminiRecommender {
   Future<Position?> getCurrentPosition() async {
     final perm = await Geolocator.requestPermission();
     if (perm == LocationPermission.denied ||
-        perm == LocationPermission.deniedForever)
+        perm == LocationPermission.deniedForever) {
       return null;
+    }
     return Geolocator.getCurrentPosition();
   }
 
@@ -233,8 +234,12 @@ Never output anything except valid JSON array.
     double? userLng,
   ) {
     double distKm(Attraction a) {
-      if (userLat == null || userLng == null || a.lat == null || a.lng == null)
+      if (userLat == null ||
+          userLng == null ||
+          a.lat == null ||
+          a.lng == null) {
         return 9999;
+      }
       final dx = (userLat - a.lat!).abs();
       final dy = (userLng - a.lng!).abs();
       // rough distance (not geodesic) — ok for fallback

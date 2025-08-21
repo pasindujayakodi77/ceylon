@@ -1,6 +1,5 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
-import 'package:ceylon/design_system/tokens.dart';
-import 'package:ceylon/main.dart';
 import 'package:ceylon/features/reviews/presentation/screens/my_reviews_screen.dart';
 import 'package:ceylon/features/profile/data/country_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,10 +48,6 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
     'Temples',
     'Local Markets',
   ];
-
-  String _getLanguageName(Locale locale) {
-    return LanguageCodes.getLanguageName(locale);
-  }
 
   Widget _buildLanguageOption(Locale locale, String name) {
     final bool isRtl = LanguageCodes.isRtlLanguage(locale);
@@ -137,7 +132,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
 
       setState(() => _loading = false);
     } catch (e) {
-      print('Error loading profile: $e');
+      debugPrint('Error loading profile: $e');
       setState(() => _loading = false);
     }
   }
@@ -167,7 +162,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
 
       return true;
     } catch (e) {
-      print('Error ensuring user profile exists: $e');
+      debugPrint('Error ensuring user profile exists: $e');
       return false;
     }
   }
@@ -319,7 +314,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                     decoration: BoxDecoration(
                       color: Theme.of(
                         context,
-                      ).colorScheme.onSurfaceVariant.withOpacity(0.4),
+                      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
@@ -585,7 +580,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                         selectedColor: Theme.of(context).colorScheme.primary,
                         selectedTileColor: Theme.of(
                           context,
-                        ).colorScheme.primaryContainer.withOpacity(0.2),
+                        ).colorScheme.primaryContainer.withValues(alpha: 0.2),
                       );
                     },
                   ),
@@ -804,7 +799,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                     leading: const Icon(Icons.currency_exchange),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                     onTap: _showCurrencyPicker,
-                    tileColor: colorScheme.surfaceVariant.withOpacity(0.3),
+                    tileColor: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.3,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -820,7 +817,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                     leading: const Icon(Icons.language),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                     onTap: _showLanguagePicker,
-                    tileColor: colorScheme.surfaceVariant.withOpacity(0.3),
+                    tileColor: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.3,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

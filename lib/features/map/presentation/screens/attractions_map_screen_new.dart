@@ -197,7 +197,7 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                       interactionOptions: const InteractionOptions(
                         flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
                       ),
-                      onTap: (_, __) {
+                      onTap: (context, index) {
                         // Clear selection when tapping on the map
                         setState(() {
                           _selectedAttraction = null;
@@ -218,7 +218,9 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                           builder: (context, markers) {
                             return Container(
                               decoration: BoxDecoration(
-                                color: colorScheme.primary.withOpacity(0.8),
+                                color: colorScheme.primary.withValues(
+                                  alpha: 0.8,
+                                ),
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
@@ -413,14 +415,16 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
             decoration: BoxDecoration(
               color: isSelected
                   ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary.withOpacity(0.9),
+                  : Theme.of(
+                      context,
+                    ).colorScheme.secondary.withValues(alpha: 0.9),
               shape: BoxShape.circle,
               boxShadow: isSelected
                   ? [
                       BoxShadow(
                         color: Theme.of(
                           context,
-                        ).colorScheme.primary.withOpacity(0.4),
+                        ).colorScheme.primary.withValues(alpha: 0.4),
                         blurRadius: 8,
                         spreadRadius: 2,
                       ),
@@ -489,7 +493,7 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onSurfaceVariant.withOpacity(0.2),
+                        ).colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(
                           CeylonTokens.radiusSmall,
                         ),

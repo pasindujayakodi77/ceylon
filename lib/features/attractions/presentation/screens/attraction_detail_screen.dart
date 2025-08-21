@@ -320,7 +320,7 @@ class AttractionDetailScreen extends StatelessWidget {
                           const SizedBox(height: 4),
                           RatingBarIndicator(
                             rating: rating,
-                            itemBuilder: (_, __) =>
+                            itemBuilder: (context, index) =>
                                 const Icon(Icons.star, color: Colors.amber),
                             itemSize: 16,
                           ),

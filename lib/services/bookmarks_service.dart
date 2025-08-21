@@ -1,4 +1,3 @@
-import 'package:ceylon/features/attractions/data/attraction_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -52,7 +51,7 @@ class BookmarksService extends ChangeNotifier {
       _initialized = true;
       notifyListeners();
     } catch (e) {
-      print('Error initializing bookmarks cache: $e');
+      debugPrint('Error initializing bookmarks cache: $e');
     }
   }
 
@@ -98,7 +97,7 @@ class BookmarksService extends ChangeNotifier {
       notifyListeners();
       return !_bookmarksCache.contains(itineraryId);
     } catch (e) {
-      print('Error toggling bookmark: $e');
+      debugPrint('Error toggling bookmark: $e');
       return _bookmarksCache.contains(itineraryId);
     }
   }
@@ -121,7 +120,7 @@ class BookmarksService extends ChangeNotifier {
         return data;
       }).toList();
     } catch (e) {
-      print('Error getting bookmarks: $e');
+      debugPrint('Error getting bookmarks: $e');
       return [];
     }
   }

@@ -43,7 +43,7 @@ class ItineraryItemWidget extends StatelessWidget {
                     width: 14,
                     height: 14,
                     decoration: BoxDecoration(
-                      color: item.type.color.withOpacity(0.2),
+                      color: item.type.color.withValues(alpha: 0.2),
                       border: Border.all(color: item.type.color, width: 2),
                       shape: BoxShape.circle,
                     ),
@@ -55,7 +55,7 @@ class ItineraryItemWidget extends StatelessWidget {
                       child: Container(
                         width: 2,
                         height: 60,
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.grey.withValues(alpha: 0.3),
                       ),
                     ),
                 ],
@@ -79,7 +79,7 @@ class ItineraryItemWidget extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(CeylonTokens.spacing12),
                 decoration: BoxDecoration(
-                  color: item.type.color.withOpacity(0.1),
+                  color: item.type.color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(
                     CeylonTokens.radiusMedium,
                   ),
@@ -96,7 +96,7 @@ class ItineraryItemWidget extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: item.type.color.withOpacity(0.2),
+                            color: item.type.color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(
                               CeylonTokens.radiusSmall,
                             ),

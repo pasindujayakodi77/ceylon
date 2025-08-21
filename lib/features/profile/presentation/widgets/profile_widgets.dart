@@ -10,12 +10,12 @@ class ProfileFormFields extends StatelessWidget {
   final Function() onCountryPickerTap;
 
   const ProfileFormFields({
-    Key? key,
+    super.key,
     required this.nameController,
     required this.selectedCountry,
     this.selectedLang,
     required this.onCountryPickerTap,
-  }) : super(key: key);
+  });
 
   String _getLanguageDisplay(String code) {
     switch (code) {
@@ -57,7 +57,7 @@ class ProfileFormFields extends StatelessWidget {
         TextField(
           controller: nameController,
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.name,
+            labelText: AppLocalizations.of(context).name,
             prefixIcon: const Icon(Icons.person_outline),
             filled: true,
           ),
@@ -71,7 +71,7 @@ class ProfileFormFields extends StatelessWidget {
             child: TextField(
               controller: TextEditingController(text: selectedCountry),
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.country,
+                labelText: AppLocalizations.of(context).country,
                 prefixIcon: const Icon(Icons.public),
                 suffixIcon: const Icon(Icons.arrow_drop_down),
                 filled: true,
@@ -108,12 +108,12 @@ class ProfileAvatar extends StatelessWidget {
   final VoidCallback onTap;
 
   const ProfileAvatar({
-    Key? key,
+    super.key,
     required this.profileImageUrl,
     required this.nameInitial,
     required this.isUploadingImage,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +185,7 @@ class ProfileAvatar extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
               ),
               child: const Center(
                 child: CircularProgressIndicator(
@@ -204,7 +204,7 @@ class ProfileAvatar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: colorScheme.primary,
                 shape: BoxShape.circle,
-                border: Border.all(color: colorScheme.background, width: 2),
+                border: Border.all(color: colorScheme.surface, width: 2),
               ),
               child: Icon(
                 Icons.camera_alt,
@@ -225,11 +225,11 @@ class EmailVerificationTile extends StatelessWidget {
   final VoidCallback onSendVerification;
 
   const EmailVerificationTile({
-    Key? key,
+    super.key,
     required this.email,
     required this.isEmailVerified,
     required this.onSendVerification,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -309,10 +309,10 @@ class CountryPickerBottomSheet extends StatefulWidget {
   final Function(String) onCountrySelected;
 
   const CountryPickerBottomSheet({
-    Key? key,
+    super.key,
     required this.selectedCountry,
     required this.onCountrySelected,
-  }) : super(key: key);
+  });
 
   @override
   State<CountryPickerBottomSheet> createState() =>
@@ -393,7 +393,7 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                   selectedColor: Theme.of(context).colorScheme.primary,
                   selectedTileColor: Theme.of(
                     context,
-                  ).colorScheme.primaryContainer.withOpacity(0.2),
+                  ).colorScheme.primaryContainer.withValues(alpha: 0.2),
                 );
               },
             ),

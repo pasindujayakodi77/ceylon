@@ -10,7 +10,6 @@ import 'package:ceylon/features/reviews/providers/reviews_provider.dart';
 import 'package:ceylon/services/favorites_provider.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,7 +69,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final Widget home;
-  const MyApp({Key? key, required this.home}) : super(key: key);
+  const MyApp({super.key, required this.home});
 
   /// Static method to set locale from other screens
   /// This maintains backwards compatibility with existing code

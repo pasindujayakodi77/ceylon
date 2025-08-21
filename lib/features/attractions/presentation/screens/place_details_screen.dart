@@ -182,7 +182,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.7),
+                              Colors.black.withValues(alpha: 0.7),
                             ],
                             stops: const [0.6, 1.0],
                           ),
@@ -206,7 +206,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                                   Shadow(
                                     offset: const Offset(1, 1),
                                     blurRadius: 3.0,
-                                    color: Colors.black.withOpacity(0.5),
+                                    color: Colors.black.withValues(alpha: 0.5),
                                   ),
                                 ],
                               ),
@@ -228,7 +228,9 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                                       Shadow(
                                         offset: const Offset(1, 1),
                                         blurRadius: 3.0,
-                                        color: Colors.black.withOpacity(0.5),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.5,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -436,11 +438,13 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
               duration: const Duration(milliseconds: 200),
               height: 60 + MediaQuery.of(context).padding.top,
               decoration: BoxDecoration(
-                color: colorScheme.surface.withOpacity(_appBarOpacity),
+                color: colorScheme.surface.withValues(alpha: _appBarOpacity),
                 boxShadow: _appBarOpacity > 0.1
                     ? [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1 * _appBarOpacity),
+                          color: Colors.black.withValues(
+                            alpha: 0.1 * _appBarOpacity,
+                          ),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),

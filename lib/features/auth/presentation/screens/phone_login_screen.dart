@@ -19,12 +19,14 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
       phoneNumber: _phone.text,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await FirebaseAuth.instance.signInWithCredential(credential);
+        if (!mounted) return;
         Navigator.pushReplacementNamed(context, '/home');
       },
       verificationFailed: (FirebaseAuthException e) {
+        if (!mounted) return;
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("❌ ${e.message}")));
+        ).showSnackBar(SnackBar(content: Text('❌ ${e.message}')));
       },
       codeSent: (String verificationId, int? resendToken) {
         setState(() {
@@ -44,6 +46,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
       smsCode: _smsCode.text,
     );
     await FirebaseAuth.instance.signInWithCredential(credential);
+    if (!mounted) return;
     Navigator.pushReplacementNamed(context, '/home');
   }
 

@@ -44,7 +44,7 @@ class ItineraryDayWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -96,8 +96,8 @@ class ItineraryDayWidget extends StatelessWidget {
                       Text(
                         day.formattedDate,
                         style: textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onPrimaryContainer.withOpacity(
-                            0.8,
+                          color: colorScheme.onPrimaryContainer.withValues(
+                            alpha: 0.8,
                           ),
                         ),
                       ),
@@ -113,7 +113,7 @@ class ItineraryDayWidget extends StatelessWidget {
                     style: IconButton.styleFrom(
                       foregroundColor: colorScheme.primary,
                       backgroundColor: colorScheme.onPrimaryContainer
-                          .withOpacity(0.1),
+                          .withValues(alpha: 0.1),
                     ),
                   ),
               ],
@@ -188,7 +188,7 @@ class ItineraryDayWidget extends StatelessWidget {
                     Icon(
                       Icons.event_note_outlined,
                       size: 48,
-                      color: colorScheme.outline.withOpacity(0.5),
+                      color: colorScheme.outline.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: CeylonTokens.spacing8),
                     Text(

@@ -47,6 +47,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           email: _emailController.text.trim(),
         );
 
+        if (!mounted) return;
         setState(() {
           _sent = true;
           _isLoading = false;
@@ -61,6 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
         );
       } catch (e) {
+        if (!mounted) return;
         setState(() => _isLoading = false);
 
         // Show error snackbar
@@ -68,8 +70,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           SnackBar(
             content: Text(
               e.toString().contains('user-not-found')
-                  ? "No account found with this email"
-                  : "Error sending reset link: ${e.toString()}",
+                  ? 'No account found with this email'
+                  : 'Error sending reset link',
             ),
             backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
@@ -84,7 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: CeylonAppBar(
         title: AppLocalizations.of(context).resetPassword,
         centerTitle: true,
@@ -101,7 +103,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Text(
                 AppLocalizations.of(context).forgotPasswordQuestion,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: colorScheme.onBackground,
+                  color: colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                 ),
               ).animate().fadeIn().slideY(
@@ -137,7 +139,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                       ),
                       filled: true,
-                      fillColor: colorScheme.surfaceVariant.withOpacity(0.3),
+                      fillColor: colorScheme.surfaceContainerHighest.withValues(
+                        alpha: 0.3,
+                      ),
                     ),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,

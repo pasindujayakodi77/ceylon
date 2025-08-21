@@ -40,10 +40,13 @@ class VerificationInboxScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: q.snapshots(),
         builder: (context, snap) {
-          if (!snap.hasData)
+          if (!snap.hasData) {
             return const Center(child: CircularProgressIndicator());
+          }
           final docs = snap.data!.docs;
-          if (docs.isEmpty) return const Center(child: Text('No requests'));
+          if (docs.isEmpty) {
+            return const Center(child: Text('No requests'));
+          }
           return ListView.builder(
             itemCount: docs.length,
             itemBuilder: (_, i) {

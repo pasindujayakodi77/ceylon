@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Build a WhatsApp deep link with a sanitized international phone (E.164 or digits) and message.

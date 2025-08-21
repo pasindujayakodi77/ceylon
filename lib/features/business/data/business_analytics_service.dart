@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum FeedbackReason { too_far, too_expensive, closed, crowded, other }
+enum FeedbackReason { tooFar, tooExpensive, closed, crowded, other }
 
 class BusinessAnalyticsService {
   BusinessAnalyticsService._();
@@ -59,8 +59,8 @@ class BusinessAnalyticsService {
   }) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final rKey = switch (reason) {
-      FeedbackReason.too_far => 'feedback_too_far',
-      FeedbackReason.too_expensive => 'feedback_too_expensive',
+      FeedbackReason.tooFar => 'feedback_too_far',
+      FeedbackReason.tooExpensive => 'feedback_too_expensive',
       FeedbackReason.closed => 'feedback_closed',
       FeedbackReason.crowded => 'feedback_crowded',
       FeedbackReason.other => 'feedback_other',

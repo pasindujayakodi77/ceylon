@@ -87,15 +87,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              colorScheme.background,
-              colorScheme.primaryContainer.withOpacity(0.2),
+              colorScheme.surface,
+              colorScheme.primaryContainer.withValues(alpha: 0.2),
             ],
           ),
         ),
@@ -160,7 +160,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         vertical: CeylonTokens.spacing8,
                       ),
                       decoration: BoxDecoration(
-                        color: colorScheme.surfaceVariant.withOpacity(0.3),
+                        color: colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.3,
+                        ),
                         borderRadius: BorderRadius.circular(
                           CeylonTokens.radiusMedium,
                         ),
@@ -206,7 +208,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         "Swipe to explore",
                         style: TextStyle(
                           fontSize: 12,
-                          color: colorScheme.onBackground.withOpacity(0.5),
+                          color: colorScheme.onSurface.withValues(alpha: 0.5),
                         ),
                       ).animate(delay: 1000.ms).fadeIn(),
                     ],
@@ -238,11 +240,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 height: 280,
                 margin: const EdgeInsets.only(bottom: CeylonTokens.spacing32),
                 decoration: BoxDecoration(
-                  color: page.imageColor.withOpacity(0.1),
+                  color: page.imageColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(CeylonTokens.radiusLarge),
                   boxShadow: [
                     BoxShadow(
-                      color: page.imageColor.withOpacity(0.2),
+                      color: page.imageColor.withValues(alpha: 0.2),
                       blurRadius: 20,
                       spreadRadius: 5,
                       offset: const Offset(0, 10),
@@ -284,7 +286,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      page.imageColor.withOpacity(0.1),
+                      page.imageColor.withValues(alpha: 0.1),
                       Colors.transparent,
                     ],
                     begin: Alignment.centerLeft,
@@ -297,7 +299,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Text(
                   page.title,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: colorScheme.onBackground,
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -342,12 +344,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       decoration: BoxDecoration(
         color: isActive
             ? pages[index].imageColor
-            : colorScheme.onSurfaceVariant.withOpacity(0.2),
+            : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
         boxShadow: isActive
             ? [
                 BoxShadow(
-                  color: pages[index].imageColor.withOpacity(0.4),
+                  color: pages[index].imageColor.withValues(alpha: 0.4),
                   blurRadius: 4,
                   spreadRadius: 1,
                 ),

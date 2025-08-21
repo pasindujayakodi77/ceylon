@@ -22,6 +22,7 @@ class _TemplateQrImportScreenState extends State<TemplateQrImportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final parentContext = context;
     return Scaffold(
       appBar: AppBar(title: const Text('Scan Trip Template QR')),
       body: QRView(
@@ -32,8 +33,9 @@ class _TemplateQrImportScreenState extends State<TemplateQrImportScreen> {
             if (!_scanned) {
               _scanned = true;
               controller?.pauseCamera();
+              if (!parentContext.mounted) return;
               Navigator.pushReplacement(
-                context,
+                parentContext,
                 MaterialPageRoute(
                   builder: (_) =>
                       TripTemplateViewScreen(templateId: scanData.code ?? ''),

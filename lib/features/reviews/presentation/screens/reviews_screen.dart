@@ -104,12 +104,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         placePhoto: widget.attractionPhoto,
                         placeCategory: widget.attractionCategory,
                         onSuccess: () {
+                          if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('✅ Review submitted')),
                           );
                           _checkUserReview();
                         },
                         onError: (error) {
+                          if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('❌ Error: $error')),
                           );
@@ -210,7 +212,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorBuilder: (context, error, stack) => Container(
                         width: 60,
                         height: 60,
                         color: Colors.grey[300],
@@ -252,7 +254,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         children: [
                           RatingBarIndicator(
                             rating: avgRating,
-                            itemBuilder: (_, __) =>
+                            itemBuilder: (context, index) =>
                                 const Icon(Icons.star, color: Colors.amber),
                             itemSize: 18,
                           ),
@@ -307,7 +309,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             const SizedBox(height: 4),
             RatingBarIndicator(
               rating: (_userReview!['rating'] as num).toDouble(),
-              itemBuilder: (_, __) =>
+              itemBuilder: (context, index) =>
                   const Icon(Icons.star, color: Colors.amber),
               itemSize: 18,
             ),
@@ -349,7 +351,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                     Image.asset(
                       'assets/images/empty_reviews.png',
                       height: 100, // Reduced height
-                      errorBuilder: (_, __, ___) => const Icon(
+                      errorBuilder: (context, error, stack) => const Icon(
                         Icons.rate_review_outlined,
                         size: 60, // Reduced size
                         color: Colors.grey,

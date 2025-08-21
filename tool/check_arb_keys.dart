@@ -12,6 +12,7 @@ import 'dart:io';
 /// - 0: Success, no issues found
 /// - 1: Missing translations found
 /// - 2: Error reading files or invalid format
+// ignore_for_file: avoid_print
 void main() async {
   // Configuration
   const baseLanguage = 'en';
@@ -117,14 +118,16 @@ void main() async {
         }
       });
 
-      print('\n📄 Checking $filename (${langCode})...');
+      print('\n📄 Checking $filename ($langCode)...');
       print('   Found ${langKeys.length} translatable keys');
 
       // Check for missing translations
       final missingKeys = baseKeys.difference(langKeys);
       if (missingKeys.isNotEmpty) {
         print('❌ Missing ${missingKeys.length} translations:');
-        missingKeys.forEach((key) => print('   - $key'));
+        for (final key in missingKeys) {
+          print('   - $key');
+        }
         hasErrors = true;
       } else {
         print('✅ All base keys are translated');
@@ -134,7 +137,9 @@ void main() async {
       final extraKeys = langKeys.difference(baseKeys);
       if (extraKeys.isNotEmpty) {
         print('⚠️ Found ${extraKeys.length} extra keys not in base language:');
-        extraKeys.forEach((key) => print('   - $key'));
+        for (final key in extraKeys) {
+          print('   - $key');
+        }
       }
     }
 

@@ -178,8 +178,9 @@ class _AttractionsFilterScreenState extends State<AttractionsFilterScreen> {
 
                 return ListView.separated(
                   itemCount: filtered.length,
-                  separatorBuilder: (_, __) => const Divider(height: 0),
-                  itemBuilder: (_, i) {
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 0),
+                  itemBuilder: (context, i) {
                     final p = filtered[i];
                     return ListTile(
                       leading: p['photo'] != ''

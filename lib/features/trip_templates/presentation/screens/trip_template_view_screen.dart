@@ -39,10 +39,12 @@ class _TripTemplateViewScreenState extends State<TripTemplateViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading)
+    if (_loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    if (_template == null)
+    }
+    if (_template == null) {
       return const Scaffold(body: Center(child: Text('Template not found')));
+    }
 
     final days = (_template!['days'] as List?) ?? [];
 
