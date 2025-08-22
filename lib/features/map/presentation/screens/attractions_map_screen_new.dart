@@ -27,6 +27,10 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
   final TextEditingController _searchController = TextEditingController();
   final AttractionRepository _attractionRepository = AttractionRepository();
   final MapController _mapController = MapController();
+  // Key and measured height for the selected attraction card so we can
+  // position the FAB above it and avoid overlap.
+  final GlobalKey _selectedCardKey = GlobalKey();
+  double _selectedCardHeight = 0.0;
 
   List<Attraction> _attractions = [];
   List<Attraction> _filteredAttractions = [];
@@ -115,6 +119,17 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
       _selectedAttraction = attraction;
     });
 
+    // Measure the selected card after the frame so we can adjust FAB position
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final ctx = _selectedCardKey.currentContext;
+      final h = ctx?.size?.height ?? 0.0;
+      if (h != _selectedCardHeight) {
+        setState(() {
+          _selectedCardHeight = h;
+        });
+      }
+    });
+
     // Center map on selected attraction
     _mapController.move(
       LatLng(attraction.latitude, attraction.longitude),
@@ -201,6 +216,7 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                         // Clear selection when tapping on the map
                         setState(() {
                           _selectedAttraction = null;
+                          _selectedCardHeight = 0.0;
                         });
                       },
                     ),
@@ -268,9 +284,10 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
 
             // Category Filter Chips
             Positioned(
-              top: 130,
+              // moved down to avoid overlapping the search bar and provide more spacing
+              top: 150,
               left: 0,
-              right: 0,
+              right: 25,
               height: 40,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -308,19 +325,24 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                   children: [
                     Column(
                       children: [
-                        AttractionMarkerCard(
-                          attraction: _selectedAttraction!,
-                          onTap: () {
-                            // Navigate to attraction details
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => AttractionDetailScreen(
-                                  attraction: _selectedAttraction!,
+                        // Wrap the card with a keyed container so we can measure
+                        // its rendered height and avoid FAB overlap.
+                        Container(
+                          key: _selectedCardKey,
+                          child: AttractionMarkerCard(
+                            attraction: _selectedAttraction!,
+                            onTap: () {
+                              // Navigate to attraction details
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => AttractionDetailScreen(
+                                    attraction: _selectedAttraction!,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                         const SizedBox(height: CeylonTokens.spacing8),
                         Padding(
@@ -362,6 +384,7 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                           onPressed: () {
                             setState(() {
                               _selectedAttraction = null;
+                              _selectedCardHeight = 0.0;
                             });
                           },
                         ),
@@ -378,10 +401,14 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                 child: const Center(child: CircularProgressIndicator()),
               ),
 
-            // Location FAB with animation
+            // Location FAB with animation. If a card is selected, position
+            // the FAB above the measured card height so it doesn't cover
+            // reviews or action buttons on the card.
             Positioned(
               bottom: _selectedAttraction != null
-                  ? 160
+                  ? (_selectedCardHeight > 0
+                        ? _selectedCardHeight + CeylonTokens.spacing32
+                        : 160)
                   : CeylonTokens.spacing16,
               right: CeylonTokens.spacing16,
               child: ScaleTransition(
@@ -389,7 +416,10 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                 child: FloatingActionButton(
                   onPressed: _getCurrentLocation,
                   backgroundColor: colorScheme.primary,
-                  child: const Icon(Icons.my_location),
+                  // Use the mini tap target and a smaller icon so the GPS button
+                  // matches the reduced marker/icon visual size.
+                  mini: true,
+                  child: const Icon(Icons.my_location, size: 16),
                 ),
               ),
             ),
@@ -405,8 +435,9 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
 
       return Marker(
         point: LatLng(attraction.latitude, attraction.longitude),
-        width: 40,
-        height: 40,
+        // Reduced marker size so the visual icon and tap target are smaller
+        width: 28,
+        height: 28,
         alignment: Alignment.center,
         child: GestureDetector(
           onTap: () => _onMarkerTap(attraction),
@@ -431,10 +462,12 @@ class _AttractionsMapScreenNewState extends State<AttractionsMapScreenNew>
                     ]
                   : null,
             ),
-            padding: const EdgeInsets.all(4),
+            // Reduce internal padding to better match the smaller marker
+            padding: const EdgeInsets.all(2),
             child: Icon(
               _getCategoryIcon(attraction.category) ?? Icons.place,
-              size: isSelected ? 20 : 18,
+              // Smaller icon sizes to match reduced marker dimensions
+              size: isSelected ? 16 : 14,
               color: Colors.white,
             ),
           ),
