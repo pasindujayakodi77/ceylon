@@ -487,17 +487,19 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
         'email': user.email ?? '',
         'role': _role.isNotEmpty ? _role : 'user',
         'updatedAt': FieldValue.serverTimestamp(),
-        'bio': _bioController.text,
+        // Trim bio to avoid accidental leading/trailing whitespace
+        'bio': _bioController.text.trim(),
         'interests': _interests,
         'preferredCurrency': _currency,
       };
 
-      if (docSnapshot.exists) {
-        await userDocRef.update(userData);
-      } else {
+      // Use merge set to avoid accidentally overwriting other fields
+      // If the document does not exist, include createdAt so it's set on create
+      if (!docSnapshot.exists) {
         userData['createdAt'] = FieldValue.serverTimestamp();
-        await userDocRef.set(userData);
       }
+
+      await userDocRef.set(userData, SetOptions(merge: true));
 
       // Locale is updated by the LocaleController in _showLanguagePicker
 
@@ -540,57 +542,73 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
   }
 
   void _showCountryPicker(BuildContext context) async {
-    // Show search dialog
-    showDialog(
+    // Return the selected country name from the dialog
+    final selected = await showDialog<String>(
       context: context,
       builder: (context) {
+        // Keep a mutable filtered list in the closure scope so StatefulBuilder can update it
+        List<Country> filtered = List.from(countries);
+
         return AlertDialog(
           title: const Text('Select Country'),
           content: SizedBox(
             width: double.maxFinite,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: 'Search countries...',
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      // Filter countries based on search
-                    });
-                  },
-                ),
-                const SizedBox(height: 8),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: countries.length,
-                    itemBuilder: (context, index) {
-                      final country = countries[index];
-                      return ListTile(
-                        title: Text(country.name),
-                        trailing: Text(country.code),
-                        onTap: () {
-                          setState(() => _selectedCountry = country.name);
-                          Navigator.pop(context);
-                        },
-                        selected: country.name == _selectedCountry,
-                        selectedColor: Theme.of(context).colorScheme.primary,
-                        selectedTileColor: Theme.of(
-                          context,
-                        ).colorScheme.primaryContainer.withValues(alpha: 0.2),
-                      );
-                    },
-                  ),
-                ),
-              ],
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Search countries...',
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          filtered = filterCountries(value.trim());
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: filtered.isEmpty
+                          ? Center(child: Text('No countries found'))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: filtered.length,
+                              itemBuilder: (context, index) {
+                                final country = filtered[index];
+                                return ListTile(
+                                  title: Text(country.name),
+                                  trailing: Text(country.code),
+                                  onTap: () {
+                                    Navigator.of(context).pop(country.name);
+                                  },
+                                  selected: country.name == _selectedCountry,
+                                  selectedColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  selectedTileColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                      .withValues(alpha: 0.2),
+                                );
+                              },
+                            ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         );
       },
     );
+
+    // Update parent state if user selected a country
+    if (selected != null && selected.isNotEmpty) {
+      setState(() => _selectedCountry = selected);
+    }
   }
 
   @override
