@@ -223,7 +223,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
 
         final storageRef = FirebaseStorage.instance
             .ref()
-            .child('user_profiles')
+            .child('users')
+            .child(user.uid)
+            .child('profile')
             .child('${user.uid}.jpg');
 
         await storageRef.putFile(File(pickedFile.path));
@@ -263,7 +265,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
       if (_profileImageUrl != null) {
         final storageRef = FirebaseStorage.instance
             .ref()
-            .child('user_profiles')
+            .child('users')
+            .child(user.uid)
+            .child('profile')
             .child('${user.uid}.jpg');
         await storageRef.delete();
       }

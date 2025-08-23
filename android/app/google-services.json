@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "738407142329",
-    "project_id": "ceylon-fb5b6",
-    "storage_bucket": "ceylon-fb5b6.firebasestorage.app"
+    "project_number": "831708443753",
+    "project_id": "ceylon-97e24",
+    "storage_bucket": "ceylon-97e24.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:738407142329:android:3ccadca72e2a7ff49d5c68",
+        "mobilesdk_app_id": "1:831708443753:android:79a63a97146ebdf617def8",
         "android_client_info": {
           "package_name": "com.example.ceylon"
         }
       },
       "oauth_client": [
         {
-          "client_id": "738407142329-bv6rrc3198feqqasvjaujj8qon6ufddh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ceylon",
-            "certificate_hash": "f3d4832b509258a9491db7750bfce5beb636a0af"
-          }
-        },
-        {
-          "client_id": "738407142329-ch87cqd1q02b6utlltlrq5mnb13aupoc.apps.googleusercontent.com",
+          "client_id": "831708443753-tl0sibdrkvdjqc9s02etm43m0bjitvo5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD4YMlMM53vD-DWKNEsT5mFEHFJh0Pv6s0"
+          "current_key": "AIzaSyDtiVi0c1kbkhoKpUBq1GHVcFGPJuHe6vs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "738407142329-ch87cqd1q02b6utlltlrq5mnb13aupoc.apps.googleusercontent.com",
+              "client_id": "831708443753-tl0sibdrkvdjqc9s02etm43m0bjitvo5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

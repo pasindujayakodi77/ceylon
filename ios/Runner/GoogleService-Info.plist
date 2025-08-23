@@ -1,0 +1,24 @@
+// FILE: ios/Runner/GoogleService-Info.plist
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PROJECT_ID</key>
+  <string>ceylon-97e24</string>
+  <key>GOOGLE_APP_ID</key>
+  <string>1:831708443753:ios:REPLACE_WITH_IOS_APP_ID</string>
+  <key>STORAGE_BUCKET</key>
+  <string>ceylon-97e24.firebasestorage.app</string>
+  <key>GCM_SENDER_ID</key>
+  <string>831708443753</string>
+  <key>API_KEY</key>
+  <string>AIzaSyDtiVi0c1kbkhoKpUBq1GHVcFGPJuHe6vs</string>
+  <key>CLIENT_ID</key>
+  <string>831708443753-tl0sibdrkvdjqc9s02etm43m0bjitvo5.apps.googleusercontent.com</string>
+  <key>REVERSED_CLIENT_ID</key>
+  <string>com.googleusercontent.apps.831708443753-tl0sibdrkvdjqc9s02etm43m0bjitvo5</string>
+  <key>BUNDLE_ID</key>
+  <string>com.example.ceylon</string>
+</dict>
+</plist>

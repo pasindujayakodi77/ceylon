@@ -742,7 +742,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       try {
         final storageRef = storage
             .ref()
-            .child('user_profiles')
+            .child('users')
+            .child(uid)
+            .child('profile')
             .child('$uid.jpg');
         await storageRef.delete();
       } catch (_) {
