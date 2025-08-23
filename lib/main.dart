@@ -9,6 +9,7 @@ import 'package:ceylon/features/itinerary/data/itinerary_repository.dart';
 import 'package:ceylon/features/reviews/providers/reviews_provider.dart';
 import 'package:ceylon/services/favorites_provider.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
+import 'package:ceylon/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +26,10 @@ import 'features/auth/presentation/screens/onboarding_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Initialize services
   await FCMService.init();
+  await LocationService.getInstance();
 
   final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('onboarding_seen') ?? false;

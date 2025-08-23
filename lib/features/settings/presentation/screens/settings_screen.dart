@@ -3,8 +3,13 @@ import 'package:ceylon/design_system/app_theme.dart';
 import 'package:ceylon/features/auth/data/auth_repository.dart';
 import 'package:ceylon/features/settings/data/language_codes.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
+import 'package:ceylon/services/firebase_messaging_service.dart';
+import 'package:ceylon/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+// note: deletion logic implemented inline; services not required here
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,12 +31,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _selectedDistanceUnit = 'km';
   String _appVersion = '1.0.0';
   final _authRepo = AuthRepository();
+  LocationService? _locationService;
 
   @override
   void initState() {
     super.initState();
     _loadSettings();
     _loadAppVersion();
+    _initializeServices();
+  }
+
+  Future<void> _initializeServices() async {
+    _locationService = await LocationService.getInstance();
+    setState(() {
+      _locationTrackingEnabled = _locationService!.isEnabled;
+      _notificationsEnabled = FCMService.isEnabled;
+    });
   }
 
   Future<void> _loadAppVersion() async {
@@ -68,6 +83,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       listen: false,
     );
     final prefs = await SharedPreferences.getInstance();
+
+    // Update notifications service
+    await FCMService.setEnabled(_notificationsEnabled);
+
+    // Update location service
+    if (_locationService != null) {
+      await _locationService!.setEnabled(_locationTrackingEnabled);
+    }
 
     await prefs.setBool('notifications_enabled', _notificationsEnabled);
     await prefs.setBool('location_tracking_enabled', _locationTrackingEnabled);
@@ -248,8 +271,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context).pushNotificationsSubtitle,
             ),
             value: _notificationsEnabled,
-            onChanged: (value) {
-              setState(() => _notificationsEnabled = value);
+            onChanged: (value) async {
+              if (value) {
+                // If enabling notifications, request permission
+                await FCMService.setEnabled(true);
+                // Load the current state after permission request
+                setState(() => _notificationsEnabled = FCMService.isEnabled);
+              } else {
+                // Simply disable notifications
+                setState(() => _notificationsEnabled = false);
+              }
             },
           ),
 
@@ -261,8 +292,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context).locationServicesSubtitle,
             ),
             value: _locationTrackingEnabled,
-            onChanged: (value) {
-              setState(() => _locationTrackingEnabled = value);
+            onChanged: (value) async {
+              if (value && _locationService != null) {
+                // If enabling location, request permission
+                await _locationService!.requestPermission();
+                final locationEnabled = await _locationService!
+                    .isLocationEnabled();
+                setState(() => _locationTrackingEnabled = locationEnabled);
+              } else {
+                // Simply disable location tracking
+                setState(() => _locationTrackingEnabled = value);
+              }
             },
           ),
 
@@ -376,6 +416,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not launch $url')));
+    }
   }
 
   void _showLanguageDialog() {
@@ -647,13 +698,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextButton(
               style: TextButton.styleFrom(foregroundColor: Colors.red),
               onPressed: () {
-                // TODO: Implement data deletion
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Your data has been queued for deletion'),
-                  ),
-                );
+                _deleteUserData();
               },
               child: const Text('Delete My Data'),
             ),
@@ -663,15 +709,127 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _launchURL(String url) async {
-    final ok = await canLaunchUrlString(url);
-    if (!mounted) return;
-    if (ok) {
-      await launchUrlString(url);
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Could not open $url')));
+  /// Delete all user data from Firestore and Firebase Storage, then sign out.
+  Future<void> _deleteUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${AppLocalizations.of(context).deleteMyData} failed: not signed in',
+          ),
+        ),
+      );
+      return;
+    }
+
+    final uid = user.uid;
+    final firestore = FirebaseFirestore.instance;
+    final storage = FirebaseStorage.instance;
+
+    // Show progress
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${AppLocalizations.of(context).deleteMyData}...'),
+        ),
+      );
+    }
+
+    try {
+      // 1) Delete profile image from Storage if exists
+      try {
+        final storageRef = storage
+            .ref()
+            .child('user_profiles')
+            .child('$uid.jpg');
+        await storageRef.delete();
+      } catch (_) {
+        // ignore errors if file not found
+      }
+
+      // 2) Delete known subcollections under users/{uid}
+      final userRef = firestore.collection('users').doc(uid);
+
+      // Helper to delete all documents in a collection
+      Future<void> deleteCollection(CollectionReference col) async {
+        const batchSize = 50;
+        while (true) {
+          final snap = await col.limit(batchSize).get();
+          if (snap.docs.isEmpty) break;
+          final batch = firestore.batch();
+          for (final doc in snap.docs) {
+            batch.delete(doc.reference);
+          }
+          await batch.commit();
+        }
+      }
+
+      // List of subcollections we know the app uses
+      final subcollections = [
+        'favorites',
+        'itineraries',
+        'my_reviews',
+        'itineraries',
+        'notifications',
+      ];
+
+      for (final name in subcollections) {
+        final col = userRef.collection(name);
+        await deleteCollection(col);
+      }
+
+      // 3) Delete any trip_templates created by the user
+      try {
+        final templates = await firestore
+            .collection('trip_templates')
+            .where('createdBy', isEqualTo: uid)
+            .get();
+        for (final doc in templates.docs) {
+          await firestore.collection('trip_templates').doc(doc.id).delete();
+        }
+      } catch (_) {}
+
+      // 4) Remove user's reviews from places collection (best-effort)
+      try {
+        final myReviewsSnap = await userRef.collection('my_reviews').get();
+        for (final doc in myReviewsSnap.docs) {
+          final placeId = doc.id;
+          final reviewId = doc.data()['reviewId'] as String?;
+          if (reviewId != null) {
+            final reviewRef = firestore
+                .collection('places')
+                .doc(placeId)
+                .collection('reviews')
+                .doc(reviewId);
+            await reviewRef.delete();
+          }
+        }
+      } catch (_) {}
+
+      // 5) Finally delete the user document
+      try {
+        await userRef.delete();
+      } catch (_) {}
+
+      // 6) Sign the user out and navigate to login
+      await _authRepo.signOut();
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${AppLocalizations.of(context).deleteMyData} successful',
+          ),
+        ),
+      );
+      Navigator.of(context).pushNamedAndRemoveUntil('/login', (r) => false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error deleting data: ${e.toString()}')),
+      );
     }
   }
 

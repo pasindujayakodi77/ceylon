@@ -12,148 +12,171 @@ class TripJournalScreen extends StatefulWidget {
   State<TripJournalScreen> createState() => _TripJournalScreenState();
 }
 
-class _TripJournalScreenState extends State<TripJournalScreen> {
+class _JournalEntrySheet extends StatefulWidget {
+  final DocumentSnapshot<Map<String, dynamic>>? doc;
+
+  const _JournalEntrySheet({this.doc});
+
+  @override
+  State<_JournalEntrySheet> createState() => _JournalEntrySheetState();
+}
+
+class _JournalEntrySheetState extends State<_JournalEntrySheet> {
+  late final TextEditingController _titleCtrl;
+  late final TextEditingController _noteCtrl;
   final _picker = ImagePicker();
+  final List<XFile> _picked = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _titleCtrl = TextEditingController(
+      text: widget.doc?.data()?['title'] ?? '',
+    );
+    _noteCtrl = TextEditingController(text: widget.doc?.data()?['note'] ?? '');
+  }
+
+  @override
+  void dispose() {
+    _titleCtrl.dispose();
+    _noteCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickImages() async {
+    final files = await _picker.pickMultiImage(imageQuality: 85);
+    if (files.isNotEmpty) {
+      setState(() => _picked.addAll(files));
+    }
+  }
+
+  Future<void> _save() async {
+    final title = _titleCtrl.text.trim();
+    final note = _noteCtrl.text.trim();
+    if (title.isEmpty && note.isEmpty && _picked.isEmpty) return;
+
+    if (widget.doc == null) {
+      await JournalService.instance.addEntry(
+        title: title,
+        note: note,
+        photos: _picked,
+      );
+    } else {
+      await JournalService.instance.updateEntry(
+        entryId: widget.doc!.id,
+        title: title.isEmpty ? (widget.doc!.data()?['title'] ?? '') : title,
+        note: note.isEmpty ? (widget.doc!.data()?['note'] ?? '') : note,
+        newPhotos: _picked,
+      );
+    }
+
+    if (!mounted) return;
+    Navigator.pop(context, true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 16 + MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 4,
+            width: 46,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              widget.doc == null ? 'New Journal Entry' : 'Edit Journal Entry',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _titleCtrl,
+            decoration: const InputDecoration(
+              labelText: 'Title',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _noteCtrl,
+            minLines: 3,
+            maxLines: 8,
+            decoration: const InputDecoration(
+              labelText: 'Note',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              ElevatedButton.icon(
+                onPressed: _pickImages,
+                icon: const Icon(Icons.photo_library),
+                label: const Text('Add Photos'),
+              ),
+              const SizedBox(width: 12),
+              if (_picked.isNotEmpty) Text('${_picked.length} selected'),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => Navigator.pop(context, false),
+                  icon: const Icon(Icons.close),
+                  label: const Text('Cancel'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: _save,
+                  icon: const Icon(Icons.check),
+                  label: const Text('Save'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TripJournalScreenState extends State<TripJournalScreen> {
   bool _exporting = false;
   final List<String> _selectedIds = []; // for selective export
 
   Future<void> _openCreateOrEdit({
     DocumentSnapshot<Map<String, dynamic>>? doc,
   }) async {
-    final titleCtrl = TextEditingController(text: doc?.data()?['title'] ?? '');
-    final noteCtrl = TextEditingController(text: doc?.data()?['note'] ?? '');
-    List<XFile> picked = [];
-
-    await showModalBottomSheet(
+    final saved = await showModalBottomSheet<bool>(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setSheet) => Padding(
-          padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 12,
-            bottom: 16 + MediaQuery.of(ctx).viewInsets.bottom,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: 4,
-                width: 46,
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  doc == null ? 'New Journal Entry' : 'Edit Journal Entry',
-                  style: Theme.of(ctx).textTheme.titleMedium,
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: titleCtrl,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: noteCtrl,
-                minLines: 3,
-                maxLines: 8,
-                decoration: const InputDecoration(
-                  labelText: 'Note',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      final files = await _picker.pickMultiImage(
-                        imageQuality: 85,
-                      );
-                      if (files.isNotEmpty) {
-                        picked.addAll(files);
-                        setSheet(() {}); // refresh preview count
-                      }
-                    },
-                    icon: const Icon(Icons.photo_library),
-                    label: const Text('Add Photos'),
-                  ),
-                  const SizedBox(width: 12),
-                  if (picked.isNotEmpty) Text('${picked.length} selected'),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => Navigator.pop(ctx),
-                      icon: const Icon(Icons.close),
-                      label: const Text('Cancel'),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        final title = titleCtrl.text.trim();
-                        final note = noteCtrl.text.trim();
-                        if (title.isEmpty && note.isEmpty && picked.isEmpty) {
-                          return;
-                        }
-
-                        if (doc == null) {
-                          await JournalService.instance.addEntry(
-                            title: title,
-                            note: note,
-                            photos: picked,
-                          );
-                        } else {
-                          await JournalService.instance.updateEntry(
-                            entryId: doc.id,
-                            title: title.isEmpty
-                                ? (doc.data()?['title'] ?? '')
-                                : title,
-                            note: note.isEmpty
-                                ? (doc.data()?['note'] ?? '')
-                                : note,
-                            newPhotos: picked,
-                          );
-                        }
-
-                        if (!ctx.mounted) return;
-                        Navigator.pop(ctx);
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('✅ Saved')),
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.check),
-                      label: const Text('Save'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      builder: (ctx) => _JournalEntrySheet(doc: doc),
     );
 
-    titleCtrl.dispose();
-    noteCtrl.dispose();
+    if (saved == true && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('✅ Saved')));
+    }
   }
 
   Future<void> _deleteEntry(String id) async {

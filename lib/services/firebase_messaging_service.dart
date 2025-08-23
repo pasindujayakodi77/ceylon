@@ -2,14 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FCMService {
   static final _fcm = FirebaseMessaging.instance;
+  static bool _isEnabled = true;
 
   static final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
+    // Load notification preference
+    final prefs = await SharedPreferences.getInstance();
+    _isEnabled = prefs.getBool('notifications_enabled') ?? true;
+
+    if (_isEnabled) {
+      await _initNotifications();
+    }
+  }
+
+  static Future<void> _initNotifications() async {
     await _fcm.requestPermission();
 
     // Subscribe to role-based or default topics
@@ -33,6 +45,8 @@ class FCMService {
     await _flutterLocalNotificationsPlugin.initialize(initSettings);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (!_isEnabled) return;
+
       final notification = message.notification;
       if (notification != null) {
         _flutterLocalNotificationsPlugin.show(
@@ -51,4 +65,18 @@ class FCMService {
       }
     });
   }
+
+  /// Set notification enabled/disabled state
+  static Future<void> setEnabled(bool enabled) async {
+    _isEnabled = enabled;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notifications_enabled', enabled);
+
+    if (enabled && !_isEnabled) {
+      await _initNotifications();
+    }
+  }
+
+  /// Get current notification enabled state
+  static bool get isEnabled => _isEnabled;
 }

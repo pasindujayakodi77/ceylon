@@ -1,4 +1,5 @@
 import 'package:ceylon/design_system/tokens.dart';
+import 'package:ceylon/features/reviews/presentation/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
 
 class Review {
@@ -21,8 +22,17 @@ class Review {
 
 class ReviewsWidget extends StatelessWidget {
   final List<Review> reviews;
+  final String? attractionName;
+  final String? attractionPhoto;
+  final String? attractionCategory;
 
-  const ReviewsWidget({super.key, required this.reviews});
+  const ReviewsWidget({
+    super.key,
+    required this.reviews,
+    this.attractionName,
+    this.attractionPhoto,
+    this.attractionCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +58,19 @@ class ReviewsWidget extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                // TODO: Navigate to all reviews
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReviewsScreen(
+                      // Use the passed attraction name or fallback to the first review's userId
+                      attractionName:
+                          attractionName ??
+                          (reviews.isNotEmpty ? reviews.first.userId : ''),
+                      attractionPhoto: attractionPhoto,
+                      attractionCategory: attractionCategory,
+                    ),
+                  ),
+                );
               },
               child: Text('View all (${reviews.length})'),
             ),

@@ -434,7 +434,13 @@ View on Google Maps: https://www.google.com/maps/search/?api=1&query=${attractio
                       const SizedBox(height: CeylonTokens.spacing24),
 
                       // Reviews
-                      if (_reviews.isNotEmpty) ReviewsWidget(reviews: _reviews),
+                      if (_reviews.isNotEmpty)
+                        ReviewsWidget(
+                          reviews: _reviews,
+                          attractionName: widget.attraction.name,
+                          attractionPhoto: widget.attraction.imageUrl,
+                          attractionCategory: widget.attraction.category,
+                        ),
 
                       const SizedBox(height: CeylonTokens.spacing24),
 

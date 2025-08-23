@@ -2,6 +2,7 @@ import 'package:ceylon/core/booking/widgets/verified_badge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:ceylon/features/business/presentation/screens/business_detail_screen.dart';
 
 class PromotedBusinessesCarousel extends StatelessWidget {
   final String title;
@@ -153,8 +154,13 @@ class _BusinessCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // TODO: Navigate to your BusinessDetailScreen
-        // Navigator.push(context, MaterialPageRoute(builder: (_) => BusinessDetailScreen(businessId: businessId, name: name)));
+        // Navigate to the business detail screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BusinessDetailScreen(businessId: businessId),
+          ),
+        );
       },
       child: Card(
         elevation: 3,

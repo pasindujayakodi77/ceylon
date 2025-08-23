@@ -12,6 +12,7 @@ import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_sc
 import 'package:ceylon/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_screen.dart';
 import 'package:ceylon/features/recommendations/presentation/screens/recommendations_screen.dart';
+import 'package:ceylon/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -79,7 +80,10 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
               color: colorScheme.onSurface,
             ),
             onPressed: () {
-              // TODO: Navigate to notifications screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+              );
             },
           ),
           IconButton(

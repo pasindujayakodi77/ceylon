@@ -101,7 +101,33 @@ class _HolidaysEventsCalendarScreenState
     super.initState();
     _eventsRepository = EventsRepository();
     _holidaysRepository = HolidaysRepository();
+    // Load user's saved events in parallel with month data
+    _loadSavedEventIds();
     _loadDataForMonth(_focusedMonth);
+  }
+
+  /// Loads the user's saved/favorite event ids into [_savedEventIds].
+  Future<void> _loadSavedEventIds() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) return;
+
+      final snap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite_events')
+          .get();
+
+      if (!mounted) return;
+
+      setState(() {
+        _savedEventIds
+          ..clear()
+          ..addAll(snap.docs.map((d) => d.id));
+      });
+    } catch (_) {
+      // Fail silently; save state is optional. We'll show feedback on save failures elsewhere.
+    }
   }
 
   @override
@@ -431,13 +457,108 @@ class _HolidaysEventsCalendarScreenState
   }
 
   Future<String?> _showItinerarySelectionDialog(CalendarEvent event) async {
-    // TODO: In a real implementation, you would show a dialog to select from existing itineraries
-    // For now, we'll create a new itinerary automatically
+    // Show a dialog allowing the user to pick an existing itinerary or create a new one.
     try {
-      final newItineraryId = await ItineraryService.instance.createItinerary(
-        'Events from CEYLON Calendar',
+      final itineraries = await ItineraryService.instance.listItineraries();
+
+      if (!mounted) return null;
+
+      // Helper to show create dialog
+      Future<String?> showCreateDialog() async {
+        final controller = TextEditingController(
+          text: 'Events from CEYLON Calendar',
+        );
+        final name = await showDialog<String>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Create itinerary'),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: const InputDecoration(labelText: 'Itinerary name'),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(null),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final text = controller.text.trim();
+                  Navigator.of(context).pop(text.isEmpty ? 'My Trip' : text);
+                },
+                child: const Text('Create'),
+              ),
+            ],
+          ),
+        );
+
+        if (name == null) return null;
+        return await ItineraryService.instance.createItinerary(name);
+      }
+
+      if (itineraries.isEmpty) {
+        // No itineraries yet — prompt to create one
+        return await showCreateDialog();
+      }
+
+      // Let the user choose from existing itineraries or create a new one
+      final selected = await showDialog<String?>(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Add to itinerary'),
+            children: [
+              ...itineraries.map((it) {
+                final id = it['id'] as String?;
+                final name = (it['name'] as String?) ?? 'Untitled';
+                final created = it['createdAt'];
+                String? subtitle;
+                try {
+                  if (created is Timestamp) {
+                    subtitle = DateFormat.yMMMd().format(created.toDate());
+                  } else if (created is DateTime) {
+                    subtitle = DateFormat.yMMMd().format(created);
+                  }
+                } catch (_) {
+                  subtitle = null;
+                }
+
+                return SimpleDialogOption(
+                  onPressed: () => Navigator.of(context).pop(id),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(name),
+                    subtitle: subtitle != null ? Text(subtitle) : null,
+                  ),
+                );
+              }),
+              SimpleDialogOption(
+                onPressed: () => Navigator.of(context).pop('_create_new_'),
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.add),
+                  title: const Text('Create new itinerary'),
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () => Navigator.of(context).pop(null),
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text('Cancel'),
+                ),
+              ),
+            ],
+          );
+        },
       );
-      return newItineraryId;
+
+      if (selected == null) return null;
+      if (selected == '_create_new_') {
+        return await showCreateDialog();
+      }
+
+      return selected;
     } catch (e) {
       return null;
     }
@@ -1004,7 +1125,7 @@ class _HolidaysEventsCalendarScreenState
           onOpenForm: () => _onOpenForm(event),
           onAddToItinerary: () => _onAddToItinerary(event),
           onToggleSave: () => _onToggleSave(event),
-          isSaved: false, // TODO: Implement save state
+          isSaved: _savedEventIds.contains(event.businessId),
         );
       },
     );
