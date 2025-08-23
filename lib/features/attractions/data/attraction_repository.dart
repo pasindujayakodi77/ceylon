@@ -83,7 +83,23 @@ class AttractionRepository {
   }
 
   /// Toggles the favorite status of an attraction
-  Attraction toggleFavorite(Attraction attraction) {
-    return attraction.copyWith(isFavorite: !attraction.isFavorite);
+  Future<Attraction> toggleFavorite(Attraction attraction) async {
+    // Create updated attraction with toggled favorite status
+    final updatedAttraction = attraction.copyWith(
+      isFavorite: !attraction.isFavorite,
+    );
+
+    try {
+      // In a real app, you'd save to a database or cloud service here.
+      // For this demo, we'll simulate saving by adding a small delay
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      // Return the updated attraction
+      return updatedAttraction;
+    } catch (e) {
+      debugPrint('Error toggling favorite: $e');
+      // Return the original attraction if there was an error
+      return attraction;
+    }
   }
 }

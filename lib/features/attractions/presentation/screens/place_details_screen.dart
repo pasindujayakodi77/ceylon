@@ -5,6 +5,7 @@ import 'package:ceylon/features/attractions/presentation/widgets/nearby_attracti
 import 'package:ceylon/features/attractions/presentation/widgets/photo_gallery_widget.dart';
 import 'package:ceylon/features/attractions/presentation/widgets/reviews_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class PlaceDetailsScreen extends StatefulWidget {
@@ -98,18 +99,23 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     });
   }
 
-  void _toggleFavorite() {
+  void _toggleFavorite() async {
+    // Optimistically update UI for better user experience
     setState(() {
       _isFavorite = !_isFavorite;
     });
 
-    // TODO: Implement favorite toggling in the repository
-    // final updatedAttraction = await attractionRepository.toggleFavorite(widget.attraction);
-    // if (mounted) {
-    //   setState(() {
-    //     _isFavorite = updatedAttraction.isFavorite;
-    //   });
-    // }
+    // Update the favorite status in the repository
+    final updatedAttraction = await _attractionRepository.toggleFavorite(
+      widget.attraction,
+    );
+
+    // Update UI with the actual result from repository if still mounted
+    if (mounted) {
+      setState(() {
+        _isFavorite = updatedAttraction.isFavorite;
+      });
+    }
   }
 
   void _openDirections() async {
@@ -120,6 +126,30 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     }
+  }
+
+  void _shareAttraction() async {
+    // Create a share message with attraction details
+    final attraction = widget.attraction;
+    final String shareText =
+        '''
+Check out ${attraction.name} in ${attraction.location}!
+
+${attraction.description.split('.').first}.
+
+Rating: ${attraction.rating.toStringAsFixed(1)}/5.0
+Category: ${attraction.category}
+${attraction.tags.isNotEmpty ? 'Tags: ${attraction.tags.join(', ')}' : ''}
+
+View on Google Maps: https://www.google.com/maps/search/?api=1&query=${attraction.latitude},${attraction.longitude}
+''';
+
+    // Share the attraction details using the non-deprecated method
+    final params = ShareParams(
+      text: shareText,
+      subject: 'Check out ${attraction.name}',
+    );
+    await SharePlus.instance.share(params);
   }
 
   @override
@@ -500,9 +530,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                             ? colorScheme.onSurface
                             : Colors.white,
                       ),
-                      onPressed: () {
-                        // TODO: Implement share functionality
-                      },
+                      onPressed: _shareAttraction,
                     ),
                   ],
                 ),
