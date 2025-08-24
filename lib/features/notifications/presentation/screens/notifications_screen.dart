@@ -5,6 +5,9 @@ import 'package:ceylon/features/notifications/data/notifications_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ceylon/features/itinerary/presentation/screens/itinerary_view_screen.dart';
+import 'package:ceylon/features/attractions/data/attraction_repository.dart';
+import 'package:ceylon/features/attractions/data/attraction_model.dart';
+import 'package:ceylon/features/attractions/presentation/screens/attraction_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -320,12 +323,37 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     // Example: navigate to attraction details
     if (notification.relatedType == 'attraction' &&
         notification.relatedId != null) {
-      // TODO: wire this to the attraction detail screen
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Navigating to ${notification.relatedId} details'),
-        ),
-      );
+      // Attempt to resolve attraction by id from local repository and navigate
+      final repo = AttractionRepository();
+      List<Attraction> list;
+      try {
+        list = await repo.getAttractions();
+      } catch (_) {
+        list = [];
+      }
+
+      Attraction? found;
+      for (final a in list) {
+        if (a.id == notification.relatedId) {
+          found = a;
+          break;
+        }
+      }
+
+      if (found != null) {
+        if (!context.mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AttractionDetailScreen(attraction: found!),
+          ),
+        );
+      } else {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Attraction not found')));
+      }
       return;
     }
 
@@ -335,7 +363,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         notification.relatedId != null) {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) {
-        if (!mounted) return;
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Sign in to view this item')),
         );
@@ -363,7 +391,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       }
 
       if (foundItineraryId != null) {
-        if (!mounted) return;
+        if (!context.mounted) return;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -371,7 +399,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           ),
         );
       } else {
-        if (!mounted) return;
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Itinerary item not found')),
         );

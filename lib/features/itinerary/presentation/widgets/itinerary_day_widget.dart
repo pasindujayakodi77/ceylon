@@ -71,7 +71,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
     final duration = ValueNotifier<int>(
       (m['durationMins'] as num?)?.toInt() ?? 60,
     );
-    String _computeEnd(String start, int mins) {
+    String computeEnd(String start, int mins) {
       final parts = start.split(':');
       final h = int.tryParse(parts[0]) ?? 0;
       final mm = int.tryParse(parts[1]) ?? 0;
@@ -80,7 +80,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
       return '${endDt.hour.toString().padLeft(2, '0')}:${endDt.minute.toString().padLeft(2, '0')}';
     }
 
-    int _diffMinutes(String start, String end) {
+    int diffMinutes(String start, String end) {
       final sp = start.split(':');
       final ep = end.split(':');
       final sh = int.tryParse(sp[0]) ?? 0;
@@ -95,7 +95,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
     }
 
     final endTime = ValueNotifier<String>(
-      _computeEnd(
+      computeEnd(
         (m['startTime'] ?? '09:00').toString(),
         (m['durationMins'] as num?)?.toInt() ?? 60,
       ),
@@ -337,7 +337,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                     title: const Text('Start time'),
                     subtitle: ValueListenableBuilder<String>(
                       valueListenable: startTime,
-                      builder: (_, v, __) => Text(v),
+                      builder: (_, v, _) => Text(v),
                     ),
                     onTap: () async {
                       final parts = startTime.value.split(':');
@@ -352,7 +352,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                         startTime.value =
                             '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
                         // recompute end time
-                        endTime.value = _computeEnd(
+                        endTime.value = computeEnd(
                           startTime.value,
                           duration.value,
                         );
@@ -366,7 +366,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                     title: const Text('Duration'),
                     subtitle: ValueListenableBuilder<int>(
                       valueListenable: duration,
-                      builder: (_, v, __) => Text('$v mins'),
+                      builder: (_, v, _) => Text('$v mins'),
                     ),
                     onTap: () async {
                       final v = await showDialog<int>(
@@ -384,7 +384,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                       );
                       if (v != null) {
                         duration.value = v;
-                        endTime.value = _computeEnd(
+                        endTime.value = computeEnd(
                           startTime.value,
                           duration.value,
                         );
@@ -398,7 +398,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                     title: const Text('End time'),
                     subtitle: ValueListenableBuilder<String>(
                       valueListenable: endTime,
-                      builder: (_, v, __) => Text(v),
+                      builder: (_, v, _) => Text(v),
                     ),
                     onTap: () async {
                       final parts = endTime.value.split(':');
@@ -413,7 +413,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                         endTime.value =
                             '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
                         // recompute duration
-                        duration.value = _diffMinutes(
+                        duration.value = diffMinutes(
                           startTime.value,
                           endTime.value,
                         );
