@@ -46,7 +46,6 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 
   Future<void> _load({bool initial = false}) async {
     setState(() {
-      _loading = true;
       if (!initial) _error = null;
     });
 
@@ -88,11 +87,13 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         lon: lon,
         hours: widget.hours.clamp(1, 24),
       );
+      if (!mounted) return;
       setState(() {
         _data = w;
         _loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = e.toString();
         _loading = false;
@@ -122,6 +123,30 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     return Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.medium,
     );
+  }
+
+  // Map Open-Meteo weather codes to built-in Material Icons for more reliable display.
+  IconData _iconForCode(int code) {
+    // Clear / Sunny
+    if (code == 0) return Icons.wb_sunny;
+    // Mainly clear / partly cloudy / overcast
+    if ({1, 2, 3}.contains(code)) return Icons.wb_cloudy;
+    // Fog / mist
+    if ({45, 48}.contains(code)) return Icons.blur_on;
+    // Drizzle
+    if ({51, 53, 55, 56, 57}.contains(code)) return Icons.grain;
+    // Rain
+    if ({61, 63, 65, 66, 67}.contains(code)) return Icons.opacity;
+    // Snow
+    if ({71, 73, 75, 77}.contains(code)) return Icons.ac_unit;
+    // Rain showers
+    if ({80, 81, 82}.contains(code)) return Icons.grain;
+    // Snow showers
+    if ({85, 86}.contains(code)) return Icons.ac_unit;
+    // Thunderstorm
+    if ({95, 96, 99}.contains(code)) return Icons.flash_on;
+    // Fallback
+    return Icons.wb_cloudy;
   }
 
   @override
@@ -204,22 +229,20 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     final now = w.current;
     final small = Theme.of(context).textTheme.bodySmall;
 
-    final iconCodePoint = WeatherService.suggestedIconCodePoint(
-      now.weatherCode,
-    );
+    final iconData = _iconForCode(now.weatherCode);
+
+    // Prefer the first hourly forecast temperature when available
+    final displayTemp = w.nextHours.isNotEmpty
+        ? w.nextHours.first.tempC
+        : now.temperatureC;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         // Header row
         ListTile(
           contentPadding: const EdgeInsets.fromLTRB(16, 12, 8, 0),
-          leading: CircleAvatar(
-            radius: 26,
-            child: Icon(
-              IconData(iconCodePoint, fontFamily: 'MaterialIcons'),
-              size: 28,
-            ),
-          ),
+          leading: CircleAvatar(radius: 26, child: Icon(iconData, size: 28)),
           title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
           subtitle: Text(WeatherService.describe(now.weatherCode)),
           trailing: IconButton(
@@ -235,7 +258,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           child: Row(
             children: [
               Text(
-                '${now.temperatureC.toStringAsFixed(1)}°C',
+                '${displayTemp.toStringAsFixed(0)}°C',
                 style: Theme.of(context).textTheme.displaySmall,
               ),
               const Spacer(),
