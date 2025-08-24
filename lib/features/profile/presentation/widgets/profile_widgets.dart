@@ -134,9 +134,13 @@ class ProfileAvatar extends StatelessWidget {
               child: CircleAvatar(
                 radius: 50,
                 backgroundColor: colorScheme.primaryContainer,
-                backgroundImage: profileImageUrl != null
-                    ? null // We'll use CachedNetworkImage instead
-                    : null,
+                // Use the user's uploaded image when available, otherwise fall back
+                // to the ui-avatars service so the avatar looks the same as on Home
+                backgroundImage: NetworkImage(
+                  profileImageUrl ??
+                      'https://ui-avatars.com/api/?name=${Uri.encodeComponent(nameInitial.isNotEmpty ? nameInitial : 'User')}&background=random',
+                ),
+                // If there's no profile image, still show the initial on top
                 child: profileImageUrl == null
                     ? Text(
                         nameInitial.isNotEmpty
@@ -148,32 +152,7 @@ class ProfileAvatar extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       )
-                    : ClipOval(
-                        child: Image.network(
-                          profileImageUrl!,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: colorScheme.primary,
-                                strokeWidth: 2,
-                                value:
-                                    loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.error_outline,
-                            color: colorScheme.error,
-                          ),
-                        ),
-                      ),
+                    : null,
               ),
             ),
           ),

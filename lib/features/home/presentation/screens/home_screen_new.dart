@@ -15,6 +15,7 @@ import 'package:ceylon/features/currency/presentation/screens/currency_and_tips_
 import 'package:ceylon/features/recommendations/presentation/screens/recommendations_screen.dart';
 import 'package:ceylon/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:ceylon/dev/dev_tools_screen.dart';
@@ -30,6 +31,7 @@ class TouristHomeScreen extends StatefulWidget {
 class _TouristHomeScreenState extends State<TouristHomeScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _showFloatingButton = false;
+  String? _profileImageUrl;
 
   @override
   void initState() {
@@ -41,6 +43,30 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
         setState(() => _showFloatingButton = showButton);
       }
     });
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      if (doc.exists) {
+        final data = doc.data();
+        if (data != null && mounted) {
+          setState(() {
+            _profileImageUrl = data['profileImageUrl'] as String?;
+          });
+        }
+      }
+    } catch (e) {
+      // ignore errors silently; avatar will fallback to ui-avatars
+      debugPrint('Error loading profile image: $e');
+    }
   }
 
   @override
@@ -88,10 +114,11 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
             },
           ),
           IconButton(
-            icon: const CircleAvatar(
+            icon: CircleAvatar(
               radius: 16,
               backgroundImage: NetworkImage(
-                'https://ui-avatars.com/api/?name=Ceylon+User&background=random',
+                _profileImageUrl ??
+                    'https://ui-avatars.com/api/?name=${Uri.encodeComponent(displayName)}&background=random',
               ),
             ),
             onPressed: () {
@@ -196,7 +223,8 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               title: 'Sigiriya Rock',
                               subtitle: 'Cultural Triangle',
                               backgroundColor: Colors.orange.shade300,
-                              imageUrl: 'https://files.catbox.moe/zgnplx.jpg',
+                              imageUrl:
+                                  'https://i.postimg.cc/sxKmMw5Y/sigiriya-rock.png',
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
@@ -211,7 +239,8 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               title: 'Ella Train Ride',
                               subtitle: 'Central Highlands',
                               backgroundColor: Colors.green.shade300,
-                              imageUrl: 'https://files.catbox.moe/stnoku.jpg',
+                              imageUrl:
+                                  'https://i.postimg.cc/3WM6ZLdP/Ella-Train-Ride.jpg',
                               onTap: () {
                                 // Navigate to Ella details
                               },
@@ -224,7 +253,8 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               title: 'Galle Fort',
                               subtitle: 'Southern Coast',
                               backgroundColor: Colors.blue.shade300,
-                              imageUrl: 'https://files.catbox.moe/435u29.jpg',
+                              imageUrl:
+                                  'https://i.postimg.cc/MKvV06w2/Galle-Fort.jpg',
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
