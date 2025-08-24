@@ -5,8 +5,8 @@
 // - Upload XFile or File with MIME detection (via `mime` package)
 // - Delete by path
 // Example paths:
-//   users/{uid}/profile/<timestamp>.jpg
-//   public/attractions/<id>.jpg
+//   users/{uid}/profile/`<timestamp>`.jpg
+//   public/attractions/`<id>`.jpg
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -34,7 +34,7 @@ class StorageService {
   final FirebaseStorage _storage;
 
   /// Upload an [XFile] to [path] and return the download URL.
-  /// Example path: users/{uid}/profile/<timestamp>.jpg
+  /// Example path: users/{uid}/profile/`<timestamp>`.jpg
   Future<String> uploadXFile(
     XFile xfile, {
     required String path,

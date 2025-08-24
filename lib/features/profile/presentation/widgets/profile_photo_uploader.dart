@@ -42,12 +42,12 @@ class _ProfilePhotoUploaderState extends State<ProfilePhotoUploader> {
         'photoUrl': downloadUrl,
       }, SetOptions(merge: true));
 
-      if (!mounted) return;
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile photo uploaded successfully')),
       );
     } catch (e) {
-      if (!mounted) return;
+      if (!context.mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Upload failed: ${e.toString()}')));
@@ -99,7 +99,7 @@ class _ProfilePhotoUploaderState extends State<ProfilePhotoUploader> {
                               placeholder: (c, _) => const Center(
                                 child: CircularProgressIndicator(),
                               ),
-                              errorWidget: (c, _, __) =>
+                              errorWidget: (c, _, _) =>
                                   const Icon(Icons.account_circle, size: 96),
                             )
                           : const Icon(Icons.account_circle, size: 96),
