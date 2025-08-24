@@ -98,35 +98,92 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                       // Open attraction picker
                       final repo = AttractionRepository();
                       final list = await repo.getAttractions();
+                      final searchCtrl = TextEditingController();
                       final selected = await showDialog<Attraction>(
                         context: context,
-                        builder: (c) => SimpleDialog(
-                          title: const Text('Pick attraction'),
-                          children: [
-                            SizedBox(
-                              width: double.maxFinite,
-                              height: 400,
-                              child: ListView.builder(
-                                itemCount: list.length,
-                                itemBuilder: (ctx, i) {
-                                  final a = list[i];
-                                  return ListTile(
-                                    leading: a.imageUrl != null
-                                        ? Image.network(
-                                            a.imageUrl!,
-                                            width: 56,
-                                            height: 56,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const SizedBox(width: 56, height: 56),
-                                    title: Text(a.name),
-                                    subtitle: Text(a.location),
-                                    onTap: () => Navigator.pop(ctx, a),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                        builder: (c) => StatefulBuilder(
+                          builder: (c2, setState) {
+                            List<Attraction> filtered() {
+                              final q = searchCtrl.text.trim().toLowerCase();
+                              if (q.isEmpty) return list;
+                              return list.where((a) {
+                                final name = a.name.toLowerCase();
+                                final loc = a.location.toLowerCase();
+                                return name.contains(q) || loc.contains(q);
+                              }).toList();
+                            }
+
+                            return SimpleDialog(
+                              title: const Text('Pick attraction'),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 8.0,
+                                  ),
+                                  child: TextField(
+                                    controller: searchCtrl,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      prefixIcon: const Icon(Icons.search),
+                                      hintText: 'Search attractions',
+                                      suffixIcon: searchCtrl.text.isEmpty
+                                          ? null
+                                          : IconButton(
+                                              icon: const Icon(Icons.clear),
+                                              onPressed: () {
+                                                searchCtrl.clear();
+                                                setState(() {});
+                                              },
+                                            ),
+                                    ),
+                                    onChanged: (v) => setState(() {}),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: double.maxFinite,
+                                  height: 400,
+                                  child: Builder(
+                                    builder: (ctx) {
+                                      final items = filtered();
+                                      return items.isEmpty
+                                          ? const Padding(
+                                              padding: EdgeInsets.all(24.0),
+                                              child: Center(
+                                                child: Text(
+                                                  'No attractions found',
+                                                ),
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              itemCount: items.length,
+                                              itemBuilder: (ctx, i) {
+                                                final a = items[i];
+                                                return ListTile(
+                                                  leading: a.imageUrl != null
+                                                      ? Image.network(
+                                                          a.imageUrl!,
+                                                          width: 56,
+                                                          height: 56,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : const SizedBox(
+                                                          width: 56,
+                                                          height: 56,
+                                                        ),
+                                                  title: Text(a.name),
+                                                  subtitle: Text(a.location),
+                                                  onTap: () =>
+                                                      Navigator.pop(ctx, a),
+                                                );
+                                              },
+                                            );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       );
 
