@@ -1,47 +1,54 @@
-import 'package:ceylon/features/itinerary/presentation/screens/itinerary_builder_screen_new.dart';
-import 'package:ceylon/features/itinerary/presentation/screens/itinerary_list_screen.dart';
-import 'package:ceylon/features/itinerary/presentation/screens/itinerary_view_screen.dart';
+// FILE: lib/features/itinerary/itinerary_routes.dart
 import 'package:flutter/material.dart';
 
+import '../screens/itinerary_list_screen.dart';
+import '../screens/itinerary_builder_screen_new.dart';
+import '../screens/itinerary_view_screen.dart';
+
 class ItineraryRoutes {
-  static const String listItineraries = '/itineraries';
-  static const String createItinerary = '/itineraries/create';
-  static const String viewItinerary = '/itineraries/:id';
-  static const String editItinerary = '/itineraries/:id/edit';
+  static const list = '/itineraries';
+  static const builder = '/itinerary/edit';
+  static const view = '/itinerary/view';
 
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    if (settings.name?.startsWith('/itineraries') == true) {
-      final uri = Uri.parse(settings.name!);
-      final pathSegments = uri.pathSegments;
+  // Delegate for app-level onGenerateRoute so callers can ask ItineraryRoutes
+  // to handle dynamic route generation.
+  static Route<dynamic>? onGenerateRoute(RouteSettings settings) =>
+      buildItineraryRoute(settings);
+}
 
-      if (pathSegments.length == 1) {
-        // /itineraries
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const ItineraryListScreen(),
-        );
-      } else if (pathSegments.length == 2 && pathSegments[1] == 'create') {
-        // /itineraries/create
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const ItineraryBuilderScreen(),
-        );
-      } else if (pathSegments.length == 2) {
-        // /itineraries/:id
-        final id = pathSegments[1];
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => ItineraryViewScreen(itineraryId: id),
-        );
-      } else if (pathSegments.length == 3 && pathSegments[2] == 'edit') {
-        // /itineraries/:id/edit
-        final id = pathSegments[1];
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => ItineraryBuilderScreen(itineraryId: id),
-        );
-      }
-    }
-    return null;
+class ItineraryBuilderArgs {
+  final String? itineraryId; // null -> create new
+  final String? initialName;
+  final DateTime? startDate;
+  final int? initialDays;
+
+  const ItineraryBuilderArgs({
+    this.itineraryId,
+    this.initialName,
+    this.startDate,
+    this.initialDays,
+  });
+}
+
+class ItineraryViewArgs {
+  final String itineraryId;
+  const ItineraryViewArgs(this.itineraryId);
+}
+
+Route<dynamic>? buildItineraryRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case ItineraryRoutes.list:
+      return MaterialPageRoute(builder: (_) => const ItineraryListScreen());
+    case ItineraryRoutes.builder:
+      final args = settings.arguments as ItineraryBuilderArgs?;
+      return MaterialPageRoute(
+        builder: (_) => ItineraryBuilderScreenNew(args: args),
+      );
+    case ItineraryRoutes.view:
+      final args = settings.arguments as ItineraryViewArgs;
+      return MaterialPageRoute(
+        builder: (_) => ItineraryViewScreen(itineraryId: args.itineraryId),
+      );
   }
+  return null;
 }
