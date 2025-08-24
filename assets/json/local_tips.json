@@ -1,0 +1,9 @@
+{
+  "countryCode": "LK",
+  "currencyCode": "LKR",
+  "restaurants": { "lowPct": 5, "stdPct": 10, "highPct": 12 },
+  "taxis": { "lowPct": 0, "stdPct": 5, "highPct": 10 },
+  "porter": { "amount": 200, "unit": "bag" },
+  "housekeeping": { "amount": 500, "unit": "night" },
+  "guide": { "amount": 5000, "unit": "day" }
+}

@@ -111,6 +111,8 @@ flutter:
     - assets/json/
     - assets/images/onboarding/beach.png
     - assets/json/holidays_lk.json
+    - assets/json/local_rates.json
+    - assets/json/local_tips.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:
