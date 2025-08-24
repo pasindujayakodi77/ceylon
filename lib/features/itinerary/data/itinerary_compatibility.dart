@@ -23,8 +23,7 @@ extension ItineraryItemCompatibility on ItineraryItem {
       durationMinutes: 60, // Default duration
       note: description,
       imageUrl: imageUrl,
-      latitude: latitude,
-      longitude: longitude,
+      // latitude/longitude removed for compatibility
     );
   }
 
@@ -43,8 +42,7 @@ extension ItineraryItemCompatibility on ItineraryItem {
       type: ItineraryItemType.activity,
       locationName: null,
       imageUrl: adapterItem.imageUrl,
-      latitude: adapterItem.latitude,
-      longitude: adapterItem.longitude,
+      // latitude/longitude removed for compatibility
     );
   }
 }

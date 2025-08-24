@@ -300,8 +300,6 @@ class ItineraryItem {
   final String? note;
   final String? placeId;
   final String? imageUrl;
-  final double? latitude;
-  final double? longitude;
   final String? description;
   final String? locationName;
   final double? cost;
@@ -316,8 +314,6 @@ class ItineraryItem {
     this.note,
     this.placeId,
     this.imageUrl,
-    this.latitude,
-    this.longitude,
     this.description,
     this.locationName,
     this.cost,
@@ -333,8 +329,6 @@ class ItineraryItem {
     String? note,
     String? placeId,
     String? imageUrl,
-    double? latitude,
-    double? longitude,
     String? description,
     String? locationName,
     double? cost,
@@ -349,8 +343,6 @@ class ItineraryItem {
       note: note ?? this.note,
       placeId: placeId ?? this.placeId,
       imageUrl: imageUrl ?? this.imageUrl,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
       description: description ?? this.description,
       locationName: locationName ?? this.locationName,
       cost: cost ?? this.cost,
@@ -404,8 +396,6 @@ class ItineraryItem {
       'note': note,
       'place_id': placeId,
       'image_url': imageUrl,
-      'latitude': latitude,
-      'longitude': longitude,
       'description': description,
       'location_name': locationName,
       'cost': cost,

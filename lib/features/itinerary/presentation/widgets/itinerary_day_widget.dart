@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'itinerary_item_widget.dart';
 import '../../data/itinerary_adapter.dart' as adapter;
+import 'package:ceylon/features/attractions/data/attraction_repository.dart';
+import 'package:ceylon/features/attractions/data/attraction_model.dart';
 
 class ItineraryDayWidget extends StatefulWidget {
   final String itineraryId;
@@ -51,6 +53,10 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
       text: (m['title'] ?? '').toString(),
     );
     final noteCtrl = TextEditingController(text: (m['note'] ?? '').toString());
+    final pickedAttractionId = ValueNotifier<String?>(
+      m['attractionId']?.toString(),
+    );
+    final pickedImageUrl = ValueNotifier<String?>(m['imageUrl']?.toString());
     final type = ValueNotifier<String>(
       (m['type'] ?? 'place').toString(),
     ); // place | food | transport | stay | activity
@@ -61,8 +67,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
       (m['durationMins'] as num?)?.toInt() ?? 60,
     );
     final cost = ValueNotifier<double>((m['cost'] as num?)?.toDouble() ?? 0.0);
-    final latCtrl = TextEditingController(text: (m['lat']?.toString() ?? ''));
-    final lngCtrl = TextEditingController(text: (m['lng']?.toString() ?? ''));
+    // lat/lng removed: no controllers
 
     await showModalBottomSheet(
       context: context,
@@ -84,6 +89,66 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(3),
                 ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  FilledButton.icon(
+                    onPressed: () async {
+                      // Open attraction picker
+                      final repo = AttractionRepository();
+                      final list = await repo.getAttractions();
+                      final selected = await showDialog<Attraction>(
+                        context: context,
+                        builder: (c) => SimpleDialog(
+                          title: const Text('Pick attraction'),
+                          children: [
+                            SizedBox(
+                              width: double.maxFinite,
+                              height: 400,
+                              child: ListView.builder(
+                                itemCount: list.length,
+                                itemBuilder: (ctx, i) {
+                                  final a = list[i];
+                                  return ListTile(
+                                    leading: a.imageUrl != null
+                                        ? Image.network(
+                                            a.imageUrl!,
+                                            width: 56,
+                                            height: 56,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : const SizedBox(width: 56, height: 56),
+                                    title: Text(a.name),
+                                    subtitle: Text(a.location),
+                                    onTap: () => Navigator.pop(ctx, a),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (selected != null) {
+                        titleCtrl.text = selected.name;
+                        noteCtrl.text = selected.description;
+                        pickedAttractionId.value = selected.id;
+                        pickedImageUrl.value = selected.imageUrl;
+                      }
+                    },
+                    icon: const Icon(Icons.place),
+                    label: const Text('Pick attraction'),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ValueListenableBuilder<String?>(
+                      valueListenable: pickedAttractionId,
+                      builder: (ctx, val, _) =>
+                          Text(val == null ? '' : 'Selected: $val'),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 12),
               Text(
@@ -127,35 +192,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                 maxLines: 4,
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: latCtrl,
-                      decoration: const InputDecoration(
-                        labelText: 'Lat (optional)',
-                        prefixIcon: Icon(Icons.location_on_outlined),
-                      ),
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: lngCtrl,
-                      decoration: const InputDecoration(
-                        labelText: 'Lng (optional)',
-                        prefixIcon: Icon(Icons.location_on_outlined),
-                      ),
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // latitude/longitude inputs removed
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -278,10 +315,9 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                         'startTime': startTime.value,
                         'durationMins': duration.value,
                         'cost': cost.value,
-                        'lat': double.tryParse(latCtrl.text),
-                        'lng': double.tryParse(lngCtrl.text),
+                        // lat/lng removed
                         'updatedAt': FieldValue.serverTimestamp(),
-                      }..removeWhere((k, v) => v == null);
+                      };
 
                       if (isEdit) {
                         await doc.reference.update(map);
@@ -398,8 +434,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                           final mins =
                               (d['durationMins'] as num?)?.toInt() ?? 0;
                           final cost = (d['cost'] as num?)?.toDouble() ?? 0.0;
-                          final lat = (d['lat'] as num?)?.toDouble();
-                          final lng = (d['lng'] as num?)?.toDouble();
+                          // lat/lng removed from storage
 
                           final item = adapter.ItineraryItem(
                             id: d.id,
@@ -408,8 +443,7 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                                 DateTime.now(), // placeholder, adapter uses TimeOfDay in some places
                             durationMinutes: mins,
                             note: note.isEmpty ? null : note,
-                            latitude: lat,
-                            longitude: lng,
+                            // latitude/longitude removed
                             cost: cost == 0.0 ? null : cost,
                             type: (() {
                               switch (type) {
@@ -478,13 +512,9 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                               item: item,
                               onTap: () {
                                 // open directions when tapping the item
-                                final uri = (lat != null && lng != null)
-                                    ? Uri.parse(
-                                        'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
-                                      )
-                                    : Uri.parse(
-                                        'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(title)}',
-                                      );
+                                final uri = Uri.parse(
+                                  'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(title)}',
+                                );
                                 launchUrl(
                                   uri,
                                   mode: LaunchMode.externalApplication,

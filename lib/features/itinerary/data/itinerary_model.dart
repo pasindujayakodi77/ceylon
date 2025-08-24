@@ -167,8 +167,6 @@ class ItineraryItem {
   final TimeOfDay? endTime;
   final ItineraryItemType type;
   final String? locationName;
-  final double? latitude;
-  final double? longitude;
   final String? attractionId;
   final double? cost;
   final String? imageUrl;
@@ -181,8 +179,6 @@ class ItineraryItem {
     this.endTime,
     required this.type,
     this.locationName,
-    this.latitude,
-    this.longitude,
     this.attractionId,
     this.cost,
     this.imageUrl,
@@ -196,8 +192,6 @@ class ItineraryItem {
     TimeOfDay? endTime,
     ItineraryItemType? type,
     String? locationName,
-    double? latitude,
-    double? longitude,
     String? attractionId,
     double? cost,
     String? imageUrl,
@@ -210,8 +204,6 @@ class ItineraryItem {
       endTime: endTime ?? this.endTime,
       type: type ?? this.type,
       locationName: locationName ?? this.locationName,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
       attractionId: attractionId ?? this.attractionId,
       cost: cost ?? this.cost,
       imageUrl: imageUrl ?? this.imageUrl,
@@ -229,8 +221,6 @@ class ItineraryItem {
           : null,
       'type': type.name,
       'location_name': locationName,
-      'latitude': latitude,
-      'longitude': longitude,
       'attraction_id': attractionId,
       'cost': cost,
       'image_url': imageUrl,
@@ -257,8 +247,6 @@ class ItineraryItem {
         orElse: () => ItineraryItemType.activity,
       ),
       locationName: json['location_name'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
       attractionId: json['attraction_id'],
       cost: json['cost'],
       imageUrl: json['image_url'],
