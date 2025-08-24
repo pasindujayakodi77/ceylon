@@ -102,19 +102,29 @@ class NotificationsService {
 
   // Stream to get real-time notifications for the current user
   Stream<List<NotificationItem>> getNotifications() {
-    final collection = _notificationsCollection;
-    if (collection == null) {
-      return Stream.value([]);
-    }
+    // Listen to auth state changes so the notifications stream will
+    // automatically switch when the user signs in or out. This prevents
+    // returning a permanent empty stream when the screen is built before
+    // authentication completes.
+    return _auth.authStateChanges().asyncExpand((user) {
+      if (user == null) {
+        return Stream.value(<NotificationItem>[]);
+      }
 
-    return collection
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => NotificationItem.fromFirestore(doc))
-              .toList(),
-        );
+      final collection = _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('notifications');
+
+      return collection
+          .orderBy('timestamp', descending: true)
+          .snapshots()
+          .map(
+            (snapshot) => snapshot.docs
+                .map((doc) => NotificationItem.fromFirestore(doc))
+                .toList(),
+          );
+    });
   }
 
   // Mark a notification as read
@@ -173,5 +183,12 @@ class NotificationsService {
         .count()
         .get();
     return snapshot.count ?? 0;
+  }
+
+  // Create a new notification
+  Future<void> createNotification(NotificationItem item) async {
+    final collection = _notificationsCollection;
+    if (collection == null) return;
+    await collection.add(item.toFirestore());
   }
 }

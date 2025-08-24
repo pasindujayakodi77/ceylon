@@ -66,6 +66,29 @@ class FCMService {
     });
   }
 
+  /// Show an immediate local notification (if notifications are enabled).
+  static Future<void> showLocalNotification(
+    int id,
+    String? title,
+    String? body,
+  ) async {
+    if (!_isEnabled) return;
+
+    await _flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'default_channel',
+          'CEYLON Notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+    );
+  }
+
   /// Set notification enabled/disabled state
   static Future<void> setEnabled(bool enabled) async {
     _isEnabled = enabled;

@@ -2,6 +2,9 @@ import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/design_system/widgets/ceylon_app_bar.dart';
 import 'package:ceylon/features/notifications/data/notifications_provider.dart';
 import 'package:ceylon/features/notifications/data/notifications_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ceylon/features/itinerary/presentation/screens/itinerary_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -310,20 +313,70 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  void _navigateBasedOnNotificationType(
+  Future<void> _navigateBasedOnNotificationType(
     BuildContext context,
     NotificationItem notification,
-  ) {
-    // This would be implemented based on app requirements
-    // For example, navigating to an attraction details screen for a recommendation
+  ) async {
+    // Example: navigate to attraction details
     if (notification.relatedType == 'attraction' &&
         notification.relatedId != null) {
-      // Navigator.push(...) to attraction details
+      // TODO: wire this to the attraction detail screen
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Navigating to ${notification.relatedId} details'),
         ),
       );
+      return;
+    }
+
+    // Navigate to itinerary item: we only have the item id, so find the
+    // parent itinerary that contains this item for the current user.
+    if (notification.relatedType == 'itinerary_item' &&
+        notification.relatedId != null) {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sign in to view this item')),
+        );
+        return;
+      }
+
+      final itinerariesCol = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('itineraries');
+
+      String? foundItineraryId;
+
+      // Iterate user's itineraries and check if any contains the item id.
+      final itinerariesSnap = await itinerariesCol.get();
+      for (final itin in itinerariesSnap.docs) {
+        final itemDoc = await itin.reference
+            .collection('items')
+            .doc(notification.relatedId!)
+            .get();
+        if (itemDoc.exists) {
+          foundItineraryId = itin.id;
+          break;
+        }
+      }
+
+      if (foundItineraryId != null) {
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ItineraryViewScreen(itineraryId: foundItineraryId!),
+          ),
+        );
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Itinerary item not found')),
+        );
+      }
+      return;
     }
   }
 

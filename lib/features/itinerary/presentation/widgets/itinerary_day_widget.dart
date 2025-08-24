@@ -9,6 +9,8 @@ import 'itinerary_item_widget.dart';
 import '../../data/itinerary_adapter.dart' as adapter;
 import 'package:ceylon/features/attractions/data/attraction_repository.dart';
 import 'package:ceylon/features/attractions/data/attraction_model.dart';
+import 'package:ceylon/services/firebase_messaging_service.dart';
+import 'package:ceylon/features/notifications/data/notifications_service.dart';
 
 class ItineraryDayWidget extends StatefulWidget {
   final String itineraryId;
@@ -30,6 +32,9 @@ class ItineraryDayWidget extends StatefulWidget {
 
 class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
   String get _uid => FirebaseAuth.instance.currentUser!.uid;
+  // In-memory cache of attractions to avoid repeated network calls when
+  // opening the picker multiple times during the same session.
+  List<Attraction>? _cachedAttractions;
 
   CollectionReference<Map<String, dynamic>> get _itemsCol => FirebaseFirestore
       .instance
@@ -66,6 +71,35 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
     final duration = ValueNotifier<int>(
       (m['durationMins'] as num?)?.toInt() ?? 60,
     );
+    String _computeEnd(String start, int mins) {
+      final parts = start.split(':');
+      final h = int.tryParse(parts[0]) ?? 0;
+      final mm = int.tryParse(parts[1]) ?? 0;
+      final startDt = DateTime(2000, 1, 1, h, mm);
+      final endDt = startDt.add(Duration(minutes: mins));
+      return '${endDt.hour.toString().padLeft(2, '0')}:${endDt.minute.toString().padLeft(2, '0')}';
+    }
+
+    int _diffMinutes(String start, String end) {
+      final sp = start.split(':');
+      final ep = end.split(':');
+      final sh = int.tryParse(sp[0]) ?? 0;
+      final sm = int.tryParse(sp[1]) ?? 0;
+      final eh = int.tryParse(ep[0]) ?? 0;
+      final em = int.tryParse(ep[1]) ?? 0;
+      var s = DateTime(2000, 1, 1, sh, sm);
+      var e = DateTime(2000, 1, 1, eh, em);
+      var diff = e.difference(s).inMinutes;
+      if (diff < 0) diff += 24 * 60;
+      return diff;
+    }
+
+    final endTime = ValueNotifier<String>(
+      _computeEnd(
+        (m['startTime'] ?? '09:00').toString(),
+        (m['durationMins'] as num?)?.toInt() ?? 60,
+      ),
+    );
     final cost = ValueNotifier<double>((m['cost'] as num?)?.toDouble() ?? 0.0);
     // lat/lng removed: no controllers
 
@@ -95,10 +129,32 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                 children: [
                   FilledButton.icon(
                     onPressed: () async {
-                      // Open attraction picker
+                      // Open attraction picker (use cached list when available)
                       final repo = AttractionRepository();
-                      final list = await repo.getAttractions();
+                      List<Attraction> list;
+                      if (_cachedAttractions != null) {
+                        list = _cachedAttractions!;
+                      } else {
+                        list = await repo.getAttractions();
+                        if (!mounted) return;
+                        _cachedAttractions = list;
+
+                        // Prefetch first few thumbnails to improve perceived load
+                        // time when the dialog opens.
+                        for (final a in list.take(8)) {
+                          final url = a.imageUrl;
+                          if (url != null && url.isNotEmpty) {
+                            try {
+                              // ignore: use_build_context_synchronously
+                              precacheImage(NetworkImage(url), context);
+                            } catch (_) {
+                              // ignore prefetch errors silently
+                            }
+                          }
+                        }
+                      }
                       final searchCtrl = TextEditingController();
+                      int? selectedIndex;
                       final selected = await showDialog<Attraction>(
                         context: context,
                         builder: (c) => StatefulBuilder(
@@ -160,6 +216,15 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                                               itemBuilder: (ctx, i) {
                                                 final a = items[i];
                                                 return ListTile(
+                                                  selected: selectedIndex == i,
+                                                  selectedTileColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                          .withAlpha(
+                                                            (0.12 * 255)
+                                                                .round(),
+                                                          ),
                                                   leading: a.imageUrl != null
                                                       ? Image.network(
                                                           a.imageUrl!,
@@ -173,8 +238,21 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                                                         ),
                                                   title: Text(a.name),
                                                   subtitle: Text(a.location),
-                                                  onTap: () =>
-                                                      Navigator.pop(ctx, a),
+                                                  onTap: () async {
+                                                    setState(() {
+                                                      selectedIndex = i;
+                                                    });
+                                                    final nav = Navigator.of(
+                                                      context,
+                                                    );
+                                                    await Future.delayed(
+                                                      const Duration(
+                                                        milliseconds: 150,
+                                                      ),
+                                                    );
+                                                    if (!nav.mounted) return;
+                                                    nav.pop(a);
+                                                  },
                                                 );
                                               },
                                             );
@@ -251,54 +329,96 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
               const SizedBox(height: 8),
               // latitude/longitude inputs removed
               const SizedBox(height: 8),
-              Row(
+              Column(
                 children: [
-                  Expanded(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.schedule),
-                      title: const Text('Start time'),
-                      subtitle: Text(startTime.value),
-                      onTap: () async {
-                        final parts = startTime.value.split(':');
-                        final t = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay(
-                            hour: int.parse(parts[0]),
-                            minute: int.parse(parts[1]),
-                          ),
-                        );
-                        if (t != null) {
-                          startTime.value =
-                              '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
-                        }
-                      },
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.schedule),
+                    title: const Text('Start time'),
+                    subtitle: ValueListenableBuilder<String>(
+                      valueListenable: startTime,
+                      builder: (_, v, __) => Text(v),
                     ),
+                    onTap: () async {
+                      final parts = startTime.value.split(':');
+                      final t = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay(
+                          hour: int.parse(parts[0]),
+                          minute: int.parse(parts[1]),
+                        ),
+                      );
+                      if (t != null) {
+                        startTime.value =
+                            '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+                        // recompute end time
+                        endTime.value = _computeEnd(
+                          startTime.value,
+                          duration.value,
+                        );
+                      }
+                    },
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.timer_outlined),
-                      title: const Text('Duration'),
-                      subtitle: Text('${duration.value} mins'),
-                      onTap: () async {
-                        final v = await showDialog<int>(
-                          context: context,
-                          builder: (c) => SimpleDialog(
-                            title: const Text('Duration (mins)'),
-                            children: [
-                              for (final m in [30, 45, 60, 90, 120, 180])
-                                SimpleDialogOption(
-                                  onPressed: () => Navigator.pop(c, m),
-                                  child: Text('$m'),
-                                ),
-                            ],
-                          ),
-                        );
-                        if (v != null) duration.value = v;
-                      },
+                  const SizedBox(height: 8),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.timer_outlined),
+                    title: const Text('Duration'),
+                    subtitle: ValueListenableBuilder<int>(
+                      valueListenable: duration,
+                      builder: (_, v, __) => Text('$v mins'),
                     ),
+                    onTap: () async {
+                      final v = await showDialog<int>(
+                        context: context,
+                        builder: (c) => SimpleDialog(
+                          title: const Text('Duration (mins)'),
+                          children: [
+                            for (final m in [30, 45, 60, 90, 120, 180])
+                              SimpleDialogOption(
+                                onPressed: () => Navigator.pop(c, m),
+                                child: Text('$m'),
+                              ),
+                          ],
+                        ),
+                      );
+                      if (v != null) {
+                        duration.value = v;
+                        endTime.value = _computeEnd(
+                          startTime.value,
+                          duration.value,
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.schedule),
+                    title: const Text('End time'),
+                    subtitle: ValueListenableBuilder<String>(
+                      valueListenable: endTime,
+                      builder: (_, v, __) => Text(v),
+                    ),
+                    onTap: () async {
+                      final parts = endTime.value.split(':');
+                      final t = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay(
+                          hour: int.parse(parts[0]),
+                          minute: int.parse(parts[1]),
+                        ),
+                      );
+                      if (t != null) {
+                        endTime.value =
+                            '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+                        // recompute duration
+                        duration.value = _diffMinutes(
+                          startTime.value,
+                          endTime.value,
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
@@ -389,11 +509,42 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                             : (((last.docs.first['order'] as num?)?.toInt()) ??
                                       0) +
                                   1;
-                        await _itemsCol.add({
+                        final docRef = await _itemsCol.add({
                           ...map,
                           'order': next,
                           'createdAt': FieldValue.serverTimestamp(),
                         });
+                        // Fire a local notification to let user know the item was added
+                        try {
+                          // Use document hashCode as a simple id
+                          final id = docRef.id.hashCode;
+                          await FCMService.showLocalNotification(
+                            id,
+                            'Itinerary updated',
+                            'Added: ${titleCtrl.text.trim()}',
+                          );
+                        } catch (_) {
+                          // ignore notification errors
+                        }
+
+                        // Persist a notification entry so it shows in the app's
+                        // Notifications screen
+                        try {
+                          final ns = NotificationsService();
+                          final notif = NotificationItem(
+                            id: '',
+                            title: 'Itinerary updated',
+                            message: 'Added: ${titleCtrl.text.trim()}',
+                            timestamp: DateTime.now(),
+                            type: NotificationType.info,
+                            isRead: false,
+                            relatedId: docRef.id,
+                            relatedType: 'itinerary_item',
+                          );
+                          await ns.createNotification(notif);
+                        } catch (_) {
+                          // ignore persistence errors
+                        }
                       }
                       if (mounted) Navigator.pop(context);
                     },
