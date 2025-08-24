@@ -515,29 +515,39 @@ class _EmptyDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.hourglass_empty, size: 56, color: Colors.black38),
-            const SizedBox(height: 6),
-            Text(
-              'Nothing planned yet',
-              style: Theme.of(context).textTheme.titleMedium,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.hourglass_empty,
+                  size: 56,
+                  color: Colors.black38,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Nothing planned yet',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Tap + to add places, food, transport, stays or activities.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                ),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              'Tap + to add places, food, transport, stays or activities.',
-              textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
