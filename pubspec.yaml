@@ -80,3 +80,6 @@ flutter:
     - assets/json/holidays_lk.json
     - assets/json/local_rates.json
     - assets/json/local_tips.json
+    - assets/home/ellatrainride.jpg
+    - assets/home/gallefort.jpg
+    - assets/home/sigiriyarock.png

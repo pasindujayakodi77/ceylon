@@ -20,6 +20,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:ceylon/dev/dev_tools_screen.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ceylon/features/home/data/sigiriya_details.dart';
+import 'package:ceylon/features/home/data/ella_details.dart';
+import 'package:ceylon/features/home/data/galle_details.dart';
 
 class TouristHomeScreen extends StatefulWidget {
   const TouristHomeScreen({super.key});
@@ -228,7 +231,13 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
-                                // Navigate to Sigiriya details
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const SigiriyaDetailsScreen(),
+                                  ),
+                                );
                               },
                             )
                             .animate()
@@ -242,7 +251,12 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               imageUrl:
                                   'https://i.postimg.cc/3WM6ZLdP/Ella-Train-Ride.jpg',
                               onTap: () {
-                                // Navigate to Ella details
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const EllaDetailsScreen(),
+                                  ),
+                                );
                               },
                             )
                             .animate()
@@ -258,7 +272,12 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                               hasBadge: true,
                               badgeText: 'UNESCO',
                               onTap: () {
-                                // Navigate to Galle details
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const GalleDetailsScreen(),
+                                  ),
+                                );
                               },
                             )
                             .animate()
