@@ -3,7 +3,8 @@ import 'package:ceylon/design_system/widgets/ceylon_app_bar.dart';
 import 'package:ceylon/features/home/presentation/widgets/feature_card.dart';
 import 'package:ceylon/features/home/presentation/widgets/highlight_card.dart';
 import 'package:ceylon/features/home/presentation/widgets/section_header.dart';
-import 'package:ceylon/features/home/presentation/widgets/weather_widget.dart';
+import 'package:ceylon/features/weather/presentation/widgets/weather_widget.dart'
+    as live_weather;
 import 'package:ceylon/features/business/presentation/widgets/promoted_businesses_carousel.dart';
 import 'package:ceylon/features/map/presentation/screens/attractions_map_screen_new.dart';
 import 'package:ceylon/features/profile/presentation/screens/profile_screen_v2.dart';
@@ -140,16 +141,24 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
               ),
             ),
 
-            // Weather widget
+            // Weather widget (use fixed Colombo in debug/development mode)
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: CeylonTokens.spacing16,
                   vertical: CeylonTokens.spacing8,
                 ),
-                child: WeatherWidget.placeholder(
-                  context,
-                ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0),
+                child:
+                    (kDebugMode
+                            ? const live_weather.WeatherWidget(
+                                lat: 6.9271,
+                                lon: 79.8612,
+                                titleOverride: 'Colombo',
+                              )
+                            : const live_weather.WeatherWidget())
+                        .animate()
+                        .fadeIn(delay: 200.ms)
+                        .slideY(begin: 0.2, end: 0),
               ),
             ),
 
