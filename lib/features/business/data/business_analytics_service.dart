@@ -1,166 +1,207 @@
-// Patched by Refactor Pack: Repository + BLoC + Batched Analytics (UTC)
-
+// FILE: lib/features/business/data/business_analytics_service.dart
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:collection/collection.dart';
+import 'business_models.dart';
 
-/// Safer, batched client analytics.
-/// Writes to `/businesses/{id}/metrics/{daily|hourly}/...`
+/// Service for retrieving and analyzing business statistics.
+/// 
+/// Provides methods for streaming daily stats, computing summaries,
+/// getting rating distributions, and finding top events.
 class BusinessAnalyticsService {
-  BusinessAnalyticsService._() {
-    _restoreQueue();
-    _autoFlushTimer ??= Timer.periodic(
-      const Duration(seconds: 8),
-      (_) => flushEventQueue(),
-    );
-  }
-  static final instance = BusinessAnalyticsService._();
+  /// Creates a new [BusinessAnalyticsService] instance.
+  /// 
+  /// Requires a [FirebaseFirestore] instance for data access.
+  BusinessAnalyticsService({required FirebaseFirestore firestore}) : _db = firestore;
+  
+  /// Factory constructor that creates an instance using the default Firestore instance.
+  factory BusinessAnalyticsService.instance() => 
+      BusinessAnalyticsService(firestore: FirebaseFirestore.instance);
+      
+  /// Singleton instance for easy access across the app.
+  static final shared = BusinessAnalyticsService(firestore: FirebaseFirestore.instance);
 
-  final _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db;
+  
+  /// Collection path constants to avoid typos
+  String get _businessesPath => 'businesses';
+  String get _analyticsPath => 'analytics';
+  String _dailyStatsPath(String businessId) => '$_analyticsPath/$businessId/daily';
+  String _eventsPath(String businessId) => '$_businessesPath/$businessId/events';
+  String _reviewsPath(String businessId) => '$_businessesPath/$businessId/reviews';
 
-  // Queue
-  final List<_QueuedEvent> _queue = [];
-  Timer? _autoFlushTimer;
-  bool _flushInFlight = false;
-  int _backoffSeconds = 2;
-
-  Future<void> recordEvent(
-    String businessId,
-    String field, {
-    DateTime? when,
-  }) async {
-    _queue.add(
-      _QueuedEvent(
-        businessId: businessId,
-        field: field,
-        when: when ?? DateTime.now().toUtc(),
-      ),
-    );
-    await _persistQueue();
+  /// Formats a date as YYYY-MM-DD string.
+  String _formatDateString(DateTime date) {
+    final y = date.year.toString().padLeft(4, '0');
+    final m = date.month.toString().padLeft(2, '0');
+    final d = date.day.toString().padLeft(2, '0');
+    return '$y-$m-$d';
   }
 
-  Future<void> recordCall(String businessId) =>
-      recordEvent(businessId, 'cta_call');
-  Future<void> recordDirections(String businessId) =>
-      recordEvent(businessId, 'cta_directions');
-  Future<void> recordWebsite(String businessId) =>
-      recordEvent(businessId, 'cta_website');
-  // Booking-specific helpers used across the UI
-  Future<void> recordBookingWhatsApp(String businessId) =>
-      recordEvent(businessId, 'booking_whatsapp');
-  Future<void> recordBookingForm(String businessId) =>
-      recordEvent(businessId, 'booking_form');
-
-  Future<void> flushEventQueue() async {
-    if (_flushInFlight || _queue.isEmpty) return;
-    _flushInFlight = true;
-    try {
-      final batch = _db.batch();
-      final nowUtc = DateTime.now().toUtc();
-      for (final e in _queue) {
-        final when = e.when ?? nowUtc;
-        final dr = _dayRef(e.businessId, when);
-        batch.set(dr, {
-          'date': _dayString(when),
-          e.field: FieldValue.increment(1),
-          'updatedAt': FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
-
-        final hr = _hourRef(e.businessId, when);
-        batch.set(hr, {
-          e.field: FieldValue.increment(1),
-          'updatedAt': FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
+  /// Streams daily statistics for a business over the specified number of days.
+  /// 
+  /// Returns a stream of [DailyStat] lists ordered by date (oldest first).
+  Stream<List<DailyStat>> streamDailyStats(String businessId, {int days = 30}) {
+    final endDate = DateTime.now();
+    final startDate = endDate.subtract(Duration(days: days - 1));
+    
+    // Create a query for the date range
+    final query = _db
+        .collection(_dailyStatsPath(businessId))
+        .where(FieldPath.documentId, isGreaterThanOrEqualTo: _formatDateString(startDate))
+        .where(FieldPath.documentId, isLessThanOrEqualTo: _formatDateString(endDate))
+        .orderBy(FieldPath.documentId);
+    
+    return query.snapshots().map((snapshot) {
+      // Convert documents to DailyStat objects
+      final stats = snapshot.docs.map((doc) => 
+          DailyStat.fromDoc(doc, businessId: businessId)).toList();
+      
+      // Fill in any missing days with zero values
+      final result = <DailyStat>[];
+      DateTime current = startDate;
+      
+      while (!current.isAfter(endDate)) {
+        final dateString = _formatDateString(current);
+        
+        // Find existing stat for this date or create a new one with zeros
+        final existingStat = stats.firstWhereOrNull((stat) => stat.date == dateString);
+        if (existingStat != null) {
+          result.add(existingStat);
+        } else {
+          result.add(DailyStat(
+            businessId: businessId,
+            date: dateString,
+            views: 0,
+            bookmarks: 0,
+            bookings: 0,
+            updatedAt: Timestamp.now(),
+          ));
+        }
+        
+        current = current.add(const Duration(days: 1));
       }
-      await batch.commit();
-      _queue.clear();
-      await _persistQueue();
-      _backoffSeconds = 2; // reset
-    } catch (e) {
-      // exponential backoff
-      _backoffSeconds = (_backoffSeconds * 2).clamp(2, 300);
-      Future.delayed(Duration(seconds: _backoffSeconds));
-    } finally {
-      _flushInFlight = false;
+      
+      return result;
+    });
+  }
+
+  /// Computes summary statistics from a list of [DailyStat] objects.
+  /// 
+  /// Returns a map containing total views, bookings, bookmarks, 
+  /// average rating, and review count.
+  Future<Map<String, num>> computeSummary(List<DailyStat> stats, String businessId) async {
+    // Calculate totals from daily stats
+    final totalViews = stats.fold<int>(0, (total, stat) => total + stat.views);
+    final totalBookmarks = stats.fold<int>(0, (total, stat) => total + stat.bookmarks);
+    final totalBookings = stats.fold<int>(0, (total, stat) => total + stat.bookings);
+    
+    // Fetch the business for rating information
+    final businessDoc = await _db.collection(_businessesPath).doc(businessId).get();
+    double avgRating = 0.0;
+    int reviewCount = 0;
+    
+    if (businessDoc.exists) {
+      final data = businessDoc.data() ?? {};
+      avgRating = (data['ratingAvg'] ?? 0.0).toDouble();
+      reviewCount = (data['ratingCount'] ?? 0) as int;
     }
+    
+    return {
+      'totalViews': totalViews,
+      'totalBookmarks': totalBookmarks,
+      'totalBookings': totalBookings,
+      'avgRating': avgRating,
+      'reviewCount': reviewCount,
+    };
   }
 
-  // ---- Helpers ----
-  String _dayString(DateTime d) {
-    final u = d.toUtc();
-    return '${u.year.toString().padLeft(4, '0')}-${u.month.toString().padLeft(2, '0')}-${u.day.toString().padLeft(2, '0')}';
-  }
-
-  DocumentReference<Map<String, dynamic>> _dayRef(
-    String businessId,
-    DateTime when,
-  ) {
-    final key = _dayString(when);
-    return _db
-        .collection('businesses')
-        .doc(businessId)
-        .collection('metrics')
-        .doc('daily')
-        .collection('days')
-        .doc(key);
-  }
-
-  DocumentReference<Map<String, dynamic>> _hourRef(
-    String businessId,
-    DateTime when,
-  ) {
-    final dayKey = _dayString(when);
-    final hour = when.toUtc().hour.toString().padLeft(2, '0');
-    return _db
-        .collection('businesses')
-        .doc(businessId)
-        .collection('metrics')
-        .doc('hourly')
-        .collection('days')
-        .doc(dayKey)
-        .collection('hours')
-        .doc(hour);
-  }
-
-  Future<void> _persistQueue() async {
-    final prefs = await SharedPreferences.getInstance();
-    final list = _queue.map((e) => e.toJson()).toList();
-    await prefs.setString('business_analytics_queue', jsonEncode(list));
-  }
-
-  Future<void> _restoreQueue() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString('business_analytics_queue');
-    if (raw == null) return;
-    try {
-      final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
-      _queue
-        ..clear()
-        ..addAll(list.map(_QueuedEvent.fromJson));
-    } catch (_) {
-      // ignore corrupted cache
-      await prefs.remove('business_analytics_queue');
+  /// Gets the distribution of ratings for a business.
+  /// 
+  /// Returns a map with keys 1-5 representing star ratings and
+  /// values representing the count of reviews with that rating.
+  /// 
+  /// Can be directly used with chart libraries like fl_chart.
+  Future<Map<int, int>> ratingDistribution(String businessId) async {
+    // Initialize distribution with zeros
+    final distribution = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+    
+    // Query for reviews
+    final querySnapshot = await _db
+        .collection(_reviewsPath(businessId))
+        .get();
+    
+    // Count ratings
+    for (var doc in querySnapshot.docs) {
+      final data = doc.data();
+      final rating = (data['rating'] ?? 0) as int;
+      if (rating >= 1 && rating <= 5) {
+        distribution[rating] = (distribution[rating] ?? 0) + 1;
+      }
     }
+    
+    return distribution;
   }
-}
+  
+  /// Gets the daily views data in a format ready for charts.
+  /// 
+  /// Returns a list of (day, views) pairs that can be used directly with chart libraries.
+  /// The `days` parameter controls how many days of data to include.
+  Future<List<MapEntry<String, int>>> getViewsChartData(String businessId, {int days = 30}) async {
+    final statsStream = streamDailyStats(businessId, days: days);
+    final statsList = await statsStream.first;
+    
+    // Create the data in the format expected by charts
+    return statsList.map((stat) => MapEntry(stat.date, stat.views)).toList();
+  }
 
-class _QueuedEvent {
-  final String businessId;
-  final String field;
-  final DateTime? when;
-  _QueuedEvent({required this.businessId, required this.field, this.when});
-
-  Map<String, dynamic> toJson() => {
-    'businessId': businessId,
-    'field': field,
-    'when': when?.toIso8601String(),
-  };
-
-  factory _QueuedEvent.fromJson(Map<String, dynamic> j) => _QueuedEvent(
-    businessId: j['businessId'] as String,
-    field: j['field'] as String,
-    when: j['when'] == null ? null : DateTime.tryParse(j['when'] as String),
-  );
+  /// Finds the top events for a business based on bookings or interest.
+  /// 
+  /// Returns a list of [BusinessEvent] objects sorted by booking count
+  /// or interest level.
+  Future<List<BusinessEvent>> topEvents(String businessId, {int limit = 5}) async {
+    // Get all events for this business
+    final eventsSnapshot = await _db
+        .collection(_eventsPath(businessId))
+        .where('published', isEqualTo: true)
+        .get();
+    
+    // Convert to BusinessEvent objects
+    final events = eventsSnapshot.docs.map((doc) => BusinessEvent.fromDoc(doc)).toList();
+    
+    // If there are no events, return an empty list
+    if (events.isEmpty) return [];
+    
+    // Get event bookings analytics data (from a collection group query for efficiency)
+    final analyticsSnapshot = await _db
+        .collectionGroup('eventBookings')
+        .where('businessId', isEqualTo: businessId)
+        .get();
+    
+    // Create a map of eventId -> booking count
+    final bookingCounts = <String, int>{};
+    for (var doc in analyticsSnapshot.docs) {
+      final data = doc.data();
+      final eventId = data['eventId'] as String?;
+      if (eventId != null) {
+        bookingCounts[eventId] = (bookingCounts[eventId] ?? 0) + 1;
+      }
+    }
+    
+    // Sort events by booking count (or start date as fallback for events with equal bookings)
+    events.sort((a, b) {
+      final aCount = bookingCounts[a.id] ?? 0;
+      final bCount = bookingCounts[b.id] ?? 0;
+      
+      // First compare by booking count
+      final countComparison = bCount.compareTo(aCount);
+      if (countComparison != 0) return countComparison;
+      
+      // For events with equal booking counts, sort by start date (upcoming first)
+      return a.startAt.compareTo(b.startAt);
+    });
+    
+    // Return top events limited by the specified count
+    return events.take(limit).toList();
+  }
 }
