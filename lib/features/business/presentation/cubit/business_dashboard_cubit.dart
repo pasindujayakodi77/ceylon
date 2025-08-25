@@ -28,6 +28,7 @@ class BusinessDashboardData extends BusinessDashboardState {
   final bool promotedActive;
   final bool isSaving;
   final String? toast;
+  final String verificationStatus;
 
   const BusinessDashboardData({
     required this.business,
@@ -36,6 +37,7 @@ class BusinessDashboardData extends BusinessDashboardState {
     required this.promotedActive,
     this.isSaving = false,
     this.toast,
+    this.verificationStatus = 'none',
   });
 
   @override
@@ -46,6 +48,7 @@ class BusinessDashboardData extends BusinessDashboardState {
     promotedActive,
     isSaving,
     toast,
+    verificationStatus,
   ];
 
   BusinessDashboardData copyWith({
@@ -55,6 +58,7 @@ class BusinessDashboardData extends BusinessDashboardState {
     bool? promotedActive,
     bool? isSaving,
     String? toast,
+    String? verificationStatus,
   }) {
     return BusinessDashboardData(
       business: business ?? this.business,
@@ -63,6 +67,7 @@ class BusinessDashboardData extends BusinessDashboardState {
       promotedActive: promotedActive ?? this.promotedActive,
       isSaving: isSaving ?? this.isSaving,
       toast: toast, // Pass the new toast directly (null clears it)
+      verificationStatus: verificationStatus ?? this.verificationStatus,
     );
   }
 }
@@ -95,6 +100,7 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
   Future<void> close() async {
     await _businessSubscription?.cancel();
     await _eventsSubscription?.cancel();
+    await _verificationSubscription?.cancel();
     return super.close();
   }
 
@@ -237,10 +243,13 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
   }
 
   /// Starts listening to real-time business updates
+  StreamSubscription? _verificationSubscription;
+
   void _startListeningToBusiness(String businessId) {
     // Cancel any existing subscriptions
     _businessSubscription?.cancel();
     _eventsSubscription?.cancel();
+    _verificationSubscription?.cancel();
 
     // Subscribe to business updates
     _businessSubscription = _repository
@@ -278,6 +287,9 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
                   promotedActive: promotedActive,
                 ),
               );
+
+              // Start listening to verification status
+              _startListeningToVerificationStatus(businessId);
             }
           },
           onError: (error) {
@@ -286,6 +298,24 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
                 'Error streaming business: ${error.toString()}',
               ),
             );
+          },
+        );
+  }
+
+  /// Starts listening to verification status updates
+  void _startListeningToVerificationStatus(String businessId) {
+    _verificationSubscription = _repository
+        .streamVerificationStatus(businessId)
+        .listen(
+          (status) {
+            if (state is BusinessDashboardData) {
+              final currentState = state as BusinessDashboardData;
+              emit(currentState.copyWith(verificationStatus: status));
+            }
+          },
+          onError: (error) {
+            // Just log the error, don't change the state
+            print('Error streaming verification status: $error');
           },
         );
   }

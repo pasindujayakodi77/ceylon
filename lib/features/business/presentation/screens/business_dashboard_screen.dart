@@ -629,6 +629,163 @@ class _VerificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<BusinessDashboardCubit>().state;
+
+    // Get verification status
+    String verificationStatus = 'none';
+    bool isVerified = false;
+
+    if (state is BusinessDashboardData) {
+      verificationStatus = state.verificationStatus;
+      isVerified = state.business.verified;
+    }
+
+    // Check the current status to determine what UI to show
+    if (isVerified) {
+      return _buildVerifiedCard(context);
+    } else if (verificationStatus == 'pending') {
+      return _buildPendingCard(context);
+    } else {
+      return _buildRequestCard(context);
+    }
+  }
+
+  /// Build the card for when the business is already verified
+  Widget _buildVerifiedCard(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              children: [
+                Icon(Icons.verified, color: Colors.green),
+                const SizedBox(width: 8),
+                Text(
+                  'Verified Business',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+            const Divider(),
+
+            // Content
+            Text(
+              'Congratulations! Your business is verified. Customers can now see your verified badge.',
+              style: TextStyle(color: colorScheme.onSurface),
+            ),
+            const SizedBox(height: 16),
+
+            // Benefits
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.green.withOpacity(0.3)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Verification Benefits',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.green.shade800,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildBenefitRow('Increased trust with customers'),
+                  _buildBenefitRow('Higher ranking in search results'),
+                  _buildBenefitRow('Access to premium features'),
+                  _buildBenefitRow('Verified badge displayed on your profile'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Build the card for when verification is pending
+  Widget _buildPendingCard(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              children: [
+                Icon(Icons.hourglass_empty, color: Colors.orange),
+                const SizedBox(width: 8),
+                Text(
+                  'Verification Pending',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+            const Divider(),
+
+            // Content
+            Text(
+              'Your verification request is being reviewed by our team. '
+              'This process typically takes 1-3 business days.',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            const SizedBox(height: 16),
+
+            // Status indicator
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.orange.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.orange.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                    strokeWidth: 2,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Review in progress',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: Colors.orange.shade800),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'We\'ll notify you once your verification is complete',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.orange.shade800),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Build the card for when no verification has been requested
+  Widget _buildRequestCard(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
@@ -721,6 +878,19 @@ class _VerificationCard extends StatelessWidget {
     if (result == true && context.mounted) {
       // The cubit will handle showing the toast
     }
+  }
+
+  Widget _buildBenefitRow(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.check_circle, size: 18, color: Colors.green),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text)),
+        ],
+      ),
+    );
   }
 }
 

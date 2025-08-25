@@ -256,6 +256,39 @@ class BusinessRepository {
           'status': 'pending',
           'submittedAt': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
+
+    // Update business verification status
+    await _db.collection(_businessesPath).doc(businessId).update({
+      'verificationStatus': 'pending',
+    });
+  }
+
+  /// Checks if a business has a pending verification request.
+  Future<bool> hasVerificationRequest(String businessId) async {
+    final uid = _uid;
+    if (uid == null) throw Exception('User not signed in');
+
+    final request = await _db
+        .collection(_businessesPath)
+        .doc(businessId)
+        .collection('verificationRequests')
+        .doc(uid)
+        .get();
+
+    return request.exists && request.data()?['status'] == 'pending';
+  }
+
+  /// Stream the verification status for a business
+  Stream<String> streamVerificationStatus(String businessId) {
+    return _db.collection(_businessesPath).doc(businessId).snapshots().map((
+      snapshot,
+    ) {
+      final data = snapshot.data();
+      if (data == null) return 'none';
+
+      if (data['verified'] == true) return 'approved';
+      return data['verificationStatus'] as String? ?? 'none';
+    });
   }
 
   /// Retrieves daily statistics for a business.
