@@ -1,9 +1,13 @@
-import 'package:ceylon/design_system/tokens.dart';
-import 'package:ceylon/features/business/data/business_analytics_service.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:ceylon/features/business/data/business_analytics_service.dart';
+
+/// Displays analytics for the current business, summarising recent activity
+/// over the past 30 days. Metrics include profile views, booking intents and
+/// engagement rates. Simple bar charts visualise daily trends, and recent
+/// feedback is listed for context. This screen is refreshable.
 class BusinessAnalyticsScreen extends StatefulWidget {
   const BusinessAnalyticsScreen({super.key});
 
@@ -36,29 +40,33 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
     if (mounted) setState(() => _loading = false);
   }
 
-  int _sum(String k) =>
-      _days.fold<int>(0, (acc, m) => acc + ((m[k] as num?)?.toInt() ?? 0));
+  int _sum(String key) {
+    return _days.fold<int>(
+      0,
+      (acc, m) => acc + ((m[key] as num?)?.toInt() ?? 0),
+    );
+  }
+
+  String _engagementRate() {
+    final views = _sum('views');
+    if (views == 0) return '0%';
+    final engagements = _sum('bookings_whatsapp') + _sum('bookings_form');
+    final rate = (engagements / views * 100).toStringAsFixed(1);
+    return '$rate%';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📈 Business Analytics'),
-        elevation: 0,
-        centerTitle: false,
+        title: const Text('Business Analytics'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh Data',
-            onPressed: _load,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _load),
         ],
       ),
       body: _loading
-          ? const Center(
-              child: CircularProgressIndicator(color: CeylonTokens.seedColor),
-            )
-          : (_businessId == null)
+          ? const Center(child: CircularProgressIndicator())
+          : _businessId == null
           ? Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -68,14 +76,14 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
                     size: 64,
                     color: Colors.grey[400],
                   ),
-                  SizedBox(height: CeylonTokens.spacing16),
+                  const SizedBox(height: 16),
                   Text(
                     'No business found',
                     style: Theme.of(
                       context,
                     ).textTheme.titleLarge?.copyWith(color: Colors.grey[700]),
                   ),
-                  SizedBox(height: CeylonTokens.spacing8),
+                  const SizedBox(height: 8),
                   Text(
                     'Create a business to view analytics',
                     style: Theme.of(
@@ -87,9 +95,8 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
             )
           : RefreshIndicator(
               onRefresh: _load,
-              color: CeylonTokens.seedColor,
               child: ListView(
-                padding: EdgeInsets.all(CeylonTokens.spacing16),
+                padding: const EdgeInsets.all(16),
                 children: [
                   Text(
                     'Last 30 Days',
@@ -98,37 +105,32 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  SizedBox(height: CeylonTokens.spacing16),
-                  _buildSummarySection(),
-                  SizedBox(height: CeylonTokens.spacing24),
-                  _buildStatsSection(),
-                  SizedBox(height: CeylonTokens.spacing24),
-                  _buildFeedbackSection(),
+                  const SizedBox(height: 16),
+                  _buildSummarySection(context),
+                  const SizedBox(height: 24),
+                  _buildStatsSection(context),
+                  const SizedBox(height: 24),
+                  _buildFeedbackSection(context),
                 ],
               ),
             ),
     );
   }
 
-  Widget _buildSummarySection() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: CeylonTokens.borderRadiusMedium,
-        boxShadow: CeylonTokens.shadowSmall,
-      ),
+  Widget _buildSummarySection(BuildContext context) {
+    // Four metrics summarised on two rows
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: EdgeInsets.all(CeylonTokens.spacing16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.summarize_rounded,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                SizedBox(width: CeylonTokens.spacing8),
+                const Icon(Icons.summarize_rounded),
+                const SizedBox(width: 8),
                 Text(
                   'Performance Summary',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -137,39 +139,37 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
                 ),
               ],
             ),
-            SizedBox(height: CeylonTokens.spacing16),
-
-            // Metric cards in a grid
+            const SizedBox(height: 16),
             GridView.count(
               shrinkWrap: true,
               crossAxisCount: 2,
-              mainAxisSpacing: CeylonTokens.spacing12,
-              crossAxisSpacing: CeylonTokens.spacing12,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
               childAspectRatio: 3 / 2,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildMetricCard(
+                _metricCard(
                   icon: Icons.visibility,
                   title: 'Profile Views',
                   value: _sum('views').toString(),
                   color: Colors.blue,
                 ),
-                _buildMetricCard(
+                _metricCard(
                   icon: Icons.message,
                   title: 'WhatsApp Clicks',
                   value: _sum('bookings_whatsapp').toString(),
                   color: Colors.green,
                 ),
-                _buildMetricCard(
+                _metricCard(
                   icon: Icons.description,
                   title: 'Form Opens',
                   value: _sum('bookings_form').toString(),
                   color: Colors.orange,
                 ),
-                _buildMetricCard(
+                _metricCard(
                   icon: Icons.star,
                   title: 'Engagement Rate',
-                  value: _getEngagementRate(),
+                  value: _engagementRate(),
                   color: Colors.purple,
                 ),
               ],
@@ -180,15 +180,7 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
     );
   }
 
-  String _getEngagementRate() {
-    final views = _sum('views');
-    if (views == 0) return '0%';
-    final engagements = _sum('bookings_whatsapp') + _sum('bookings_form');
-    final rate = (engagements / views * 100).toStringAsFixed(1);
-    return '$rate%';
-  }
-
-  Widget _buildMetricCard({
+  Widget _metricCard({
     required IconData icon,
     required String title,
     required String value,
@@ -197,15 +189,15 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
     return Container(
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: CeylonTokens.borderRadiusMedium,
+        borderRadius: BorderRadius.circular(12),
       ),
-      padding: EdgeInsets.all(CeylonTokens.spacing12),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: color, size: 24),
-          SizedBox(height: CeylonTokens.spacing8),
+          Icon(icon, color: color),
+          const SizedBox(height: 8),
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -213,55 +205,56 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
               color: color,
             ),
           ),
-          SizedBox(height: CeylonTokens.spacing4),
+          const SizedBox(height: 4),
           Text(title, style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );
   }
 
-  Widget _buildStatsSection() {
+  Widget _buildStatsSection(BuildContext context) {
+    // Build bar charts for each metric. Use simple vertical bars sized proportionally.
     return Column(
       children: [
         _StatCard(
           title: 'Visits',
           value: _sum('views'),
-          color: Colors.blue,
           series: _days.map((d) => (d['views'] as num?)?.toInt() ?? 0).toList(),
+          color: Colors.blue,
         ),
         const SizedBox(height: 10),
         _StatCard(
           title: 'WhatsApp Intents',
           value: _sum('bookings_whatsapp'),
-          color: Colors.green,
           series: _days
               .map((d) => (d['bookings_whatsapp'] as num?)?.toInt() ?? 0)
               .toList(),
+          color: Colors.green,
         ),
         const SizedBox(height: 10),
         _StatCard(
           title: 'Form Opens',
           value: _sum('bookings_form'),
-          color: Colors.deepPurple,
           series: _days
               .map((d) => (d['bookings_form'] as num?)?.toInt() ?? 0)
               .toList(),
+          color: Colors.deepPurple,
         ),
         const SizedBox(height: 10),
         _StatCard(
           title: 'Favorites (+ / −)',
           value: _sum('favorites_added'),
-          extra: '−${_sum('favorites_removed')}',
-          color: Colors.pink,
           series: _days
               .map((d) => (d['favorites_added'] as num?)?.toInt() ?? 0)
               .toList(),
+          color: Colors.pink,
+          extra: '−${_sum('favorites_removed')}',
         ),
       ],
     );
   }
 
-  Widget _buildFeedbackSection() {
+  Widget _buildFeedbackSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -322,6 +315,7 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
               children: [
                 for (final d in docs)
                   ListTile(
+                    contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.comment),
                     title: Text((d['reason'] as String?) ?? ''),
                     subtitle: Text((d['note'] as String?) ?? '—'),
@@ -343,6 +337,7 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
   }
 }
 
+/// A simple vertical bar chart summarising a single metric over 30 days.
 class _StatCard extends StatelessWidget {
   final String title;
   final int value;
@@ -359,10 +354,11 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final max = (series.isEmpty ? 1 : (series.reduce((a, b) => a > b ? a : b)))
+    final maxVal = (series.isEmpty ? 1 : series.reduce((a, b) => a > b ? a : b))
         .clamp(1, 999999);
     return Card(
       elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -393,8 +389,8 @@ class _StatCard extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 1),
                         child: Container(
-                          height: (v / max) * 40.0,
-                          color: color.withValues(alpha: 0.35),
+                          height: (v / maxVal) * 40.0,
+                          color: color.withOpacity(0.35),
                         ),
                       ),
                     ),
@@ -408,14 +404,15 @@ class _StatCard extends StatelessWidget {
   }
 }
 
+/// A row representing a feedback reason with a coloured indicator and count.
 class _FeedbackRow extends StatelessWidget {
   final String label;
-  final int count;
   final Color color;
+  final int count;
   const _FeedbackRow({
     required this.label,
-    required this.count,
     required this.color,
+    required this.count,
   });
 
   @override
@@ -424,18 +421,16 @@ class _FeedbackRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          SizedBox(width: 110, child: Text(label)),
-          Expanded(
-            child: LinearProgressIndicator(
-              value: count == 0
-                  ? 0
-                  : null, // indeterminate for non-zero to make it lightweight
-              backgroundColor: color.withValues(alpha: 0.12),
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
               color: color,
-              minHeight: 8,
+              borderRadius: BorderRadius.circular(3),
             ),
           ),
           const SizedBox(width: 8),
+          Expanded(child: Text(label)),
           Text(count.toString()),
         ],
       ),
