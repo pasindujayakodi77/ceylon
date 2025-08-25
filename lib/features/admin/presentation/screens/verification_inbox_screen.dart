@@ -132,8 +132,9 @@ class _VerificationInboxScreenState extends State<VerificationInboxScreen> {
     final base = _functionsBase.isNotEmpty
         ? _functionsBase
         : await AdminConfig.functionsBaseUrl();
-    if (base.isEmpty)
+    if (base.isEmpty) {
       throw Exception('Admin functions base URL not configured');
+    }
 
     final url = Uri.parse('$base/adminApproveVerification');
     final body = jsonEncode({

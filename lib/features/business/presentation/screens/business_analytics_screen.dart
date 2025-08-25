@@ -1,3 +1,4 @@
+import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/features/business/data/business_analytics_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,52 +43,179 @@ class _BusinessAnalyticsScreenState extends State<BusinessAnalyticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📈 Business Analytics (30 days)'),
+        title: const Text('📈 Business Analytics'),
+        elevation: 0,
+        centerTitle: false,
         actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _load),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: 'Refresh Data',
+            onPressed: _load,
+          ),
         ],
       ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(color: CeylonTokens.seedColor),
+            )
           : (_businessId == null)
-          ? const Center(child: Text('No business found for your account.'))
-          : ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildSummarySection(),
-                const SizedBox(height: 16),
-                _buildStatsSection(),
-                const SizedBox(height: 16),
-                _buildFeedbackSection(),
-              ],
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.business_center_outlined,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                  SizedBox(height: CeylonTokens.spacing16),
+                  Text(
+                    'No business found',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(color: Colors.grey[700]),
+                  ),
+                  SizedBox(height: CeylonTokens.spacing8),
+                  Text(
+                    'Create a business to view analytics',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: _load,
+              color: CeylonTokens.seedColor,
+              child: ListView(
+                padding: EdgeInsets.all(CeylonTokens.spacing16),
+                children: [
+                  Text(
+                    'Last 30 Days',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  SizedBox(height: CeylonTokens.spacing16),
+                  _buildSummarySection(),
+                  SizedBox(height: CeylonTokens.spacing24),
+                  _buildStatsSection(),
+                  SizedBox(height: CeylonTokens.spacing24),
+                  _buildFeedbackSection(),
+                ],
+              ),
             ),
     );
   }
 
   Widget _buildSummarySection() {
-    return Card(
-      elevation: 2,
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: CeylonTokens.borderRadiusMedium,
+        boxShadow: CeylonTokens.shadowSmall,
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(CeylonTokens.spacing16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Summary', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
-            Text(
-              'Total Visits: ${_sum('views')}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Icon(
+                  Icons.summarize_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                SizedBox(width: CeylonTokens.spacing8),
+                Text(
+                  'Performance Summary',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              'Total WhatsApp Intents: ${_sum('bookings_whatsapp')}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Total Form Opens: ${_sum('bookings_form')}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            SizedBox(height: CeylonTokens.spacing16),
+
+            // Metric cards in a grid
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              mainAxisSpacing: CeylonTokens.spacing12,
+              crossAxisSpacing: CeylonTokens.spacing12,
+              childAspectRatio: 3 / 2,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildMetricCard(
+                  icon: Icons.visibility,
+                  title: 'Profile Views',
+                  value: _sum('views').toString(),
+                  color: Colors.blue,
+                ),
+                _buildMetricCard(
+                  icon: Icons.message,
+                  title: 'WhatsApp Clicks',
+                  value: _sum('bookings_whatsapp').toString(),
+                  color: Colors.green,
+                ),
+                _buildMetricCard(
+                  icon: Icons.description,
+                  title: 'Form Opens',
+                  value: _sum('bookings_form').toString(),
+                  color: Colors.orange,
+                ),
+                _buildMetricCard(
+                  icon: Icons.star,
+                  title: 'Engagement Rate',
+                  value: _getEngagementRate(),
+                  color: Colors.purple,
+                ),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  String _getEngagementRate() {
+    final views = _sum('views');
+    if (views == 0) return '0%';
+    final engagements = _sum('bookings_whatsapp') + _sum('bookings_form');
+    final rate = (engagements / views * 100).toStringAsFixed(1);
+    return '$rate%';
+  }
+
+  Widget _buildMetricCard({
+    required IconData icon,
+    required String title,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: CeylonTokens.borderRadiusMedium,
+      ),
+      padding: EdgeInsets.all(CeylonTokens.spacing12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: color, size: 24),
+          SizedBox(height: CeylonTokens.spacing8),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          SizedBox(height: CeylonTokens.spacing4),
+          Text(title, style: Theme.of(context).textTheme.bodySmall),
+        ],
       ),
     );
   }

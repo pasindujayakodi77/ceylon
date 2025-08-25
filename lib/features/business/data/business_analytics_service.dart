@@ -292,8 +292,8 @@ class BusinessAnalyticsService {
     int days = 30,
   }) async {
     final now = DateTime.now();
-    final _end = end ?? now;
-    final _start = start ?? now.subtract(Duration(days: days - 1));
+    final endDate = end ?? now;
+    final startDate = start ?? now.subtract(Duration(days: days - 1));
 
     final col = _db
         .collection('businesses')
@@ -313,7 +313,7 @@ class BusinessAnalyticsService {
         int.parse(id.substring(4, 6)),
         int.parse(id.substring(6, 8)),
       );
-      if (dt.isBefore(_start) || dt.isAfter(_end)) continue;
+      if (dt.isBefore(startDate) || dt.isAfter(endDate)) continue;
       final data = d.data();
       data.forEach((k, v) {
         if (k == 'date' || k == 'updatedAt') return;
@@ -366,8 +366,8 @@ class BusinessAnalyticsService {
   }) async {
     final Map<String, num> series = {};
     final now = DateTime.now();
-    final _end = end ?? now;
-    final _start = start ?? now.subtract(Duration(days: days - 1));
+    final endDate = end ?? now;
+    final startDate = start ?? now.subtract(Duration(days: days - 1));
     final col = _db
         .collection('businesses')
         .doc(businessId)
@@ -383,7 +383,7 @@ class BusinessAnalyticsService {
         int.parse(id.substring(4, 6)),
         int.parse(id.substring(6, 8)),
       );
-      if (dt.isBefore(_start) || dt.isAfter(_end)) continue;
+      if (dt.isBefore(startDate) || dt.isAfter(endDate)) continue;
       final m = d.data();
       final val = (m[field] is num) ? m[field] as num : 0;
       series[id] = val;
@@ -399,13 +399,25 @@ class BusinessAnalyticsService {
     for (final r in rows) {
       headers.addAll(r.keys.where((k) => k != 'id'));
     }
-    final headerList = ['id', ...headers.toList()];
+    final headerList = ['id', ...headers];
+    String escapeCsv(String s) {
+      final needsQuote =
+          s.contains('"') ||
+          s.contains(',') ||
+          s.contains('\n') ||
+          s.contains('\r');
+      final escaped = s.replaceAll('"', '""');
+      return needsQuote ? '"$escaped"' : escaped;
+    }
+
     final buf = StringBuffer();
-    buf.writeln(headerList.join(','));
+    // write header row (quote headers only if needed)
+    buf.writeln(headerList.map((h) => escapeCsv(h)).join(','));
     for (final r in rows) {
-      final values = headerList
-          .map((h) => (r[h] ?? '').toString().replaceAll(',', '\,'))
-          .toList();
+      final values = headerList.map((h) {
+        final v = (r[h] ?? '').toString();
+        return escapeCsv(v);
+      }).toList();
       buf.writeln(values.join(','));
     }
     return buf.toString();

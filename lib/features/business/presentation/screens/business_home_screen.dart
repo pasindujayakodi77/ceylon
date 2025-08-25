@@ -20,18 +20,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   String? _businessName;
   bool _isLoading = true;
   int _currentIndex = 0;
-  // Simple filter state and personalization
-  final Set<String> _selectedCategories = {};
-  // (removed unused sort state)
-
-  // Static category suggestions (can be dynamic later)
-  final List<String> _categories = [
-    'cafe',
-    'hotel',
-    'tour',
-    'restaurant',
-    'shop',
-  ];
+  // simple screen state
 
   final List<Widget> _screens = [
     const BusinessDashboardScreen(),
@@ -45,6 +34,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
     super.initState();
     _loadBusinessInfo();
   }
+
+  // ...existing code...
 
   Future<void> _loadBusinessInfo() async {
     setState(() => _isLoading = true);
@@ -83,15 +74,75 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: CeylonTokens.seedColor),
+        ),
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_businessName ?? 'Business Dashboard'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        centerTitle: false,
+        titleSpacing: CeylonTokens.spacing12,
+        title: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  _businessName?.isNotEmpty == true
+                      ? _businessName![0].toUpperCase()
+                      : 'B',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: CeylonTokens.spacing12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _businessName ?? 'Business Dashboard',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    'Welcome back',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.notifications_outlined),
+            onPressed: () {
+              // Handle notifications
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const SettingsScreen()),
@@ -102,69 +153,13 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Search + quick filters
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              child: Column(
-                children: [
-                  // Search field
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search your listings or categories',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Theme.of(context).colorScheme.surfaceVariant,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                    ),
-                    onChanged: (v) {
-                      // simple local filter state - left as placeholder
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  if (_currentIndex == 0)
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: _categories.map((c) {
-                            final selected = _selectedCategories.contains(c);
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: InputChip(
-                                selected: selected,
-                                label: Text(
-                                  c[0].toUpperCase() + c.substring(1),
-                                ),
-                                onSelected: (s) => setState(() {
-                                  if (s) {
-                                    _selectedCategories.add(c);
-                                  } else {
-                                    _selectedCategories.remove(c);
-                                  }
-                                }),
-                                avatar: const Icon(Icons.label, size: 16),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-
-            // (Promoted 'Recommended for you' carousel removed per request.)
-
-            // Compact recommendation tile that opens a preview-only carousel.
+            // Compact recommendation tile placed at the top
             if (_currentIndex == 0) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: CeylonTokens.spacing16),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: CeylonTokens.spacing16,
+                ),
                 child: GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
@@ -172,7 +167,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                       isScrollControlled: true,
                       useSafeArea: true,
                       builder: (_) => Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(CeylonTokens.spacing16),
                         child: PromotedBusinessesCarousel(
                           title: 'Recommended for you',
                           limit: 12,
@@ -181,34 +176,65 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                       ),
                     );
                   },
-                  child: Card(
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withOpacity(0.1),
+                          Theme.of(
+                            context,
+                          ).colorScheme.secondary.withOpacity(0.05),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: CeylonTokens.borderRadiusMedium,
+                      boxShadow: CeylonTokens.shadowSmall,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: CeylonTokens.spacing16,
+                        vertical: CeylonTokens.spacing16,
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.recommend, size: 20),
-                          const SizedBox(width: 12),
+                          Icon(
+                            Icons.trending_up_rounded,
+                            size: 22,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          SizedBox(width: CeylonTokens.spacing12),
                           Expanded(
-                            child: Text(
-                              'Recommended for you — Tap to preview',
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w600),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Recommended for you',
+                                  style: Theme.of(context).textTheme.bodyLarge
+                                      ?.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(height: CeylonTokens.spacing4),
+                                Text(
+                                  'Tap to explore trending businesses',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(color: Colors.grey[600]),
+                                ),
+                              ],
                             ),
                           ),
-                          const Icon(Icons.chevron_right),
+                          Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
+              SizedBox(height: CeylonTokens.spacing16),
             ],
 
             // Main content
@@ -216,34 +242,67 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
-            activeIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          boxShadow: CeylonTokens.shadowSmall,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(CeylonTokens.radiusMedium),
+            topRight: Radius.circular(CeylonTokens.radiusMedium),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event_outlined),
-            activeIcon: Icon(Icons.event),
-            label: 'Events',
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: CeylonTokens.spacing8,
+              vertical: CeylonTokens.spacing8,
+            ),
+            child: NavigationBar(
+              height: 64,
+              selectedIndex: _currentIndex,
+              onDestinationSelected: (index) =>
+                  setState(() => _currentIndex = index),
+              labelBehavior:
+                  NavigationDestinationLabelBehavior.onlyShowSelected,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              destinations: [
+                NavigationDestination(
+                  icon: const Icon(Icons.dashboard_outlined),
+                  selectedIcon: Icon(
+                    Icons.dashboard,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  label: 'Dashboard',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.event_outlined),
+                  selectedIcon: Icon(
+                    Icons.event,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  label: 'Events',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.analytics_outlined),
+                  selectedIcon: Icon(
+                    Icons.analytics,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  label: 'Analytics',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.reviews_outlined),
+                  selectedIcon: Icon(
+                    Icons.reviews,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  label: 'Reviews',
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics_outlined),
-            activeIcon: Icon(Icons.analytics),
-            label: 'Analytics',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.reviews_outlined),
-            activeIcon: Icon(Icons.reviews),
-            label: 'Reviews',
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -255,6 +314,7 @@ class BusinessFeatureTile extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
   final Color color;
+  final Widget? trailing;
 
   const BusinessFeatureTile({
     super.key,
@@ -263,51 +323,68 @@ class BusinessFeatureTile extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.color = Colors.blue,
+    this.trailing,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(CeylonTokens.radiusSmall),
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: CeylonTokens.spacing16,
+        vertical: CeylonTokens.spacing8,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: CeylonTokens.borderRadiusMedium,
+        boxShadow: CeylonTokens.shadowSmall,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: CeylonTokens.borderRadiusMedium,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: CeylonTokens.borderRadiusMedium,
+          child: Padding(
+            padding: EdgeInsets.all(CeylonTokens.spacing16),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(CeylonTokens.spacing12),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.12),
+                    borderRadius: CeylonTokens.borderRadiusSmall,
+                  ),
+                  child: Icon(icon, color: color, size: 22),
                 ),
-                child: Icon(icon, color: color),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                SizedBox(width: CeylonTokens.spacing16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
-                    ),
-                  ],
+                      SizedBox(height: CeylonTokens.spacing4),
+                      Text(
+                        subtitle,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Icon(Icons.chevron_right, color: Colors.grey[400]),
-            ],
+                trailing ??
+                    Icon(
+                      Icons.chevron_right,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.5),
+                    ),
+              ],
+            ),
           ),
         ),
       ),

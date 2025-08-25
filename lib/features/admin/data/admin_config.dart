@@ -18,7 +18,7 @@ class AdminConfig {
       final rc = FirebaseRemoteConfig.instance;
       await rc.fetchAndActivate();
       final v = rc.getString(_rcKeyFunctionsBase);
-      if (v != null && v.isNotEmpty) return v;
+      if (v.isNotEmpty) return v;
     } catch (_) {}
     return _staticFunctionsBase;
   }
