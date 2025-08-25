@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ceylon/features/business/presentation/widgets/promoted_businesses_carousel.dart';
-import 'package:ceylon/features/business/data/business_analytics_service.dart';
 
 class BusinessHomeScreen extends StatefulWidget {
   const BusinessHomeScreen({super.key});
@@ -23,7 +22,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   int _currentIndex = 0;
   // Simple filter state and personalization
   final Set<String> _selectedCategories = {};
-  bool _sortByDistance = false;
+  // (removed unused sort state)
 
   // Static category suggestions (can be dynamic later)
   final List<String> _categories = [
@@ -100,68 +99,122 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Filter bar shown on Dashboard tab
-          if (_currentIndex == 0)
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Search + quick filters
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Wrap(
-                    spacing: 8,
-                    children: _categories.map((c) {
-                      final selected = _selectedCategories.contains(c);
-                      return FilterChip(
-                        label: Text(c[0].toUpperCase() + c.substring(1)),
-                        selected: selected,
-                        onSelected: (s) => setState(
-                          () => s
-                              ? _selectedCategories.add(c)
-                              : _selectedCategories.remove(c),
-                        ),
-                      );
-                    }).toList(),
+                  // Search field
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search your listings or categories',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.surfaceVariant,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                    ),
+                    onChanged: (v) {
+                      // simple local filter state - left as placeholder
+                    },
                   ),
                   const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Text('Sort by:'),
-                      const SizedBox(width: 8),
-                      ChoiceChip(
-                        label: const Text('Promoted'),
-                        selected: !_sortByDistance,
-                        onSelected: (_) =>
-                            setState(() => _sortByDistance = false),
-                      ),
-                      const SizedBox(width: 8),
-                      ChoiceChip(
-                        label: const Text('Distance'),
-                        selected: _sortByDistance,
-                        onSelected: (_) =>
-                            setState(() => _sortByDistance = true),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  // Recommended slot (simple heuristic)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PromotedBusinessesCarousel(
-                          title: 'Recommended for you',
-                          limit: 6,
+                  if (_currentIndex == 0)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: _categories.map((c) {
+                            final selected = _selectedCategories.contains(c);
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: InputChip(
+                                selected: selected,
+                                label: Text(
+                                  c[0].toUpperCase() + c.substring(1),
+                                ),
+                                onSelected: (s) => setState(() {
+                                  if (s) {
+                                    _selectedCategories.add(c);
+                                  } else {
+                                    _selectedCategories.remove(c);
+                                  }
+                                }),
+                                avatar: const Icon(Icons.label, size: 16),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
                 ],
               ),
             ),
-          // Main content
-          Expanded(child: _screens[_currentIndex]),
-        ],
+
+            // (Promoted 'Recommended for you' carousel removed per request.)
+
+            // Compact recommendation tile that opens a preview-only carousel.
+            if (_currentIndex == 0) ...[
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: PromotedBusinessesCarousel(
+                          title: 'Recommended for you',
+                          limit: 12,
+                          previewOnly: true,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.recommend, size: 20),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Recommended for you — Tap to preview',
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+
+            // Main content
+            Expanded(child: _screens[_currentIndex]),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -171,15 +224,25 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
+            icon: Icon(Icons.dashboard_outlined),
+            activeIcon: Icon(Icons.dashboard),
             label: 'Dashboard',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Events'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
+            icon: Icon(Icons.event_outlined),
+            activeIcon: Icon(Icons.event),
+            label: 'Events',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics_outlined),
+            activeIcon: Icon(Icons.analytics),
             label: 'Analytics',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.reviews), label: 'Reviews'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.reviews_outlined),
+            activeIcon: Icon(Icons.reviews),
+            label: 'Reviews',
+          ),
         ],
       ),
     );

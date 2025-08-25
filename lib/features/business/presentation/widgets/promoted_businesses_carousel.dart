@@ -5,15 +5,24 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:ceylon/features/business/presentation/screens/business_detail_screen.dart';
 
-class PromotedBusinessesCarousel extends StatelessWidget {
+class PromotedBusinessesCarousel extends StatefulWidget {
   final String title;
   final int limit;
+
+  /// If true, tapping a card will show a small inline preview sheet instead
+  /// of navigating directly to the full business detail screen.
+  final bool previewOnly;
 
   const PromotedBusinessesCarousel({
     super.key,
     this.title = '✨ Featured Businesses',
     this.limit = 12,
+    this.previewOnly = false,
   });
+
+  @override
+  State<PromotedBusinessesCarousel> createState() =>
+      _PromotedBusinessesCarouselState();
 
   // Deprecated single query kept for reference; using combined streams instead.
   // ignore: unused_element
@@ -64,11 +73,17 @@ class PromotedBusinessesCarousel extends StatelessWidget {
       return merged.take(limit).toList();
     });
   }
+}
+
+class _PromotedBusinessesCarouselState
+    extends State<PromotedBusinessesCarousel> {
+  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  _streamCombinedWrapped() => widget._streamCombined();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
-      stream: _streamCombined(),
+      stream: _streamCombinedWrapped(),
       builder: (context, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           return const Padding(
@@ -93,39 +108,107 @@ class PromotedBusinessesCarousel extends StatelessWidget {
             description: (data['description'] ?? '') as String,
             verified: (data['verified'] as bool?) ?? false,
             lastVerified: (data['verifiedAt'] as Timestamp?)?.toDate(),
+            previewOnly: widget.previewOnly,
           );
         }).toList();
 
-        return SizedBox(
-          height: 290, // Increased from 260 to accommodate content
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: PageView.builder(
-                  controller: PageController(viewportFraction: 0.86),
-                  itemCount: cards.length,
-                  itemBuilder: (_, i) => Padding(
+        return _PromotedCarouselView(title: widget.title, cards: cards);
+      },
+    );
+  }
+}
+
+class _PromotedCarouselView extends StatefulWidget {
+  final String title;
+  final List<Widget> cards;
+  const _PromotedCarouselView({required this.title, required this.cards});
+
+  @override
+  State<_PromotedCarouselView> createState() => _PromotedCarouselViewState();
+}
+
+class _PromotedCarouselViewState extends State<_PromotedCarouselView> {
+  late final PageController _controller;
+  int _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(viewportFraction: 0.86);
+    _controller.addListener(() {
+      final p = _controller.page ?? 0.0;
+      setState(() => _page = p.round());
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cards = widget.cards;
+    if (cards.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      height: 300,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              widget.title,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: cards.length,
+              itemBuilder: (_, i) {
+                // scale effect
+                final current = (_controller.hasClients
+                    ? (_controller.page ?? _controller.initialPage.toDouble())
+                    : 0.0);
+                final delta = (current - i).abs().clamp(0.0, 1.0);
+                final scale = 1.0 - (delta * 0.08);
+                return Transform.scale(
+                  scale: scale,
+                  child: Padding(
                     padding: EdgeInsets.only(
                       left: i == 0 ? 12 : 6,
                       right: i == cards.length - 1 ? 12 : 6,
                     ),
                     child: cards[i],
                   ),
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-        );
-      },
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(cards.length, (i) {
+              final active = i == _page;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                width: active ? 18 : 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: active
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -141,6 +224,7 @@ class _BusinessCard extends StatelessWidget {
   final String description;
   final bool verified;
   final DateTime? lastVerified;
+  final bool previewOnly;
 
   const _BusinessCard({
     required this.businessId,
@@ -152,6 +236,7 @@ class _BusinessCard extends StatelessWidget {
     required this.description,
     required this.verified,
     this.lastVerified,
+    this.previewOnly = false,
   });
 
   @override
@@ -169,6 +254,28 @@ class _BusinessCard extends StatelessWidget {
           businessId,
           'promoted_click',
         );
+
+        if (previewOnly) {
+          // Show an inline preview sheet instead of navigating directly.
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            builder: (ctx) => _BusinessPreviewSheet(
+              businessId: businessId,
+              name: name,
+              photo: photo,
+              category: category,
+              avgRating: avgRating,
+              reviewCount: reviewCount,
+              description: description,
+              verified: verified,
+              lastVerified: lastVerified,
+            ),
+          );
+          return;
+        }
+
         // Navigate to the business detail screen
         Navigator.push(
           context,
@@ -280,6 +387,151 @@ class _BusinessCard extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Inline preview shown when a promoted card is tapped. Small, contained UI
+// with a prominent image, short description and a button to open full details.
+class _BusinessPreviewSheet extends StatelessWidget {
+  final String businessId;
+  final String name;
+  final String photo;
+  final String category;
+  final double? avgRating;
+  final int reviewCount;
+  final String description;
+  final bool verified;
+  final DateTime? lastVerified;
+
+  const _BusinessPreviewSheet({
+    required this.businessId,
+    required this.name,
+    required this.photo,
+    required this.category,
+    required this.avgRating,
+    required this.reviewCount,
+    required this.description,
+    required this.verified,
+    this.lastVerified,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        name,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    if (verified)
+                      VerifiedBadge(
+                        businessId: businessId,
+                        lastVerified: lastVerified,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                if (photo.isNotEmpty)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      photo,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                else
+                  const SizedBox(
+                    height: 200,
+                    child: ColoredBox(
+                      color: Color(0xFFEFEFEF),
+                      child: Center(child: Icon(Icons.store, size: 48)),
+                    ),
+                  ),
+
+                const SizedBox(height: 12),
+
+                Row(
+                  children: [
+                    if (avgRating != null)
+                      Text(
+                        '⭐ ${avgRating!.toStringAsFixed(1)}',
+                        style: const TextStyle(color: Colors.amber),
+                      ),
+                    if (avgRating != null) const SizedBox(width: 8),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(category, overflow: TextOverflow.ellipsis),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 12),
+
+                Text(description, maxLines: 3, overflow: TextOverflow.ellipsis),
+
+                const SizedBox(height: 16),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Close sheet then open full detail page.
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  BusinessDetailScreen(businessId: businessId),
+                            ),
+                          );
+                        },
+                        child: const Text('View details'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
