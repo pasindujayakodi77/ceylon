@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ceylon/features/admin/data/admin_config.dart';
 // note: deletion logic implemented inline; services not required here
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _locationTrackingEnabled = true;
   bool _savingOfflineMaps = false;
+  bool _isAdmin = false;
+  bool _adminUiEnabledPref = false;
   Locale _selectedLocale = const Locale('en');
   String _selectedCurrency = 'LKR';
   String _selectedDistanceUnit = 'km';
@@ -39,6 +42,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _loadSettings();
     _loadAppVersion();
     _initializeServices();
+    _checkAdminClaim();
   }
 
   Future<void> _initializeServices() async {
@@ -74,7 +78,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
       _selectedCurrency = prefs.getString('currency') ?? 'LKR';
       _selectedDistanceUnit = prefs.getString('distance_unit') ?? 'km';
+      _adminUiEnabledPref = prefs.getBool('admin_ui_enabled') ?? false;
     });
+  }
+
+  Future<void> _checkAdminClaim() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+      final idTokenResult = await user.getIdTokenResult();
+      final claims = idTokenResult.claims ?? {};
+      final isAdmin = claims['admin'] == true;
+      final shouldShowAdmin =
+          isAdmin ||
+          AdminConfig.forceEnableAdminUi ||
+          _adminUiEnabledPref ||
+          (AdminConfig.allowAdminInDebug &&
+              !bool.fromEnvironment('dart.vm.product'));
+      if (!mounted) return;
+      setState(() => _isAdmin = shouldShowAdmin);
+    } catch (_) {
+      // ignore
+    }
   }
 
   Future<void> _saveSettings() async {
@@ -370,6 +395,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
+
+          // Local toggle for enabling admin UI (debug builds)
+          if (!bool.fromEnvironment('dart.vm.product'))
+            SwitchListTile(
+              secondary: const Icon(Icons.developer_mode),
+              title: const Text('Enable admin UI (local)'),
+              value: _adminUiEnabledPref,
+              onChanged: (v) async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('admin_ui_enabled', v);
+                if (!mounted) return;
+                setState(() => _adminUiEnabledPref = v);
+                _checkAdminClaim();
+              },
+            ),
+
+          // Admin tools (visible only to users with admin claim)
+          if (_isAdmin)
+            ListTile(
+              leading: const Icon(
+                Icons.admin_panel_settings,
+                color: Colors.purple,
+              ),
+              title: const Text('Admin'),
+              subtitle: const Text('Verification requests & tools'),
+              onTap: () => Navigator.pushNamed(context, '/admin'),
+            ),
 
           // Account Management
           _buildSectionHeader(

@@ -9,6 +9,8 @@ import 'package:ceylon/features/business/presentation/screens/business_analytics
 import 'package:ceylon/features/business/presentation/screens/business_events_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
 import 'package:ceylon/features/calendar/presentation/screens/holidays_events_calendar_screen.dart';
+import 'package:ceylon/features/admin/presentation/screens/admin_overview_screen.dart';
+import 'package:ceylon/features/admin/presentation/screens/verification_inbox_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -40,5 +42,8 @@ class AppRouter {
     '/business/analytics': (_) => const BusinessAnalyticsScreen(),
     '/business/events': (_) => const BusinessEventsScreen(),
     '/business/reviews': (_) => const BusinessReviewsScreen(),
+    // Admin routes
+    '/admin': (_) => const AdminOverviewScreen(),
+    '/admin/verification-requests': (_) => const VerificationInboxScreen(),
   };
 }

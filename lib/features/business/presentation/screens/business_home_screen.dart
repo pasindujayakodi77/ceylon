@@ -7,6 +7,8 @@ import 'package:ceylon/features/settings/presentation/screens/settings_screen.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/business/presentation/widgets/promoted_businesses_carousel.dart';
+import 'package:ceylon/features/business/data/business_analytics_service.dart';
 
 class BusinessHomeScreen extends StatefulWidget {
   const BusinessHomeScreen({super.key});
@@ -19,6 +21,18 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
   String? _businessName;
   bool _isLoading = true;
   int _currentIndex = 0;
+  // Simple filter state and personalization
+  final Set<String> _selectedCategories = {};
+  bool _sortByDistance = false;
+
+  // Static category suggestions (can be dynamic later)
+  final List<String> _categories = [
+    'cafe',
+    'hotel',
+    'tour',
+    'restaurant',
+    'shop',
+  ];
 
   final List<Widget> _screens = [
     const BusinessDashboardScreen(),
@@ -86,7 +100,69 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           ),
         ],
       ),
-      body: _screens[_currentIndex],
+      body: Column(
+        children: [
+          // Filter bar shown on Dashboard tab
+          if (_currentIndex == 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Wrap(
+                    spacing: 8,
+                    children: _categories.map((c) {
+                      final selected = _selectedCategories.contains(c);
+                      return FilterChip(
+                        label: Text(c[0].toUpperCase() + c.substring(1)),
+                        selected: selected,
+                        onSelected: (s) => setState(
+                          () => s
+                              ? _selectedCategories.add(c)
+                              : _selectedCategories.remove(c),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Text('Sort by:'),
+                      const SizedBox(width: 8),
+                      ChoiceChip(
+                        label: const Text('Promoted'),
+                        selected: !_sortByDistance,
+                        onSelected: (_) =>
+                            setState(() => _sortByDistance = false),
+                      ),
+                      const SizedBox(width: 8),
+                      ChoiceChip(
+                        label: const Text('Distance'),
+                        selected: _sortByDistance,
+                        onSelected: (_) =>
+                            setState(() => _sortByDistance = true),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // Recommended slot (simple heuristic)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PromotedBusinessesCarousel(
+                          title: 'Recommended for you',
+                          limit: 6,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          // Main content
+          Expanded(child: _screens[_currentIndex]),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,

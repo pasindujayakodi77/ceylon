@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:ceylon/features/business/data/business_analytics_service.dart';
 
 import 'event_editor_screen.dart';
 
@@ -27,7 +30,7 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
         .where('ownerId', isEqualTo: uid)
         .limit(1)
         .get();
-    if (snap.docs.isNotEmpty) {
+    if (snap.docs.isNotEmpty && mounted) {
       setState(() => _businessId = snap.docs.first.id);
     }
   }
@@ -63,27 +66,25 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
             padding: const EdgeInsets.all(12),
             itemCount: docs.length,
             separatorBuilder: (context, index) => const SizedBox(height: 8),
-            itemBuilder: (_, i) {
+            itemBuilder: (context, i) {
               final doc = docs[i];
-              final data = doc.data() as Map<String, dynamic>;
-              final title = data['title'] ?? 'Untitled';
-              final desc = data['description'] ?? '';
-              final banner = data['banner'] ?? '';
-              final published = (data['published'] as bool?) ?? false;
-
-              final DateTime? start = (data['startsAt'] as Timestamp?)
-                  ?.toDate();
-              final DateTime? end = (data['endsAt'] as Timestamp?)?.toDate();
+              final data = (doc.data() as Map<String, dynamic>?) ?? {};
+              final title = (data['title'] ?? 'Untitled').toString();
+              final banner = (data['banner'] ?? '').toString();
 
               String dateText = '';
-              if (start != null && end != null) {
+              final startTs = data['startsAt'] as Timestamp?;
+              final endTs = data['endsAt'] as Timestamp?;
+              if (startTs != null && endTs != null) {
+                final start = startTs.toDate();
+                final end = endTs.toDate();
                 dateText =
                     "${start.toLocal().toString().split('.').first} → ${end.toLocal().toString().split('.').first}";
               }
 
               return Card(
                 child: ListTile(
-                  leading: banner.toString().isNotEmpty
+                  leading: banner.isNotEmpty
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(6),
                           child: Image.network(
@@ -93,43 +94,16 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
                             fit: BoxFit.cover,
                           ),
                         )
-                      : const Icon(Icons.event, size: 40),
-                  title: Row(
-                    children: [
-                      Expanded(child: Text(title)),
-                      if (published)
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Chip(
-                            label: Text('Published'),
-                            backgroundColor: Colors.greenAccent,
-                          ),
-                        )
-                      else
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Chip(
-                            label: Text('Draft'),
-                            backgroundColor: Colors.grey,
-                          ),
-                        ),
-                    ],
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (dateText.isNotEmpty)
-                        Text(dateText, style: const TextStyle(fontSize: 12)),
-                      if (desc.toString().isNotEmpty)
-                        Text(
-                          desc,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                    ],
-                  ),
+                      : null,
+                  title: Text(title),
+                  subtitle: dateText.isNotEmpty ? Text(dateText) : null,
                   onTap: () async {
-                    // Open editor in edit mode
+                    // Record owner viewing the event
+                    await BusinessAnalyticsService.instance.recordEvent(
+                      _businessId!,
+                      'event_view_${doc.id}',
+                    );
+                    if (!mounted) return;
                     final route = MaterialPageRoute(
                       builder: (_) => EventEditorScreen(
                         businessId: _businessId!,
@@ -139,42 +113,165 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen> {
                     );
                     await Navigator.push(context, route);
                   },
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () async {
-                      final ok = await showDialog<bool>(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: const Text('Delete Event'),
-                          content: const Text(
-                            'Are you sure you want to delete this event?',
+                  trailing: PopupMenuButton<String>(
+                    onSelected: (v) async {
+                      if (v == 'delete') {
+                        final ok = await showDialog<bool>(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text('Delete Event'),
+                            content: const Text(
+                              'Are you sure you want to delete this event?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: const Text('Delete'),
+                              ),
+                            ],
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (!context.mounted) return;
-                      if (ok == true) {
-                        await FirebaseFirestore.instance
+                        );
+                        if (!mounted) return;
+                        if (ok == true) {
+                          await FirebaseFirestore.instance
+                              .collection('businesses')
+                              .doc(_businessId!)
+                              .collection('events')
+                              .doc(doc.id)
+                              .delete();
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('✅ Event deleted')),
+                          );
+                        }
+                      } else if (v == 'view_rsvps') {
+                        final rsvpsSnap = await FirebaseFirestore.instance
                             .collection('businesses')
                             .doc(_businessId!)
                             .collection('events')
                             .doc(doc.id)
-                            .delete();
-                        if (!context.mounted) return;
+                            .collection('rsvps')
+                            .get();
+                        if (!mounted) return;
+                        final rsvps = rsvpsSnap.docs;
+                        if (!mounted) return;
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (ctx) => Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Attendees (${rsvps.length})',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  height: 300,
+                                  child: ListView.separated(
+                                    itemCount: rsvps.length,
+                                    separatorBuilder: (_, __) =>
+                                        const Divider(),
+                                    itemBuilder: (ctx2, idx) {
+                                      final r =
+                                          (rsvps[idx].data()
+                                              as Map<String, dynamic>?) ??
+                                          {};
+                                      final name = (r['name'] ?? 'Guest')
+                                          .toString();
+                                      final email = (r['email'] ?? '')
+                                          .toString();
+                                      final attended =
+                                          (r['attended'] as bool?) ?? false;
+                                      return ListTile(
+                                        title: Text(name),
+                                        subtitle: Text(email),
+                                        trailing: attended
+                                            ? const Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                              )
+                                            : TextButton(
+                                                child: const Text(
+                                                  'Mark attended',
+                                                ),
+                                                onPressed: () async {
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('businesses')
+                                                      .doc(_businessId!)
+                                                      .collection('events')
+                                                      .doc(doc.id)
+                                                      .collection('rsvps')
+                                                      .doc(rsvps[idx].id)
+                                                      .update({
+                                                        'attended': true,
+                                                      });
+                                                  await BusinessAnalyticsService
+                                                      .instance
+                                                      .recordEvent(
+                                                        _businessId!,
+                                                        'event_attended_${doc.id}',
+                                                      );
+                                                  if (!mounted) return;
+                                                  Navigator.pop(ctx);
+                                                },
+                                              ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else if (v == 'export') {
+                        final rsvpsSnap = await FirebaseFirestore.instance
+                            .collection('businesses')
+                            .doc(_businessId!)
+                            .collection('events')
+                            .doc(doc.id)
+                            .collection('rsvps')
+                            .get();
+                        final rows = <String>[];
+                        rows.add('name,email,phone,attended');
+                        for (final r in rsvpsSnap.docs) {
+                          final d = (r.data() as Map<String, dynamic>?) ?? {};
+                          rows.add(
+                            '"${d['name'] ?? ''}","${d['email'] ?? ''}","${d['phone'] ?? ''}","${(d['attended'] ?? false)}"',
+                          );
+                        }
+                        final csv = rows.join('\n');
+                        await Clipboard.setData(ClipboardData(text: csv));
+                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('✅ Event deleted')),
+                          const SnackBar(
+                            content: Text('Attendees CSV copied to clipboard'),
+                          ),
                         );
                       }
                     },
+                    itemBuilder: (ctx) => const [
+                      PopupMenuItem(
+                        value: 'view_rsvps',
+                        child: Text('View RSVPs'),
+                      ),
+                      PopupMenuItem(
+                        value: 'export',
+                        child: Text('Export attendees'),
+                      ),
+                      PopupMenuItem(
+                        value: 'delete',
+                        child: Text('Delete event'),
+                      ),
+                    ],
                   ),
                 ),
               );

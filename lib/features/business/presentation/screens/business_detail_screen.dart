@@ -6,6 +6,8 @@ import 'package:ceylon/core/booking/widgets/booking_buttons.dart';
 import 'package:ceylon/core/booking/widgets/verified_badge.dart';
 import 'package:ceylon/features/events/presentation/widgets/published_events_carousel.dart';
 import 'package:ceylon/features/business/data/business_analytics_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:ceylon/features/business/presentation/widgets/business_feedback_sheet.dart';
 
 class BusinessDetailScreen extends StatefulWidget {
@@ -152,7 +154,11 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    VerifiedBadge(businessId: widget.businessId),
+                    VerifiedBadge(
+                      businessId: widget.businessId,
+                      lastVerified: (data['verifiedAt'] as Timestamp?)
+                          ?.toDate(),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 6),
@@ -194,6 +200,58 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
                       : null,
                   title: name,
                   contextNote: 'Inquiry from CEYLON app',
+                ),
+
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        icon: const Icon(Icons.directions),
+                        label: const Text('Get Directions'),
+                        onPressed: () async {
+                          // record analytics and open maps
+                          await BusinessAnalyticsService.instance
+                              .recordDirections(widget.businessId);
+                          final lat = data['lat'] ?? data['latitude'];
+                          final lng = data['lng'] ?? data['longitude'];
+                          if (lat != null && lng != null) {
+                            final url =
+                                'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng';
+                            // ignore: prefer_interpolation_to_compose_strings
+                            if (await canLaunchUrlString(url)) {
+                              await launchUrlString(url);
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        icon: const Icon(Icons.call),
+                        label: const Text('Call'),
+                        onPressed: () async {
+                          if (phone == null || phone.trim().isEmpty) {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Phone not available'),
+                              ),
+                            );
+                            return;
+                          }
+                          await BusinessAnalyticsService.instance.recordCall(
+                            widget.businessId,
+                          );
+                          final uri = Uri.parse('tel:${phone.trim()}');
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri);
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 16),

@@ -280,6 +280,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pushNotificationsSubtitle => 'Get travel updates and alerts';
 
   @override
+  String get admin => 'Admin';
+
+  @override
+  String get enableAdminUiLocal => 'Enable admin UI (local)';
+
+  @override
+  String get verificationInbox => 'Verification Inbox';
+
+  @override
+  String get approve => 'Approve';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
   String get locationServices => 'Location Services';
 
   @override

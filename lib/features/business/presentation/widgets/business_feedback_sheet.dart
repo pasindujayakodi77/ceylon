@@ -11,6 +11,13 @@ class BusinessFeedbackSheet extends StatefulWidget {
 
 class _BusinessFeedbackSheetState extends State<BusinessFeedbackSheet> {
   FeedbackReason? _reason;
+  int _rating = 0; // 0 = not set
+  final Map<String, bool> _categories = {
+    'service': false,
+    'price': false,
+    'location': false,
+  };
+  int _nps = 0; // 0-10
   final _noteCtrl = TextEditingController();
   bool _saving = false;
 
@@ -33,6 +40,12 @@ class _BusinessFeedbackSheetState extends State<BusinessFeedbackSheet> {
         businessId: widget.businessId,
         reason: _reason!,
         note: _noteCtrl.text,
+        rating: _rating > 0 ? _rating : null,
+        nps: _nps > 0 ? _nps : null,
+        categories: _categories.entries
+            .where((e) => e.value)
+            .map((e) => e.key)
+            .toList(),
       );
       if (!mounted) return;
       Navigator.pop(context, true);
@@ -99,6 +112,45 @@ class _BusinessFeedbackSheetState extends State<BusinessFeedbackSheet> {
               _chip(FeedbackReason.crowded, 'Crowded', Icons.groups),
               _chip(FeedbackReason.other, 'Other', Icons.more_horiz),
             ],
+          ),
+          const SizedBox(height: 12),
+          // Rating 1-5 stars
+          Text('Rating (1-5)'),
+          Row(
+            children: List.generate(5, (i) {
+              final v = i + 1;
+              return IconButton(
+                icon: Icon(
+                  _rating >= v ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                ),
+                onPressed: () => setState(() => _rating = v),
+              );
+            }),
+          ),
+          const SizedBox(height: 8),
+          // Categories checkboxes
+          Text('What was affected?'),
+          Wrap(
+            spacing: 8,
+            children: _categories.keys.map((k) {
+              return FilterChip(
+                label: Text(k[0].toUpperCase() + k.substring(1)),
+                selected: _categories[k]!,
+                onSelected: (s) => setState(() => _categories[k] = s),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 8),
+          // NPS 0-10
+          Text('On a scale 0-10 how likely are you to recommend?'),
+          Slider(
+            min: 0,
+            max: 10,
+            divisions: 10,
+            value: _nps.toDouble(),
+            label: _nps.toString(),
+            onChanged: (v) => setState(() => _nps = v.toInt()),
           ),
           const SizedBox(height: 12),
           TextField(

@@ -55,132 +55,178 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
           }
 
           final docs = snap.data!.docs;
-          return ListView.separated(
-            padding: const EdgeInsets.all(12),
-            itemCount: docs.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-            itemBuilder: (context, i) {
-              final doc = docs[i];
-              final data = doc.data() as Map<String, dynamic>;
-              final rating = (data['rating'] as num?)?.toDouble() ?? 0;
-              final comment = (data['comment'] ?? '').toString();
-              final author = (data['name'] ?? 'Anonymous').toString();
-              final ts = (data['timestamp'] as Timestamp?)?.toDate();
-              final reply = (data['ownerReply'] as Map<String, dynamic>?) ?? {};
-
-              final replied = reply.isNotEmpty;
-              final replyText = (reply['text'] ?? '').toString();
-              final replyAt = (reply['repliedAt'] as Timestamp?)?.toDate();
-
-              return Card(
-                elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          // compute sentiment summary (simple buckets)
+          int positive = 0, neutral = 0, negative = 0;
+          for (final d in docs) {
+            final r = (d.data() as Map<String, dynamic>)["rating"] as num?;
+            if (r == null) continue;
+            if (r >= 4.0)
+              positive++;
+            else if (r >= 2.5)
+              neutral++;
+            else
+              negative++;
+          }
+          final total = positive + neutral + negative;
+          return Column(
+            children: [
+              // Sentiment summary header
+              if (total > 0)
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Review header
-                      Row(
-                        children: [
-                          _Stars(rating: rating),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              author,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          if (ts != null)
-                            Text(
-                              _short(ts),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                        ],
+                      Text(
+                        'Positive: ${((positive / total) * 100).toStringAsFixed(0)}%',
                       ),
-                      const SizedBox(height: 8),
-                      Text(comment),
-
-                      const SizedBox(height: 12),
-                      const Divider(height: 1),
-
-                      // Owner reply section
-                      if (replied) ...[
-                        const SizedBox(height: 8),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.reply,
-                              size: 18,
-                              color: Colors.green,
-                            ),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    replyText,
-                                    style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                  if (replyAt != null)
-                                    Text(
-                                      'Replied • ${_short(replyAt)}',
-                                      style: const TextStyle(
-                                        fontSize: 11,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  const SizedBox(height: 6),
-                                  Row(
-                                    children: [
-                                      TextButton.icon(
-                                        icon: const Icon(Icons.edit, size: 16),
-                                        label: const Text('Edit'),
-                                        onPressed: () => _openReplyEditor(
-                                          doc.id,
-                                          initialText: replyText,
-                                        ),
-                                      ),
-                                      TextButton.icon(
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          size: 16,
-                                        ),
-                                        label: const Text('Delete'),
-                                        onPressed: () => _deleteReply(doc.id),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ] else ...[
-                        const SizedBox(height: 8),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: OutlinedButton.icon(
-                            icon: const Icon(Icons.reply),
-                            label: const Text('Reply'),
-                            onPressed: () => _openReplyEditor(doc.id),
-                          ),
-                        ),
-                      ],
+                      Text(
+                        'Neutral: ${((neutral / total) * 100).toStringAsFixed(0)}%',
+                      ),
+                      Text(
+                        'Negative: ${((negative / total) * 100).toStringAsFixed(0)}%',
+                      ),
                     ],
                   ),
                 ),
-              );
-            },
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(12),
+                  itemCount: docs.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 8),
+                  itemBuilder: (context, i) {
+                    final doc = docs[i];
+                    final data = doc.data() as Map<String, dynamic>;
+                    final rating = (data['rating'] as num?)?.toDouble() ?? 0;
+                    final comment = (data['comment'] ?? '').toString();
+                    final author = (data['name'] ?? 'Anonymous').toString();
+                    final ts = (data['timestamp'] as Timestamp?)?.toDate();
+                    final reply =
+                        (data['ownerReply'] as Map<String, dynamic>?) ?? {};
+
+                    final replied = reply.isNotEmpty;
+                    final replyText = (reply['text'] ?? '').toString();
+                    final replyAt = (reply['repliedAt'] as Timestamp?)
+                        ?.toDate();
+
+                    return Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Review header
+                            Row(
+                              children: [
+                                _Stars(rating: rating),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    author,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                if (ts != null)
+                                  Text(
+                                    _short(ts),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(comment),
+
+                            const SizedBox(height: 12),
+                            const Divider(height: 1),
+
+                            // Owner reply section
+                            if (replied) ...[
+                              const SizedBox(height: 8),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.reply,
+                                    size: 18,
+                                    color: Colors.green,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          replyText,
+                                          style: const TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                        if (replyAt != null)
+                                          Text(
+                                            'Replied • ${_short(replyAt)}',
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            TextButton.icon(
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                size: 16,
+                                              ),
+                                              label: const Text('Edit'),
+                                              onPressed: () => _openReplyEditor(
+                                                doc.id,
+                                                initialText: replyText,
+                                              ),
+                                            ),
+                                            TextButton.icon(
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                size: 16,
+                                              ),
+                                              label: const Text('Delete'),
+                                              onPressed: () =>
+                                                  _deleteReply(doc.id),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ] else ...[
+                              const SizedBox(height: 8),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: OutlinedButton.icon(
+                                  icon: const Icon(Icons.reply),
+                                  label: const Text('Reply'),
+                                  onPressed: () => _openReplyEditor(doc.id),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),

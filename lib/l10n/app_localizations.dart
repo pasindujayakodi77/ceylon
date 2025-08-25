@@ -646,6 +646,36 @@ abstract class AppLocalizations {
   /// **'Get travel updates and alerts'**
   String get pushNotificationsSubtitle;
 
+  /// Label for admin section in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get admin;
+
+  /// Debug toggle to enable admin UI locally
+  ///
+  /// In en, this message translates to:
+  /// **'Enable admin UI (local)'**
+  String get enableAdminUiLocal;
+
+  /// Title for the verification requests inbox
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Inbox'**
+  String get verificationInbox;
+
+  /// Approve action label
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get approve;
+
+  /// Reject action label
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
   /// Title for location services toggle
   ///
   /// In en, this message translates to:

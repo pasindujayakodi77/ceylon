@@ -1,4 +1,5 @@
 import 'package:ceylon/core/booking/widgets/verified_badge.dart';
+import 'package:ceylon/features/business/data/business_analytics_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -91,6 +92,7 @@ class PromotedBusinessesCarousel extends StatelessWidget {
             reviewCount: (data['review_count'] as num?)?.toInt() ?? 0,
             description: (data['description'] ?? '') as String,
             verified: (data['verified'] as bool?) ?? false,
+            lastVerified: (data['verifiedAt'] as Timestamp?)?.toDate(),
           );
         }).toList();
 
@@ -138,6 +140,7 @@ class _BusinessCard extends StatelessWidget {
   final int reviewCount;
   final String description;
   final bool verified;
+  final DateTime? lastVerified;
 
   const _BusinessCard({
     required this.businessId,
@@ -148,12 +151,24 @@ class _BusinessCard extends StatelessWidget {
     required this.reviewCount,
     required this.description,
     required this.verified,
+    this.lastVerified,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Record an impression when the card is built (best-effort)
+    BusinessAnalyticsService.instance.recordEvent(
+      businessId,
+      'promoted_impression',
+    );
+
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        // Click tracking
+        await BusinessAnalyticsService.instance.recordEvent(
+          businessId,
+          'promoted_click',
+        );
         // Navigate to the business detail screen
         Navigator.push(
           context,
@@ -173,7 +188,14 @@ class _BusinessCard extends StatelessWidget {
                 if (photo.isNotEmpty)
                   AspectRatio(
                     aspectRatio: 16 / 9,
-                    child: Image.network(photo, fit: BoxFit.cover),
+                    child: Builder(
+                      builder: (context) {
+                        // Precache image for smoother experience
+                        final image = Image.network(photo, fit: BoxFit.cover);
+                        precacheImage(image.image, context);
+                        return image;
+                      },
+                    ),
                   )
                 else
                   const AspectRatio(
@@ -250,7 +272,11 @@ class _BusinessCard extends StatelessWidget {
               Positioned(
                 left: 8,
                 top: 8,
-                child: VerifiedBadge(size: 16, businessId: businessId),
+                child: VerifiedBadge(
+                  size: 16,
+                  businessId: businessId,
+                  lastVerified: lastVerified,
+                ),
               ),
           ],
         ),

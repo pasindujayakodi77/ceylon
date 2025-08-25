@@ -281,6 +281,21 @@ class AppLocalizationsSi extends AppLocalizations {
       'ගමන්ගමන යාවත්කාලීන කිරීම් සහ ඇඟවීම් ලබාගන්න';
 
   @override
+  String get admin => 'Admin';
+
+  @override
+  String get enableAdminUiLocal => 'Enable admin UI (local)';
+
+  @override
+  String get verificationInbox => 'Verification Inbox';
+
+  @override
+  String get approve => 'Approve';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
   String get locationServices => 'ස්ථාන සේවා';
 
   @override

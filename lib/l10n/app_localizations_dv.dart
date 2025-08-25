@@ -279,6 +279,21 @@ class AppLocalizationsDv extends AppLocalizations {
   String get pushNotificationsSubtitle => 'Manage push notification settings';
 
   @override
+  String get admin => 'Admin';
+
+  @override
+  String get enableAdminUiLocal => 'Enable admin UI (local)';
+
+  @override
+  String get verificationInbox => 'Verification Inbox';
+
+  @override
+  String get approve => 'Approve';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
   String get locationServices => 'Location Services';
 
   @override

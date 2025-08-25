@@ -281,6 +281,21 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pushNotificationsSubtitle => 'Ontvang reisupdates en -meldingen';
 
   @override
+  String get admin => 'Admin';
+
+  @override
+  String get enableAdminUiLocal => 'Enable admin UI (local)';
+
+  @override
+  String get verificationInbox => 'Verification Inbox';
+
+  @override
+  String get approve => 'Approve';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
   String get locationServices => 'Locatiediensten';
 
   @override
