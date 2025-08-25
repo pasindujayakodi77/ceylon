@@ -304,6 +304,12 @@ class BusinessReview {
   /// When the review was created.
   final Timestamp createdAt;
 
+  /// The business owner's reply to this review.
+  final String? ownerReply;
+
+  /// When the business owner replied to this review.
+  final Timestamp? ownerReplyAt;
+
   /// Creates an immutable [BusinessReview] instance.
   const BusinessReview({
     required this.id,
@@ -312,6 +318,8 @@ class BusinessReview {
     required this.text,
     required this.rating,
     required this.createdAt,
+    this.ownerReply,
+    this.ownerReplyAt,
   });
 
   /// Creates a [BusinessReview] from a Firestore document.
@@ -326,6 +334,8 @@ class BusinessReview {
       text: json['text'] ?? '',
       rating: json['rating'] ?? 0,
       createdAt: json['createdAt'] ?? Timestamp.now(),
+      ownerReply: json['ownerReply'],
+      ownerReplyAt: json['ownerReplyAt'],
     );
   }
 
@@ -336,13 +346,25 @@ class BusinessReview {
   }
 
   /// Converts the [BusinessReview] instance to JSON for Firestore.
-  Map<String, dynamic> toJson() => {
-    'userId': userId,
-    'businessId': businessId,
-    'text': text,
-    'rating': rating,
-    'createdAt': createdAt,
-  };
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'userId': userId,
+      'businessId': businessId,
+      'text': text,
+      'rating': rating,
+      'createdAt': createdAt,
+    };
+
+    if (ownerReply != null) {
+      json['ownerReply'] = ownerReply;
+    }
+
+    if (ownerReplyAt != null) {
+      json['ownerReplyAt'] = ownerReplyAt;
+    }
+
+    return json;
+  }
 
   /// Creates a copy of this [BusinessReview] with the given fields replaced.
   BusinessReview copyWith({
@@ -352,6 +374,8 @@ class BusinessReview {
     String? text,
     int? rating,
     Timestamp? createdAt,
+    String? ownerReply,
+    Timestamp? ownerReplyAt,
   }) {
     return BusinessReview(
       id: id ?? this.id,
@@ -360,6 +384,8 @@ class BusinessReview {
       text: text ?? this.text,
       rating: rating ?? this.rating,
       createdAt: createdAt ?? this.createdAt,
+      ownerReply: ownerReply ?? this.ownerReply,
+      ownerReplyAt: ownerReplyAt ?? this.ownerReplyAt,
     );
   }
 }
