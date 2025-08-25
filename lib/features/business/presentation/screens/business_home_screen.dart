@@ -61,11 +61,11 @@ class BusinessHomeScreen extends StatelessWidget {
       return _buildTouristView(context, role);
     }
   }
-  
+
   /// Builds the view for business owners with dashboard shortcuts
   Widget _buildBusinessOwnerView(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Business Dashboard'),
@@ -89,19 +89,17 @@ class BusinessHomeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                
+
                 if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
+                  return Center(child: Text('Error: ${snapshot.error}'));
                 }
-                
+
                 final businesses = snapshot.data?.docs ?? [];
-                
+
                 if (businesses.isEmpty) {
                   return _buildEmptyBusinessOwnerView(context);
                 }
-                
+
                 // User has at least one business
                 return ListView(
                   padding: const EdgeInsets.all(16.0),
@@ -134,7 +132,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds an empty state view for business owners with no businesses
   Widget _buildEmptyBusinessOwnerView(BuildContext context) {
     return Center(
@@ -175,13 +173,13 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds a welcome card for business owners
   Widget _buildWelcomeCard(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     final greeting = _getTimeBasedGreeting();
     final name = user?.displayName ?? 'Business Owner';
-    
+
     return Card(
       elevation: 2,
       child: Padding(
@@ -221,7 +219,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds a card for each business
   Widget _buildBusinessCard(BuildContext context, dynamic business) {
     return Card(
@@ -231,9 +229,7 @@ class BusinessHomeScreen extends StatelessWidget {
           backgroundImage: business.photo != null
               ? NetworkImage(business.photo)
               : null,
-          child: business.photo == null
-              ? const Icon(Icons.business)
-              : null,
+          child: business.photo == null ? const Icon(Icons.business) : null,
         ),
         title: Text(business.name),
         subtitle: Text(business.category),
@@ -241,24 +237,20 @@ class BusinessHomeScreen extends StatelessWidget {
             ? const Icon(Icons.verified, color: Colors.blue)
             : null,
         onTap: () {
-          Navigator.of(context).pushNamed(
-            '/business/dashboard',
-            arguments: business.id,
-          );
+          Navigator.of(
+            context,
+          ).pushNamed('/business/dashboard', arguments: business.id);
         },
       ),
     );
   }
-  
+
   /// Builds a grid of quick action buttons
   Widget _buildQuickActionsGrid(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Quick Actions',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        Text('Quick Actions', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
         GridView.count(
           shrinkWrap: true,
@@ -308,7 +300,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ],
     );
   }
-  
+
   /// Builds an individual action card for the quick actions grid
   Widget _buildActionCard(
     BuildContext context, {
@@ -323,11 +315,7 @@ class BusinessHomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 32,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            Icon(icon, size: 32, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 8),
             Text(
               title,
@@ -339,7 +327,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds the tourist view with promoted businesses and nearby categories
   Widget _buildTouristView(BuildContext context, String role) {
     return Scaffold(
@@ -356,7 +344,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds a section displaying business categories
   Widget _buildBusinessCategories(BuildContext context) {
     final categories = [
@@ -367,16 +355,13 @@ class BusinessHomeScreen extends StatelessWidget {
       {'name': 'Transport', 'icon': Icons.directions_car},
       {'name': 'Services', 'icon': Icons.miscellaneous_services},
     ];
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Categories',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text('Categories', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 16),
           GridView.builder(
             shrinkWrap: true,
@@ -401,7 +386,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds an individual category item
   Widget _buildCategoryItem(
     BuildContext context, {
@@ -439,7 +424,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds a section displaying nearby businesses based on location
   Widget _buildNearbyBusinessesSection(BuildContext context) {
     return Padding(
@@ -447,10 +432,7 @@ class BusinessHomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Nearby Places',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text('Nearby Places', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 16),
           FutureBuilder<QuerySnapshot>(
             future: FirebaseFirestore.instance
@@ -466,15 +448,13 @@ class BusinessHomeScreen extends StatelessWidget {
                   ),
                 );
               }
-              
+
               if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
-                );
+                return Center(child: Text('Error: ${snapshot.error}'));
               }
-              
+
               final businesses = snapshot.data?.docs ?? [];
-              
+
               if (businesses.isEmpty) {
                 return const Center(
                   child: Padding(
@@ -483,7 +463,7 @@ class BusinessHomeScreen extends StatelessWidget {
                   ),
                 );
               }
-              
+
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -501,17 +481,16 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Builds an individual nearby business item
   Widget _buildNearbyBusinessItem(BuildContext context, dynamic business) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(
-            '/business/detail',
-            arguments: business.id,
-          );
+          Navigator.of(
+            context,
+          ).pushNamed('/business/detail', arguments: business.id);
         },
         child: Row(
           children: [
@@ -530,7 +509,9 @@ class BusinessHomeScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
                           color: Colors.grey[300],
-                          child: const Center(child: CircularProgressIndicator()),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
                         errorWidget: (context, url, error) => Container(
                           color: Colors.grey[300],
@@ -564,11 +545,7 @@ class BusinessHomeScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(
-                          Icons.star,
-                          size: 16,
-                          color: Colors.amber,
-                        ),
+                        Icon(Icons.star, size: 16, color: Colors.amber),
                         const SizedBox(width: 4),
                         Text(
                           '${business.ratingSafe().toStringAsFixed(1)} (${business.ratingCount})',
@@ -576,17 +553,13 @@ class BusinessHomeScreen extends StatelessWidget {
                         ),
                         if (business.verified) ...[
                           const SizedBox(width: 8),
-                          Icon(
-                            Icons.verified,
-                            size: 14,
-                            color: Colors.blue,
-                          ),
+                          Icon(Icons.verified, size: 14, color: Colors.blue),
                           const SizedBox(width: 2),
                           Text(
                             'Verified',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.blue,
-                            ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(color: Colors.blue),
                           ),
                         ],
                       ],
@@ -600,7 +573,7 @@ class BusinessHomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Returns a greeting based on the current time
   String _getTimeBasedGreeting() {
     final hour = DateTime.now().hour;
