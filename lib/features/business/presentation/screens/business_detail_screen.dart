@@ -1,140 +1,413 @@
-// Patched by Refactor Pack: Repository + BLoC + Batched Analytics (UTC)
+// FILE: lib/features/business/presentation/screens/business_detail_screen.dart
 
-import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ceylon/core/booking/widgets/verified_badge.dart';
+import 'package:ceylon/features/business/data/business_analytics_service.dart';
+import 'package:ceylon/features/business/data/business_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:ceylon/features/business/data/business_repository.dart';
-import 'package:ceylon/features/business/data/business_models.dart';
-import 'package:ceylon/features/business/data/business_analytics_service.dart';
-import 'package:ceylon/features/business/presentation/widgets/business_feedback_sheet.dart';
-
 class BusinessDetailScreen extends StatefulWidget {
-  final String businessId;
-  const BusinessDetailScreen({super.key, required this.businessId});
+  final Business business;
+
+  const BusinessDetailScreen({Key? key, required this.business})
+    : super(key: key);
 
   @override
   State<BusinessDetailScreen> createState() => _BusinessDetailScreenState();
 }
 
-class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
-  Business? _biz;
-  bool _loading = true;
-  String? _error;
+class _BusinessDetailScreenState extends State<BusinessDetailScreen>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  bool _isBookmarked = false;
+  final BusinessAnalyticsService _analyticsService =
+      BusinessAnalyticsService.instance();
 
   @override
   void initState() {
     super.initState();
-    _load();
+    _tabController = TabController(length: 3, vsync: this);
+    _checkIfBookmarked();
+
+    // Track view analytics
+    _analyticsService.trackBusinessView(widget.business.id);
   }
 
-  Future<void> _load() async {
-    setState(() {
-      _loading = true;
-      _error = null;
-    });
-    try {
-      final repo = BusinessRepository(
-        FirebaseFirestore.instance,
-        FirebaseAuth.instance,
-      );
-      _biz = await repo.getBusinessById(widget.businessId);
-    } catch (e) {
-      _error = e.toString();
-    } finally {
-      if (mounted) setState(() => _loading = false);
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _checkIfBookmarked() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('bookmarks')
+        .doc(widget.business.id)
+        .get();
+
+    if (mounted) {
+      setState(() {
+        _isBookmarked = doc.exists;
+      });
     }
   }
 
-  Future<void> _call() async {
-    final uri = Uri(scheme: 'tel', path: '000'); // TODO: wire real phone
+  Future<void> _toggleBookmark() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please sign in to bookmark')),
+      );
+      return;
+    }
+
+    final bookmarkRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('bookmarks')
+        .doc(widget.business.id);
+
+    if (_isBookmarked) {
+      await bookmarkRef.delete();
+      _analyticsService.trackBookmarkRemoved(widget.business.id);
+    } else {
+      await bookmarkRef.set({
+        'businessId': widget.business.id,
+        'name': widget.business.name,
+        'category': widget.business.category,
+        'photo': widget.business.photo,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      _analyticsService.trackBookmarkAdded(widget.business.id);
+    }
+
+    if (mounted) {
+      setState(() {
+        _isBookmarked = !_isBookmarked;
+      });
+    }
+  }
+
+  void _shareBusiness() async {
+    final String shareText =
+        '${widget.business.name} - Check out this ${widget.business.category} on Ceylon!'
+        '\n\nhttps://ceylon.app/business/${widget.business.id}';
+
+    await Share.share(shareText);
+    _analyticsService.trackBusinessShared(widget.business.id);
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
-      await BusinessAnalyticsService.instance.recordCall(widget.businessId);
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not launch $url')));
     }
   }
 
-  Future<void> _directions() async {
-    final uri = Uri.parse(
-      'https://maps.google.com/?q=6.9271,79.8612',
-    ); // TODO: wire real coords
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-      await BusinessAnalyticsService.instance.recordDirections(
-        widget.businessId,
+  void _callBusiness() async {
+    if (widget.business.phone == null || widget.business.phone!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No phone number available')),
       );
+      return;
     }
+
+    final url = 'tel:${widget.business.phone}';
+    await _launchURL(url);
+    _analyticsService.trackBusinessCalled(widget.business.id);
   }
 
-  Future<void> _website() async {
-    final uri = Uri.parse('https://example.com'); // TODO: wire real url
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-      await BusinessAnalyticsService.instance.recordWebsite(widget.businessId);
-    }
+  void _getDirections() async {
+    // In a real app, you would use the business address to generate directions
+    final url =
+        'https://maps.google.com/?q=${Uri.encodeComponent(widget.business.name)}';
+    await _launchURL(url);
+    _analyticsService.trackDirectionsRequested(widget.business.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_loading)
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    if (_error != null)
-      return Scaffold(body: Center(child: Text('Error: $_error')));
-    if (_biz == null)
-      return const Scaffold(body: Center(child: Text('Business not found')));
-    final b = _biz!;
     return Scaffold(
-      appBar: AppBar(title: Text(b.name)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          if (b.photoUrl != null && b.photoUrl!.isNotEmpty)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(b.photoUrl!, height: 180, fit: BoxFit.cover),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              expandedHeight: 250.0,
+              floating: false,
+              pinned: true,
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    _isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                  ),
+                  onPressed: _toggleBookmark,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: _shareBusiness,
+                ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Hero image with fallback
+                    widget.business.photo != null
+                        ? CachedNetworkImage(
+                            imageUrl: widget.business.photo!,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              'assets/images/placeholder_business.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/placeholder_business.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                    // Gradient overlay
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.7),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          const SizedBox(height: 12),
-          if (b.description != null) Text(b.description!),
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 12,
-            children: [
-              ElevatedButton.icon(
-                onPressed: _call,
-                icon: const Icon(Icons.call),
-                label: const Text('Call'),
+          ];
+        },
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title and verified badge
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.business.name,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                      if (widget.business.verified)
+                        const VerifiedBadge(label: 'Verified', size: 20),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Rating row
+                  Row(
+                    children: [
+                      RatingBarIndicator(
+                        rating: widget.business.ratingSafe(),
+                        itemBuilder: (context, index) =>
+                            const Icon(Icons.star, color: Colors.amber),
+                        itemCount: 5,
+                        itemSize: 20.0,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${widget.business.ratingSafe().toStringAsFixed(1)} (${widget.business.ratingCount})',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Category chips
+                  Wrap(
+                    spacing: 8.0,
+                    children: [
+                      Chip(
+                        label: Text(widget.business.category),
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.surfaceVariant,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Contact/Booking buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.call),
+                        label: const Text('Call'),
+                        onPressed: _callBusiness,
+                      ),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.directions),
+                        label: const Text('Directions'),
+                        onPressed: _getDirections,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              OutlinedButton.icon(
-                onPressed: _directions,
-                icon: const Icon(Icons.directions),
-                label: const Text('Directions'),
+            ),
+
+            // Tab bar
+            TabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(text: 'About'),
+                Tab(text: 'Events'),
+                Tab(text: 'Reviews'),
+              ],
+            ),
+
+            // Tab content
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // About tab
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'About',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.business.description ??
+                              'No description available.',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Events tab
+                  const Center(
+                    child: Text('Upcoming events will be shown here.'),
+                  ),
+
+                  // Reviews tab
+                  const Center(child: Text('Reviews will be shown here.')),
+                ],
               ),
-              OutlinedButton.icon(
-                onPressed: _website,
-                icon: const Icon(Icons.link),
-                label: const Text('Website'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () async {
-              final ok = await showModalBottomSheet<bool>(
-                context: context,
-                isScrollControlled: true,
-                builder: (_) => BusinessFeedbackSheet(businessId: b.id),
-              );
-              if (ok == true && mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Thanks for your feedback!')),
-                );
-              }
-            },
-            child: const Text('Send Feedback'),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+}
+
+// Extension on BusinessAnalyticsService to handle common tracking events
+extension BusinessAnalyticsServiceExtension on BusinessAnalyticsService {
+  // Helper for formatting date string
+  String _formatDateString(DateTime date) {
+    final y = date.year.toString().padLeft(4, '0');
+    final m = date.month.toString().padLeft(2, '0');
+    final d = date.day.toString().padLeft(2, '0');
+    return '$y-$m-$d';
+  }
+
+  // Helper to get the daily stats path
+  String _dailyStatsPath(String businessId) => 'analytics/$businessId/daily';
+
+  Future<void> trackBusinessView(String businessId) async {
+    try {
+      // Increment views in the daily stats
+      final date = DateTime.now();
+      final dateString = _formatDateString(date);
+
+      final statsRef = FirebaseFirestore.instance
+          .collection(_dailyStatsPath(businessId))
+          .doc(dateString);
+
+      await statsRef.set({
+        'views': FieldValue.increment(1),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('Error tracking business view: $e');
+    }
+  }
+
+  Future<void> trackBookmarkAdded(String businessId) async {
+    try {
+      // Increment bookmarks in the daily stats
+      final date = DateTime.now();
+      final dateString = _formatDateString(date);
+
+      final statsRef = FirebaseFirestore.instance
+          .collection(_dailyStatsPath(businessId))
+          .doc(dateString);
+
+      await statsRef.set({
+        'bookmarks': FieldValue.increment(1),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('Error tracking bookmark added: $e');
+    }
+  }
+
+  Future<void> trackBookmarkRemoved(String businessId) async {
+    try {
+      // Decrement bookmarks in the daily stats
+      final date = DateTime.now();
+      final dateString = _formatDateString(date);
+
+      final statsRef = FirebaseFirestore.instance
+          .collection(_dailyStatsPath(businessId))
+          .doc(dateString);
+
+      await statsRef.set({
+        'bookmarks': FieldValue.increment(-1),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('Error tracking bookmark removed: $e');
+    }
+  }
+
+  Future<void> trackBusinessShared(String businessId) async {
+    // This could log to an 'actions' subcollection for more detailed analytics
+    debugPrint('Business shared: $businessId');
+  }
+
+  Future<void> trackBusinessCalled(String businessId) async {
+    debugPrint('Business called: $businessId');
+  }
+
+  Future<void> trackDirectionsRequested(String businessId) async {
+    debugPrint('Directions requested: $businessId');
   }
 }
