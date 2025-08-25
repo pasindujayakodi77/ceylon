@@ -124,8 +124,8 @@ class BusinessHomeScreen extends StatelessWidget {
             ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Navigate to business dashboard where users can add a new business
-          Navigator.of(context).pushNamed('/business/dashboard');
+          // Navigate to business create screen
+          Navigator.of(context).pushNamed('/business/create');
         },
         icon: const Icon(Icons.add_business),
         label: const Text('Add Business'),
@@ -157,7 +157,8 @@ class BusinessHomeScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context).pushNamed('/business/dashboard');
+                print('Navigating to business create screen');
+                Navigator.of(context).pushNamed('/business/create');
               },
               icon: const Icon(Icons.add_business),
               label: const Text('Add Your First Business'),

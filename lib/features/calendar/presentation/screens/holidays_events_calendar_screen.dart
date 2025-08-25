@@ -12,7 +12,6 @@ import '../../data/holiday.dart';
 import '../../data/holidays_repository.dart';
 import '../widgets/calendar_legend.dart';
 import '../widgets/event_list_tile.dart';
-import '../../../business/data/business_analytics_service.dart';
 import '../../../itinerary/data/itinerary_service.dart';
 
 class HolidaysEventsCalendarScreen extends StatefulWidget {
@@ -366,9 +365,7 @@ class _HolidaysEventsCalendarScreenState
 
       if (success) {
         // Record analytics
-        await BusinessAnalyticsService.instance.recordBookingWhatsApp(
-          event.businessId,
-        );
+        _recordBookingAnalytics(event.businessId, 'whatsapp');
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Could not open WhatsApp')),
@@ -408,9 +405,7 @@ class _HolidaysEventsCalendarScreenState
 
       if (success) {
         // Record analytics
-        await BusinessAnalyticsService.instance.recordBookingForm(
-          event.businessId,
-        );
+        _recordBookingAnalytics(event.businessId, 'form');
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Could not open booking form')),
@@ -423,6 +418,24 @@ class _HolidaysEventsCalendarScreenState
         );
       }
     }
+  }
+
+  // Record analytics for bookings
+  void _recordBookingAnalytics(String businessId, String type) {
+    // Update the daily analytics for this business
+    final today = DateTime.now();
+    final dateString =
+        "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    FirebaseFirestore.instance
+        .collection('analytics')
+        .doc(businessId)
+        .collection('daily')
+        .doc(dateString)
+        .set({
+          'bookings': FieldValue.increment(1),
+          'lastUpdated': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
   }
 
   Future<void> _onAddToItinerary(CalendarEvent event) async {
