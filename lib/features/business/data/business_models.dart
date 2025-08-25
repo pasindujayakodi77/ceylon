@@ -187,6 +187,15 @@ class BusinessEvent {
   /// Whether the event is published and visible to users.
   final bool published;
 
+  /// Optional URL to an image for the event.
+  final String? imageUrl;
+
+  /// Optional price for the event.
+  final double? price;
+
+  /// Optional maximum capacity for the event.
+  final int? capacity;
+
   /// Creates an immutable [BusinessEvent] instance.
   const BusinessEvent({
     required this.id,
@@ -196,6 +205,9 @@ class BusinessEvent {
     this.description,
     this.endAt,
     this.published = false,
+    this.imageUrl,
+    this.price,
+    this.capacity,
   });
 
   /// Creates a [BusinessEvent] from a Firestore document.
@@ -211,6 +223,9 @@ class BusinessEvent {
       startAt: json['startAt'] ?? Timestamp.now(),
       endAt: json['endAt'],
       published: json['published'] ?? false,
+      imageUrl: json['imageUrl'],
+      price: json['price'] != null ? (json['price'] as num).toDouble() : null,
+      capacity: json['capacity'],
     );
   }
 
@@ -228,6 +243,9 @@ class BusinessEvent {
     'startAt': startAt,
     'endAt': endAt,
     'published': published,
+    'imageUrl': imageUrl,
+    'price': price,
+    'capacity': capacity,
   };
 
   /// Checks if the event is in the future based on the current time.
@@ -245,6 +263,9 @@ class BusinessEvent {
     Timestamp? startAt,
     Timestamp? endAt,
     bool? published,
+    String? imageUrl,
+    double? price,
+    int? capacity,
   }) {
     return BusinessEvent(
       id: id ?? this.id,
@@ -254,6 +275,9 @@ class BusinessEvent {
       startAt: startAt ?? this.startAt,
       endAt: endAt ?? this.endAt,
       published: published ?? this.published,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      capacity: capacity ?? this.capacity,
     );
   }
 }
