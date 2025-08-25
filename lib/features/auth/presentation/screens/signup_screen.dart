@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:ceylon/features/profile/data/country_data.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
@@ -144,6 +145,121 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  // Reusable country picker dialog that returns the selected country name
+  Future<void> _showCountryPicker() async {
+    final selected = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        // Use the same countries list from profile's country_data
+        final all = List.of(countries);
+        List<Country> filtered = all;
+
+        return AlertDialog(
+          title: const Text('Select country'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Search countries',
+                      ),
+                      onChanged: (value) {
+                        final q = value.trim().toLowerCase();
+                        setState(() {
+                          filtered = q.isEmpty
+                              ? all
+                              : all
+                                    .where(
+                                      (c) => c.name.toLowerCase().contains(q),
+                                    )
+                                    .toList();
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: filtered.isEmpty
+                          ? const Center(child: Text('No countries found'))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: filtered.length,
+                              itemBuilder: (context, index) {
+                                final c = filtered[index];
+                                return ListTile(
+                                  title: Text(c.name),
+                                  trailing: Text(c.code),
+                                  onTap: () =>
+                                      Navigator.of(context).pop(c.name),
+                                );
+                              },
+                            ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+
+    if (selected != null && selected.isNotEmpty) {
+      setState(() => _country.text = selected);
+    }
+  }
+
+  // Small helper to build the country form field used in the signup form
+  Widget _buildCountryField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return GestureDetector(
+      onTap: _showCountryPicker,
+      child: AbsorbPointer(
+        child: TextFormField(
+          controller: _country,
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context).country,
+            prefixIcon: Icon(Icons.public, color: colorScheme.primary),
+            suffixIcon: SizedBox(
+              width: 84,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (_country.text.isNotEmpty)
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: Icon(
+                        Icons.clear,
+                        size: 20,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      onPressed: _clearCountry,
+                    ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(CeylonTokens.radiusMedium),
+            ),
+          ),
+          validator: _validateCountry,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+        ),
+      ),
+    );
+  }
+
+  void _clearCountry() {
+    setState(() => _country.clear());
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -244,24 +360,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: CeylonTokens.spacing16),
 
                     // Country field
-                    TextFormField(
-                      controller: _country,
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context).country,
-                        prefixIcon: Icon(
-                          Icons.public,
-                          color: colorScheme.primary,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            CeylonTokens.radiusMedium,
-                          ),
-                        ),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      validator: _validateCountry,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                    ).animate().fadeIn(
+                    _buildCountryField(context).animate().fadeIn(
                       duration: const Duration(milliseconds: 600),
                       delay: const Duration(milliseconds: 300),
                     ),
@@ -292,7 +391,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         DropdownMenuItem(
                           value: 'hi',
-                          child: Text("हिंदී (Hindi)"),
+                          child: Text("हिंदī (Hindi)"),
                         ),
                         DropdownMenuItem(
                           value: 'dv',
