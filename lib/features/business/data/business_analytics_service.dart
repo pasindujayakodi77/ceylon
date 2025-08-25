@@ -185,6 +185,59 @@ class BusinessAnalyticsService {
     return statsList.map((stat) => MapEntry(stat.date, stat.views)).toList();
   }
 
+  /// Gets the daily bookings data in a format ready for charts.
+  ///
+  /// Returns a list of (day, bookings) pairs that can be used directly with chart libraries.
+  /// The `days` parameter controls how many days of data to include.
+  Future<List<MapEntry<String, int>>> getBookingsChartData(
+    String businessId, {
+    int days = 30,
+  }) async {
+    final statsStream = streamDailyStats(businessId, days: days);
+    final statsList = await statsStream.first;
+
+    // Create the data in the format expected by charts
+    return statsList.map((stat) => MapEntry(stat.date, stat.bookings)).toList();
+  }
+
+  /// Gets the daily bookmarks data in a format ready for charts.
+  ///
+  /// Returns a list of (day, bookmarks) pairs that can be used directly with chart libraries.
+  /// The `days` parameter controls how many days of data to include.
+  Future<List<MapEntry<String, int>>> getBookmarksChartData(
+    String businessId, {
+    int days = 30,
+  }) async {
+    final statsStream = streamDailyStats(businessId, days: days);
+    final statsList = await statsStream.first;
+
+    // Create the data in the format expected by charts
+    return statsList
+        .map((stat) => MapEntry(stat.date, stat.bookmarks))
+        .toList();
+  }
+
+  /// Generates a CSV string from analytics data for export.
+  ///
+  /// Includes daily views, bookings, and bookmarks for the specified time period.
+  Future<String> generateCsvExport(String businessId, {int days = 30}) async {
+    final statsStream = streamDailyStats(businessId, days: days);
+    final statsList = await statsStream.first;
+
+    // CSV header
+    final csvRows = <String>['Date,Views,Bookings,Bookmarks'];
+
+    // Add data rows
+    for (final stat in statsList) {
+      csvRows.add(
+        '${stat.date},${stat.views},${stat.bookings},${stat.bookmarks}',
+      );
+    }
+
+    // Join rows with newlines
+    return csvRows.join('\n');
+  }
+
   /// Finds the top events for a business based on bookings or interest.
   ///
   /// Returns a list of [BusinessEvent] objects sorted by booking count
