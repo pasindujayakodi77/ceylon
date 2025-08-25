@@ -559,7 +559,8 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                   ).animate().fadeIn(delay: 1600.ms),
 
                   const PromotedBusinessesCarousel(
-                    limit: 6,
+                    title: 'Featured Businesses',
+                    pageSize: 6,
                   ).animate().fadeIn(delay: 1700.ms),
                 ],
               ),

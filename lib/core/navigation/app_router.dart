@@ -6,8 +6,7 @@ import 'package:ceylon/features/auth/presentation/screens/login_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_home_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_dashboard_screen.dart';
 import 'package:ceylon/features/business/presentation/screens/business_analytics_screen.dart';
-import 'package:ceylon/features/business/presentation/screens/business_events_screen.dart';
-import 'package:ceylon/features/business/presentation/screens/business_reviews_screen.dart';
+// business events/reviews are navigated with arguments via MaterialPageRoute
 import 'package:ceylon/features/calendar/presentation/screens/holidays_events_calendar_screen.dart';
 import 'package:ceylon/features/admin/presentation/screens/admin_overview_screen.dart';
 import 'package:ceylon/features/admin/presentation/screens/verification_inbox_screen.dart';
@@ -40,8 +39,10 @@ class AppRouter {
     '/business': (_) => const BusinessHomeScreen(),
     '/business/dashboard': (_) => const BusinessDashboardScreen(),
     '/business/analytics': (_) => const BusinessAnalyticsScreen(),
-    '/business/events': (_) => const BusinessEventsScreen(),
-    '/business/reviews': (_) => const BusinessReviewsScreen(),
+    // Screens that require a businessId must be navigated to with arguments or
+    // pushed via MaterialPageRoute. Default to the dashboard from static routes.
+    '/business/events': (_) => const BusinessDashboardScreen(),
+    '/business/reviews': (_) => const BusinessDashboardScreen(),
     // Admin routes
     '/admin': (_) => const AdminOverviewScreen(),
     '/admin/verification-requests': (_) => const VerificationInboxScreen(),
