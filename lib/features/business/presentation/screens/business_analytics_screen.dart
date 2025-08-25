@@ -204,8 +204,6 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
             return const Center(
               child: Text('No business found for this account.'),
             );
-
-            return _buildAnalyticsContent(biz.id);
           },
         ),
       ),
