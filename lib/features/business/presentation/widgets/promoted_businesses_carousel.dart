@@ -115,11 +115,6 @@ class _PromotedBusinessesCarouselState
 
   @override
   Widget build(BuildContext context) {
-    final repo = BusinessRepository(
-      firestore: FirebaseFirestore.instance,
-      auth: FirebaseAuth.instance,
-    );
-
     // Create a query for promoted businesses
     final query = FirebaseFirestore.instance
         .collection('businesses')

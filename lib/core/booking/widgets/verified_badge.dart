@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ceylon/features/business/presentation/widgets/request_verification_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +20,8 @@ class VerifiedBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     // If no businessId, render the simple static badge
     if (businessId == null) {
       return Semantics(
@@ -29,9 +32,9 @@ class VerifiedBadge extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFFE3F2FD),
+              color: colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: const Color(0xFF90CAF9)),
+              border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -39,7 +42,7 @@ class VerifiedBadge extends StatelessWidget {
                 Icon(
                   Icons.verified,
                   size: size,
-                  color: const Color(0xFF1E88E5),
+                  color: colorScheme.primary,
                 ),
                 const SizedBox(width: 6),
                 Column(
@@ -48,16 +51,16 @@ class VerifiedBadge extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: const TextStyle(
-                        color: Color(0xFF1565C0),
+                      style: TextStyle(
+                        color: colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     if (lastVerified != null)
                       Text(
                         'Verified ${lastVerified!.toLocal().toString().split(' ').first}',
-                        style: const TextStyle(
-                          color: Color(0xFF1565C0),
+                        style: TextStyle(
+                          color: colorScheme.onPrimaryContainer,
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                         ),
@@ -73,12 +76,14 @@ class VerifiedBadge extends StatelessWidget {
 
     // If Firebase hasn't been initialized (tests or early boot), avoid accessing Firestore
     if (Firebase.apps.isEmpty) {
+      final colorScheme = Theme.of(context).colorScheme;
       // Fallback to a neutral 'Verification' badge without live status
       return Semantics(
         label: label,
         button: true,
         child: InkWell(
           onTap: () {
+            HapticFeedback.mediumImpact();
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -88,9 +93,9 @@ class VerifiedBadge extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFFE3F2FD),
+              color: colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: const Color(0xFF90CAF9)),
+              border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -98,13 +103,13 @@ class VerifiedBadge extends StatelessWidget {
                 Icon(
                   Icons.verified,
                   size: size,
-                  color: const Color(0xFF1E88E5),
+                  color: colorScheme.primary,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: Color(0xFF1565C0),
+                  style: TextStyle(
+                    color: colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -122,6 +127,8 @@ class VerifiedBadge extends StatelessWidget {
           .doc(businessId)
           .snapshots(),
       builder: (context, snap) {
+        final colorScheme = Theme.of(context).colorScheme;
+        
         if (!snap.hasData || snap.data == null) {
           return const SizedBox.shrink();
         }
@@ -140,6 +147,7 @@ class VerifiedBadge extends StatelessWidget {
             button: true,
             child: InkWell(
               onTap: () {
+                HapticFeedback.mediumImpact();
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -150,9 +158,9 @@ class VerifiedBadge extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE3F2FD),
+                  color: colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: const Color(0xFF90CAF9)),
+                  border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -160,7 +168,7 @@ class VerifiedBadge extends StatelessWidget {
                     Icon(
                       Icons.verified,
                       size: size,
-                      color: const Color(0xFF1E88E5),
+                      color: colorScheme.primary,
                     ),
                     const SizedBox(width: 6),
                     Column(
@@ -169,16 +177,16 @@ class VerifiedBadge extends StatelessWidget {
                       children: [
                         Text(
                           'Verified',
-                          style: const TextStyle(
-                            color: Color(0xFF1565C0),
+                          style: TextStyle(
+                            color: colorScheme.onPrimaryContainer,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         if (verifiedAt != null)
                           Text(
                             'Verified ${verifiedAt.toLocal().toString().split(' ').first}',
-                            style: const TextStyle(
-                              color: Color(0xFF1565C0),
+                            style: TextStyle(
+                              color: colorScheme.onPrimaryContainer,
                               fontSize: 10,
                             ),
                           ),
@@ -197,6 +205,7 @@ class VerifiedBadge extends StatelessWidget {
             button: true,
             child: InkWell(
               onTap: () {
+                HapticFeedback.mediumImpact();
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -207,9 +216,9 @@ class VerifiedBadge extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
+                  color: colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: Colors.orange.shade200),
+                  border: Border.all(color: colorScheme.tertiary.withOpacity(0.5)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -217,13 +226,13 @@ class VerifiedBadge extends StatelessWidget {
                     Icon(
                       Icons.hourglass_empty,
                       size: size,
-                      color: Colors.orange,
+                      color: colorScheme.tertiary,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       'Verification requested',
                       style: TextStyle(
-                        color: Colors.orange.shade800,
+                        color: colorScheme.onTertiaryContainer,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -240,6 +249,7 @@ class VerifiedBadge extends StatelessWidget {
             button: true,
             child: InkWell(
               onTap: () {
+                HapticFeedback.mediumImpact();
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -250,19 +260,23 @@ class VerifiedBadge extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.red.shade50,
+                  color: colorScheme.errorContainer,
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: Colors.red.shade200),
+                  border: Border.all(color: colorScheme.error.withOpacity(0.5)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.block, size: size, color: Colors.red),
+                    Icon(
+                      Icons.block, 
+                      size: size, 
+                      color: colorScheme.error
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       'Verification rejected',
                       style: TextStyle(
-                        color: Colors.red.shade800,
+                        color: colorScheme.onErrorContainer,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -279,6 +293,7 @@ class VerifiedBadge extends StatelessWidget {
           button: true,
           child: InkWell(
             onTap: () {
+              HapticFeedback.mediumImpact();
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
@@ -289,9 +304,9 @@ class VerifiedBadge extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: const Color(0xFFE3F2FD),
+                color: colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: const Color(0xFF90CAF9)),
+                border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -299,13 +314,13 @@ class VerifiedBadge extends StatelessWidget {
                   Icon(
                     Icons.verified,
                     size: size,
-                    color: const Color(0xFF1E88E5),
+                    color: colorScheme.primary,
                   ),
                   const SizedBox(width: 6),
                   Text(
                     label,
-                    style: const TextStyle(
-                      color: Color(0xFF1565C0),
+                    style: TextStyle(
+                      color: colorScheme.onPrimaryContainer,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
