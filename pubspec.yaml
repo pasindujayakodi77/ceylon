@@ -88,3 +88,6 @@ flutter:
     - assets/home/ellatrainride.jpg
     - assets/home/gallefort.jpg
     - assets/home/sigiriyarock.png
+    - assets/images/onboarding/discover.svg
+    - assets/images/onboarding/plan.svg
+    - assets/images/onboarding/smart.svg
