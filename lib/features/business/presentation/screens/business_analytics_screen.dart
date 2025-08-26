@@ -48,7 +48,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
   final List<int> _timeframes = [7, 30, 90];
 
   // Widget classes for summary cards and chart legends
-  Widget _SummaryCard({
+  Widget _summaryCard({
     required String title,
     required dynamic value,
     required IconData icon,
@@ -97,7 +97,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
     );
   }
 
-  Widget _ChartLegendItem({
+  Widget _chartLegendItem({
     required Color color,
     required String label,
     required bool isSelected,
@@ -115,7 +115,9 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
               width: 16,
               height: 16,
               decoration: BoxDecoration(
-                color: isSelected ? color : color.withOpacity(0.3),
+                color: isSelected
+                    ? color
+                    : color.withAlpha((0.3 * 255).round()),
                 shape: BoxShape.circle,
                 border: Border.all(color: color, width: 2),
               ),
@@ -126,7 +128,9 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
               style: TextStyle(
                 color: isSelected
                     ? Theme.of(context).colorScheme.onSurface
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withAlpha((0.5 * 255).round()),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -266,7 +270,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
             Row(
               children: [
                 Expanded(
-                  child: _SummaryCard(
+                  child: _summaryCard(
                     title: 'Views',
                     value: summary['totalViews']?.toInt() ?? 0,
                     icon: Icons.visibility,
@@ -274,7 +278,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: _SummaryCard(
+                  child: _summaryCard(
                     title: 'Bookings',
                     value: summary['totalBookings']?.toInt() ?? 0,
                     icon: Icons.calendar_today,
@@ -286,7 +290,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
             Row(
               children: [
                 Expanded(
-                  child: _SummaryCard(
+                  child: _summaryCard(
                     title: 'Rating',
                     value: summary['avgRating']?.toDouble() ?? 0.0,
                     isRating: true,
@@ -295,7 +299,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: _SummaryCard(
+                  child: _summaryCard(
                     title: 'Reviews',
                     value: summary['reviewCount']?.toInt() ?? 0,
                     icon: Icons.rate_review,
@@ -326,14 +330,14 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _ChartLegendItem(
+                _chartLegendItem(
                   color: Colors.blue,
                   label: 'Views',
                   isSelected: _showViews,
                   onTap: () => setState(() => _showViews = !_showViews),
                 ),
                 const SizedBox(width: 16),
-                _ChartLegendItem(
+                _chartLegendItem(
                   color: Colors.green,
                   label: 'Bookings',
                   isSelected: _showBookings,
@@ -423,7 +427,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
             ), // Show dots only for smaller datasets
             belowBarData: BarAreaData(
               show: true,
-              color: color.withOpacity(0.2),
+              color: color.withAlpha((0.2 * 255).round()),
             ),
           ),
         );
@@ -518,7 +522,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
                   final distribution = snapshot.data!;
                   final totalRatings = distribution.values.fold<int>(
                     0,
-                    (sum, count) => sum + count,
+                    (acc, val) => acc + val,
                   );
 
                   if (totalRatings == 0) {
@@ -528,7 +532,7 @@ class _AnalyticsBodyState extends State<_AnalyticsBody> {
                   // Find the maximum count for scaling
                   final maxCount = distribution.values.fold<int>(
                     1, // Default to 1 to avoid division by zero
-                    (max, count) => max > count ? max : count,
+                    (curMax, val) => curMax > val ? curMax : val,
                   );
 
                   return BarChart(

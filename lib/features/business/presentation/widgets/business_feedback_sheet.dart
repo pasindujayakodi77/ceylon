@@ -136,7 +136,9 @@ class _BusinessFeedbackSheetState extends State<BusinessFeedbackSheet> {
                   label: Text(category),
                   selected: isSelected,
                   onSelected: (_) => _toggleCategory(category),
-                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest,
                   selectedColor: Theme.of(context).colorScheme.primaryContainer,
                   checkmarkColor: Theme.of(context).colorScheme.primary,
                 );

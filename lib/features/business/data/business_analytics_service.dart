@@ -1,5 +1,7 @@
 // FILE: lib/features/business/data/business_analytics_service.dart
 import 'dart:async';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'business_models.dart';
@@ -236,6 +238,38 @@ class BusinessAnalyticsService {
 
     // Join rows with newlines
     return csvRows.join('\n');
+  }
+
+  /// Record an analytics event by enqueueing it in SharedPreferences.
+  ///
+  /// The queue is stored as a JSON array under the key `analytics_event_queue_v1`.
+  /// Each entry is a map that contains at least the business id under key `b`.
+  Future<void> recordEvent(String businessId, String eventName) async {
+    const queueKey = 'analytics_event_queue_v1';
+
+    final prefs = await SharedPreferences.getInstance();
+    final s = prefs.getString(queueKey);
+
+    List<dynamic> arr = <dynamic>[];
+    if (s != null) {
+      try {
+        final decoded = jsonDecode(s);
+        if (decoded is List<dynamic>) arr = decoded;
+      } catch (_) {
+        arr = <dynamic>[];
+      }
+    }
+
+    final entry = <String, dynamic>{
+      'b': businessId,
+      'e': eventName,
+      't': DateTime.now().toIso8601String(),
+    };
+
+    // Add to the front so recent events are first (test only checks first element)
+    arr.insert(0, entry);
+
+    await prefs.setString(queueKey, jsonEncode(arr));
   }
 
   /// Finds the top events for a business based on bookings or interest.

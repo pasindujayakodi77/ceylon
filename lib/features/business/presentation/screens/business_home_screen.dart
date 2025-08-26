@@ -7,10 +7,13 @@ import 'package:ceylon/features/business/presentation/widgets/promoted_businesse
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 class BusinessHomeScreen extends StatelessWidget {
   /// Optional user role override - if not provided, role is determined from profile
   final String? userRole;
+
+  static final Logger _logger = Logger('BusinessHomeScreen');
 
   const BusinessHomeScreen({super.key, this.userRole});
 
@@ -158,7 +161,7 @@ class BusinessHomeScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
-                print('Navigating to business create screen');
+                _logger.info('Navigating to business create screen');
                 Navigator.of(context).pushNamed('/business/create');
               },
               icon: const Icon(Icons.add_business),

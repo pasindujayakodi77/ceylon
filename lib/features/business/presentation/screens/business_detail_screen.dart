@@ -14,8 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 class BusinessDetailScreen extends StatefulWidget {
   final Business business;
 
-  const BusinessDetailScreen({Key? key, required this.business})
-    : super(key: key);
+  const BusinessDetailScreen({super.key, required this.business});
 
   @override
   State<BusinessDetailScreen> createState() => _BusinessDetailScreenState();
@@ -103,7 +102,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen>
         '${widget.business.name} - Check out this ${widget.business.category} on Ceylon!'
         '\n\nhttps://ceylon.app/business/${widget.business.id}';
 
-    await Share.share(shareText);
+    await SharePlus.instance.share(ShareParams(text: shareText));
     _analyticsService.trackBusinessShared(widget.business.id);
   }
 
@@ -112,6 +111,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen>
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Could not launch $url')));
@@ -190,7 +190,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen>
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withAlpha((0.7 * 255).round()),
                           ],
                         ),
                       ),
@@ -250,7 +250,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen>
                         label: Text(widget.business.category),
                         backgroundColor: Theme.of(
                           context,
-                        ).colorScheme.surfaceVariant,
+                        ).colorScheme.surfaceContainerHighest,
                       ),
                     ],
                   ),

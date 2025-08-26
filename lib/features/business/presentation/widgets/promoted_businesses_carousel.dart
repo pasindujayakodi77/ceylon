@@ -224,7 +224,7 @@ class _PromotedBusinessesCarouselState
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(
                                       context,
-                                    ).colorScheme.surfaceVariant,
+                                    ).colorScheme.surfaceContainerHighest,
                             ),
                           );
                         }),
@@ -250,9 +250,8 @@ class _PromotedBusinessesCarouselState
           width: MediaQuery.of(context).size.width * 0.85,
           margin: const EdgeInsets.symmetric(horizontal: 6),
           decoration: BoxDecoration(
-            color: Theme.of(
-              context,
-            ).colorScheme.surfaceVariant.withOpacity(0.7),
+            color: Theme.of(context).colorScheme.surfaceContainerHighest
+                .withAlpha((0.7 * 255).round()),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -262,7 +261,7 @@ class _PromotedBusinessesCarouselState
               Container(
                 height: 150,
                 width: double.infinity,
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
               ),
 
               // Title placeholder
@@ -273,7 +272,7 @@ class _PromotedBusinessesCarouselState
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurfaceVariant.withOpacity(0.1),
+                  ).colorScheme.onSurfaceVariant.withAlpha((0.1 * 255).round()),
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -286,7 +285,7 @@ class _PromotedBusinessesCarouselState
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurfaceVariant.withOpacity(0.1),
+                  ).colorScheme.onSurfaceVariant.withAlpha((0.1 * 255).round()),
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -299,7 +298,7 @@ class _PromotedBusinessesCarouselState
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurfaceVariant.withOpacity(0.1),
+                  ).colorScheme.onSurfaceVariant.withAlpha((0.1 * 255).round()),
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
@@ -374,7 +373,9 @@ class _BusinessCard extends StatelessWidget {
                       business.photo!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Container(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
                         child: const Center(
                           child: Icon(Icons.broken_image, size: 48),
                         ),
@@ -382,7 +383,9 @@ class _BusinessCard extends StatelessWidget {
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
                         return Container(
-                          color: Theme.of(context).colorScheme.surfaceVariant,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
                           child: const Center(
                             child: CircularProgressIndicator(),
                           ),
@@ -390,7 +393,9 @@ class _BusinessCard extends StatelessWidget {
                       },
                     )
                   : Container(
-                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       child: const Center(
                         child: Icon(Icons.business, size: 48),
                       ),

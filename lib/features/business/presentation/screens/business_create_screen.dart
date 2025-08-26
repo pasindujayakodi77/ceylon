@@ -37,7 +37,7 @@ class _BusinessCreateScreenState extends State<BusinessCreateScreen> {
   final _bookingFormUrlController = TextEditingController();
 
   String _selectedCategory = 'Food & Dining';
-  List<String> _businessPhotos = [];
+  final List<String> _businessPhotos = [];
   File? _mainPhotoFile;
 
   final _categories = [
@@ -81,9 +81,11 @@ class _BusinessCreateScreenState extends State<BusinessCreateScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
+      }
     }
   }
 
@@ -107,9 +109,11 @@ class _BusinessCreateScreenState extends State<BusinessCreateScreen> {
 
       return downloadUrl;
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error uploading image: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error uploading image: $e')));
+      }
       return null;
     }
   }
@@ -137,12 +141,14 @@ class _BusinessCreateScreenState extends State<BusinessCreateScreen> {
       if (_mainPhotoFile != null) {
         mainPhotoUrl = await _uploadMainPhoto();
         if (mainPhotoUrl == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to upload main photo')),
-          );
-          setState(() {
-            _isLoading = false;
-          });
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to upload main photo')),
+            );
+            setState(() {
+              _isLoading = false;
+            });
+          }
           return;
         }
       }

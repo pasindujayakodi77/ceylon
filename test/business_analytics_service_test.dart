@@ -15,7 +15,7 @@ void main() {
     // Attempt to access the service; if Firebase is not initialized in the
     // test environment, skip this test.
     try {
-      final svc = BusinessAnalyticsService.instance;
+      final svc = BusinessAnalyticsService.instance();
 
       // enqueue an event
       await svc.recordEvent('biz-1', 'test_event');

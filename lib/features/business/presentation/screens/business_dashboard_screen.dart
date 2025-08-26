@@ -372,7 +372,9 @@ class _ProfileCardState extends State<_ProfileCard> {
                           const Icon(Icons.image_not_supported, size: 40),
                     )
                   : Container(
-                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       child: const Icon(Icons.add_a_photo_outlined, size: 40),
                     ),
             ),
@@ -685,9 +687,11 @@ class _VerificationCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: Colors.green.withAlpha((0.1 * 255).round()),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.green.withOpacity(0.3)),
+                border: Border.all(
+                  color: Colors.green.withAlpha((0.3 * 255).round()),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -746,9 +750,11 @@ class _VerificationCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withAlpha((0.1 * 255).round()),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                border: Border.all(
+                  color: Colors.orange.withAlpha((0.3 * 255).round()),
+                ),
               ),
               child: Row(
                 children: [
@@ -819,7 +825,7 @@ class _VerificationCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: colorScheme.surfaceVariant,
+                color: colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -1016,7 +1022,9 @@ class _QuickLinksCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: colorScheme.surfaceVariant.withOpacity(0.4),
+          color: colorScheme.surfaceContainerHighest.withAlpha(
+            (0.4 * 255).round(),
+          ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Stack(

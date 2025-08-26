@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logging/logging.dart';
 
 import '../../data/business_repository.dart';
 import '../../data/business_models.dart';
@@ -85,6 +86,8 @@ class BusinessDashboardError extends BusinessDashboardState {
 /// Cubit for managing business dashboard state
 class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
   final BusinessRepository _repository;
+
+  static final Logger _logger = Logger('BusinessDashboardCubit');
 
   StreamSubscription? _businessSubscription;
   StreamSubscription? _eventsSubscription;
@@ -315,7 +318,7 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
           },
           onError: (error) {
             // Just log the error, don't change the state
-            print('Error streaming verification status: $error');
+            _logger.warning('Error streaming verification status: $error');
           },
         );
   }
@@ -332,9 +335,8 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
             }
           },
           onError: (error) {
-            // Just log the error but don't change state - in production use a proper logging framework
-            // ignore: avoid_print
-            print('Error streaming events: $error');
+            // Just log the error but don't change state
+            _logger.warning('Error streaming events: $error');
           },
         );
   }
@@ -357,9 +359,8 @@ class BusinessDashboardCubit extends Cubit<BusinessDashboardState> {
         emit(currentState.copyWith(pendingReviewsCount: pendingCount));
       }
     } catch (e) {
-      // Just log the error but don't change state - in production use a proper logging framework
-      // ignore: avoid_print
-      print('Error loading pending reviews: $e');
+      // Just log the error but don't change state
+      _logger.warning('Error loading pending reviews: $e');
     }
   }
 

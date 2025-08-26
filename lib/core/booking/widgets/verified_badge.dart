@@ -21,7 +21,7 @@ class VerifiedBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     // If no businessId, render the simple static badge
     if (businessId == null) {
       return Semantics(
@@ -34,16 +34,14 @@ class VerifiedBadge extends StatelessWidget {
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
+              border: Border.all(
+                color: colorScheme.primary.withAlpha((0.5 * 255).round()),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.verified,
-                  size: size,
-                  color: colorScheme.primary,
-                ),
+                Icon(Icons.verified, size: size, color: colorScheme.primary),
                 const SizedBox(width: 6),
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -95,16 +93,14 @@ class VerifiedBadge extends StatelessWidget {
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
+              border: Border.all(
+                color: colorScheme.primary.withAlpha((0.5 * 255).round()),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.verified,
-                  size: size,
-                  color: colorScheme.primary,
-                ),
+                Icon(Icons.verified, size: size, color: colorScheme.primary),
                 const SizedBox(width: 6),
                 Text(
                   label,
@@ -128,7 +124,7 @@ class VerifiedBadge extends StatelessWidget {
           .snapshots(),
       builder: (context, snap) {
         final colorScheme = Theme.of(context).colorScheme;
-        
+
         if (!snap.hasData || snap.data == null) {
           return const SizedBox.shrink();
         }
@@ -160,7 +156,9 @@ class VerifiedBadge extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
+                  border: Border.all(
+                    color: colorScheme.primary.withAlpha((0.5 * 255).round()),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -218,7 +216,9 @@ class VerifiedBadge extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: colorScheme.tertiary.withOpacity(0.5)),
+                  border: Border.all(
+                    color: colorScheme.tertiary.withAlpha((0.5 * 255).round()),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -262,16 +262,14 @@ class VerifiedBadge extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: colorScheme.errorContainer,
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: colorScheme.error.withOpacity(0.5)),
+                  border: Border.all(
+                    color: colorScheme.error.withAlpha((0.5 * 255).round()),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.block, 
-                      size: size, 
-                      color: colorScheme.error
-                    ),
+                    Icon(Icons.block, size: size, color: colorScheme.error),
                     const SizedBox(width: 6),
                     Text(
                       'Verification rejected',
@@ -306,16 +304,14 @@ class VerifiedBadge extends StatelessWidget {
               decoration: BoxDecoration(
                 color: colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: colorScheme.primary.withOpacity(0.5)),
+                border: Border.all(
+                  color: colorScheme.primary.withAlpha((0.5 * 255).round()),
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.verified,
-                    size: size,
-                    color: colorScheme.primary,
-                  ),
+                  Icon(Icons.verified, size: size, color: colorScheme.primary),
                   const SizedBox(width: 6),
                   Text(
                     label,

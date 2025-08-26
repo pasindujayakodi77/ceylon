@@ -28,7 +28,7 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
   );
   final _replyController = TextEditingController();
 
-  bool _isBusinessOwner = true; // In real app, check if current user is owner
+  bool _isBusinessOwner = false; // Will be set after checking ownership
   bool _showWithReplies = false;
   Map<int, int> _distributionData = <int, int>{1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
 
@@ -36,6 +36,28 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
   void initState() {
     super.initState();
     _loadDistribution();
+    _checkIfOwner();
+  }
+
+  Future<void> _checkIfOwner() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) return;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('businesses')
+          .doc(widget.businessId)
+          .get();
+
+      final ownerId = doc.data()?['ownerId'] as String?;
+      if (mounted) {
+        setState(() {
+          _isBusinessOwner = ownerId != null && ownerId == userId;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error checking business owner: $e');
+    }
   }
 
   @override
@@ -181,7 +203,7 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
@@ -234,15 +256,15 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
     // Calculate total number of ratings
     final totalRatings = _distributionData.values.fold<int>(
       0,
-      (sum, count) => sum + count,
+      (acc, val) => acc + val,
     );
 
     // Calculate average rating
     double averageRating = 0;
     if (totalRatings > 0) {
       double sum = 0;
-      _distributionData.forEach((rating, count) {
-        sum += rating * count;
+      _distributionData.forEach((rating, cnt) {
+        sum += rating * cnt;
       });
       averageRating = sum / totalRatings;
     }
@@ -250,7 +272,7 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
     // Find the max count for scaling
     final maxCount = _distributionData.values.fold<int>(
       1,
-      (max, count) => count > max ? count : max,
+      (curMax, val) => val > curMax ? val : curMax,
     );
 
     return Card(
@@ -329,7 +351,7 @@ class _BusinessReviewsScreenState extends State<BusinessReviewsScreen> {
                                 decoration: BoxDecoration(
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.surfaceVariant,
+                                  ).colorScheme.surfaceContainerHighest,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),

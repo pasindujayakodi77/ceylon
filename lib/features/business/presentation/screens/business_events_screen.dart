@@ -62,7 +62,7 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _createEvent(context),
+        onPressed: _createEvent,
         child: const Icon(Icons.add),
       ),
       body: StreamBuilder<List<BusinessEvent>>(
@@ -161,14 +161,14 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen>
         final event = events[index];
         return _EventCard(
           event: event,
-          onTap: () => _editEvent(context, event),
+          onTap: () => _editEvent(event),
           isUpcoming: isUpcoming,
         );
       },
     );
   }
 
-  Future<void> _createEvent(BuildContext context) async {
+  Future<void> _createEvent() async {
     final result = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
@@ -179,13 +179,14 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen>
 
     if (result == true) {
       // The stream will update automatically
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Event created successfully')),
       );
     }
   }
 
-  Future<void> _editEvent(BuildContext context, BusinessEvent event) async {
+  Future<void> _editEvent(BusinessEvent event) async {
     final result = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
@@ -197,6 +198,7 @@ class _BusinessEventsScreenState extends State<BusinessEventsScreen>
 
     if (result == true) {
       // The stream will update automatically
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Event updated successfully')),
       );
@@ -243,7 +245,7 @@ class _EventCard extends StatelessWidget {
           children: [
             // Header with visibility status
             Container(
-              color: colorScheme.surfaceVariant,
+              color: colorScheme.surfaceContainerHighest,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,8 +314,8 @@ class _EventCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     final backgroundColor = isPublished
-        ? colorScheme.primary.withOpacity(0.2)
-        : colorScheme.error.withOpacity(0.2);
+        ? colorScheme.primary.withAlpha((0.2 * 255).round())
+        : colorScheme.error.withAlpha((0.2 * 255).round());
 
     final textColor = isPublished ? colorScheme.primary : colorScheme.error;
 

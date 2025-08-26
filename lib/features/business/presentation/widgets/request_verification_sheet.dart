@@ -107,7 +107,7 @@ class _RequestVerificationSheetState extends State<RequestVerificationSheet> {
 
               // Information text
               Card(
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(

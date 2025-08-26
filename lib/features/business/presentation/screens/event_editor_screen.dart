@@ -93,6 +93,8 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
     );
 
     if (pickedDate == null) return;
+    // Ensure widget is still mounted before continuing
+    if (!mounted) return;
 
     // Then select time
     final pickedTime = await showTimePicker(
@@ -101,6 +103,9 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
     );
 
     if (pickedTime == null) return;
+
+    // Ensure widget is still mounted before updating state
+    if (!mounted) return;
 
     setState(() {
       _startDate = pickedDate;
@@ -124,6 +129,8 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
     );
 
     if (pickedDate == null) return;
+    // Ensure widget is still mounted before continuing
+    if (!mounted) return;
 
     // Then select time
     final pickedTime = await showTimePicker(
@@ -132,6 +139,9 @@ class _EventEditorScreenState extends State<EventEditorScreen> {
     );
 
     if (pickedTime == null) return;
+
+    // Ensure widget is still mounted before updating state
+    if (!mounted) return;
 
     setState(() {
       _endDate = pickedDate;
