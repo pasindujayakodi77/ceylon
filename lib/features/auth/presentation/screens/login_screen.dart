@@ -135,15 +135,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 80,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: colorScheme.primaryContainer,
+                          color: colorScheme.secondaryContainer,
                           borderRadius: BorderRadius.circular(
                             CeylonTokens.radiusMedium,
                           ),
+                          border: Border.all(
+                            color: colorScheme.outlineVariant,
+                            width: 1.0,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.travel_explore,
-                          size: 48,
-                          color: colorScheme.onPrimaryContainer,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            CeylonTokens.radiusMedium,
+                          ),
+                          child: Image.asset(
+                            'assets/images/logo.png',
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.contain,
+                            semanticLabel: 'App logo',
+                          ),
                         ),
                       ),
                     ).animate().fadeIn(
