@@ -73,7 +73,28 @@ class AuthRepository {
         );
 
         final userCredential = await _auth.signInWithProvider(googleProvider);
-        return userCredential.user;
+        final user = userCredential.user;
+
+        // Ensure a corresponding Firestore user document exists so
+        // UI that relies on users/{uid}.role works for Google accounts too.
+        if (user != null) {
+          final userRef = FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid);
+          final doc = await userRef.get();
+          if (!doc.exists) {
+            await userRef.set({
+              'email': user.email ?? '',
+              'name': user.displayName ?? '',
+              // Use the same default role as the signup flow
+              'role': 'tourist',
+              'language': 'en',
+              'created_at': FieldValue.serverTimestamp(),
+            }, SetOptions(merge: true));
+          }
+        }
+
+        return user;
       }
     } catch (e) {
       foundation.debugPrint('Firebase Authentication error: $e');

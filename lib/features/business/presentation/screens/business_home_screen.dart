@@ -1,6 +1,7 @@
 // FILE: lib/features/business/presentation/screens/business_home_screen.dart
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:ceylon/features/business/data/business_models.dart';
 import 'package:ceylon/features/business/presentation/widgets/promoted_businesses_carousel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -191,27 +192,36 @@ class BusinessHomeScreen extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: user?.photoURL != null
-                      ? NetworkImage(user!.photoURL!)
-                      : null,
+                  backgroundImage:
+                      // safeNetworkImageProvider returns null for empty/file:// urls
+                      // preserving previous behavior when there is no valid image
+                      // and avoiding ArgumentError from NetworkImage.
+                      safeNetworkImageProvider(user?.photoURL),
                   child: user?.photoURL == null
                       ? const Icon(Icons.person)
                       : null,
                 ),
                 const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '$greeting, $name',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Welcome to your business dashboard',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
+                // Prevent overflow by allowing the text column to take remaining space
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$greeting, $name',
+                        style: Theme.of(context).textTheme.titleLarge,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Welcome to your business dashboard',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -227,9 +237,7 @@ class BusinessHomeScreen extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundImage: business.photo != null
-              ? NetworkImage(business.photo)
-              : null,
+          backgroundImage: safeNetworkImageProvider(business.photo),
           child: business.photo == null ? const Icon(Icons.business) : null,
         ),
         title: Text(business.name),

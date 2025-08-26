@@ -6,6 +6,7 @@ import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:ceylon/services/location_service.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -202,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     CircleAvatar(
                       radius: 40,
                       backgroundImage: user.photoURL != null
-                          ? NetworkImage(user.photoURL!)
+                          ? safeNetworkImageProvider(user.photoURL)
                           : null,
                       child: user.photoURL == null
                           ? Text(

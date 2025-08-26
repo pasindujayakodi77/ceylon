@@ -17,6 +17,7 @@ import 'package:ceylon/features/notifications/presentation/screens/notifications
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:ceylon/dev/dev_tools_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -119,7 +120,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
           IconButton(
             icon: CircleAvatar(
               radius: 16,
-              backgroundImage: NetworkImage(
+              backgroundImage: safeNetworkImageProvider(
                 _profileImageUrl ??
                     'https://ui-avatars.com/api/?name=${Uri.encodeComponent(displayName)}&background=random',
               ),

@@ -1,6 +1,7 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/features/reviews/presentation/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 
 class Review {
   final String userId;
@@ -102,7 +103,7 @@ class ReviewsWidget extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundImage: NetworkImage(review.userPhotoUrl),
+                backgroundImage: safeNetworkImageProvider(review.userPhotoUrl),
                 backgroundColor: colorScheme.primaryContainer,
                 child: review.userPhotoUrl.isEmpty
                     ? Text(

@@ -1,6 +1,7 @@
 import 'package:ceylon/design_system/tokens.dart';
 import 'package:ceylon/features/profile/data/country_data.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:flutter/material.dart';
 
 class ProfileFormFields extends StatelessWidget {
@@ -136,7 +137,7 @@ class ProfileAvatar extends StatelessWidget {
                 backgroundColor: colorScheme.primaryContainer,
                 // Use the user's uploaded image when available, otherwise fall back
                 // to the ui-avatars service so the avatar looks the same as on Home
-                backgroundImage: NetworkImage(
+                backgroundImage: safeNetworkImageProvider(
                   profileImageUrl ??
                       'https://ui-avatars.com/api/?name=${Uri.encodeComponent(nameInitial.isNotEmpty ? nameInitial : 'User')}&background=random',
                 ),

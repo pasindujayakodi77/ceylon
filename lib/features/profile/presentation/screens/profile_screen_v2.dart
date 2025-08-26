@@ -2,11 +2,13 @@
 import 'dart:io';
 import 'package:ceylon/features/reviews/presentation/screens/my_reviews_screen.dart';
 import 'package:ceylon/features/profile/data/country_data.dart';
+import 'package:ceylon/features/business/presentation/screens/business_home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ceylon/core/l10n/locale_controller.dart';
 import 'package:ceylon/features/settings/data/language_codes.dart';
@@ -119,7 +121,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
           setState(() {
             _name.text = data['name'] ?? '';
             _selectedCountry = data['country'] ?? '';
-            _role = data['role'] ?? '';
+            // Normalize older 'user' role to 'tourist' for consistency
+            final rawRole = data['role'] as String? ?? '';
+            _role = (rawRole == 'user') ? 'tourist' : rawRole;
             _selectedLocale = Locale(data['language'] ?? 'en');
             _profileImageUrl = data['profileImageUrl'];
             _bio = data['bio'] ?? '';
@@ -153,7 +157,8 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
           'name': user.displayName ?? '',
           'email': user.email ?? '',
           'createdAt': FieldValue.serverTimestamp(),
-          'role': 'user',
+          // Align default role with sign-up flow and Google sign-in
+          'role': 'tourist',
           'language': 'en',
           'interests': [],
           'preferredCurrency': 'USD',
@@ -483,13 +488,16 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
           .doc(uid);
 
       final docSnapshot = await userDocRef.get();
+      final previousRole = docSnapshot.exists
+          ? (docSnapshot.data()?['role'] as String? ?? 'tourist')
+          : 'tourist';
 
       final userData = {
         'name': _name.text,
         'country': _selectedCountry,
         'language': _selectedLocale.languageCode,
         'email': user.email ?? '',
-        'role': _role.isNotEmpty ? _role : 'user',
+        'role': _role.isNotEmpty ? _role : 'tourist',
         'updatedAt': FieldValue.serverTimestamp(),
         // Trim bio to avoid accidental leading/trailing whitespace
         'bio': _bioController.text.trim(),
@@ -523,6 +531,17 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
             behavior: SnackBarBehavior.floating,
           ),
         );
+
+        // If user changed role to business, navigate immediately to BusinessHomeScreen
+        if (previousRole != 'business' &&
+            (userData['role'] as String) == 'business') {
+          // Replace the current stack so user lands in the business area
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const BusinessHomeScreen()),
+          );
+          return;
+        }
       }
     } catch (e) {
       setState(() => _loading = false);
@@ -691,9 +710,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                           child: CircleAvatar(
                             radius: 50,
                             backgroundColor: colorScheme.primaryContainer,
-                            backgroundImage: _profileImageUrl != null
-                                ? NetworkImage(_profileImageUrl!)
-                                : null,
+                            backgroundImage: safeNetworkImageProvider(
+                              _profileImageUrl,
+                            ),
                             child: _profileImageUrl == null
                                 ? Text(
                                     _name.text.isNotEmpty
@@ -886,6 +905,35 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                       ),
                       subtitle: Text(_email),
                     ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Role selector — lets users switch between tourist and business
+                  DropdownButtonFormField<String>(
+                    // Ensure legacy 'user' value doesn't cause Dropdown mismatch
+                    value: (_role == 'user')
+                        ? 'tourist'
+                        : (_role.isNotEmpty ? _role : 'tourist'),
+                    decoration: InputDecoration(
+                      labelText: 'Role',
+                      prefixIcon: const Icon(Icons.badge_outlined),
+                      border: OutlineInputBorder(),
+                    ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'tourist',
+                        child: Text('Tourist'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'business',
+                        child: Text('Business'),
+                      ),
+                    ],
+                    onChanged: (val) {
+                      if (val == null) return;
+                      setState(() => _role = val);
+                    },
                   ),
 
                   const SizedBox(height: 24),

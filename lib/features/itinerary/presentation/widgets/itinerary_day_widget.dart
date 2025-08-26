@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -146,7 +147,10 @@ class _ItineraryDayWidgetState extends State<ItineraryDayWidget> {
                           if (url != null && url.isNotEmpty) {
                             try {
                               // ignore: use_build_context_synchronously
-                              precacheImage(NetworkImage(url), context);
+                              final provider = safeNetworkImageProvider(url);
+                              if (provider != null) {
+                                precacheImage(provider, context);
+                              }
                             } catch (_) {
                               // ignore prefetch errors silently
                             }
