@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ceylon/features/reviews/presentation/screens/my_reviews_screen.dart';
 import 'package:ceylon/features/profile/data/country_data.dart';
 import 'package:ceylon/features/business/presentation/screens/business_home_screen.dart';
+import 'package:ceylon/features/home/presentation/screens/home_screen_new.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -532,15 +533,25 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
           ),
         );
 
-        // If user changed role to business, navigate immediately to BusinessHomeScreen
-        if (previousRole != 'business' &&
-            (userData['role'] as String) == 'business') {
-          // Replace the current stack so user lands in the business area
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const BusinessHomeScreen()),
-          );
-          return;
+        // Handle role changes - navigate to the appropriate screen
+        final newRole = userData['role'] as String;
+        if (previousRole != newRole) {
+          // User changed roles, navigate to the appropriate screen
+          if (newRole == 'business') {
+            // Navigate to business home screen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const BusinessHomeScreen()),
+            );
+            return;
+          } else if (newRole == 'tourist') {
+            // Navigate to tourist home screen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const TouristHomeScreen()),
+            );
+            return;
+          }
         }
       }
     } catch (e) {
