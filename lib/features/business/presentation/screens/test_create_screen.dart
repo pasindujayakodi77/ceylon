@@ -6,12 +6,8 @@ class BusinessCreateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Business'),
-      ),
-      body: const Center(
-        child: Text('This is the create business screen'),
-      ),
+      appBar: AppBar(title: const Text('Create Business')),
+      body: const Center(child: Text('This is the create business screen')),
     );
   }
 }

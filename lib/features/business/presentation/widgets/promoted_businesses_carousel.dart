@@ -138,7 +138,8 @@ class _PromotedBusinessesCarouselState
           ),
         ),
         SizedBox(
-          height: 280, // Taller to accommodate rating and book button
+          height:
+              300, // Increased to avoid small vertical overflow and fit rating/book button
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: query.snapshots(),
             builder: (context, snapshot) {

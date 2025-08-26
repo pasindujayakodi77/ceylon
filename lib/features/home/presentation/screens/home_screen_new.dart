@@ -147,6 +147,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
                   CeylonTokens.spacing16,
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -195,6 +196,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
             // Featured destinations
             SliverToBoxAdapter(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SectionHeader(
@@ -293,6 +295,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
             // Quick actions
             SliverToBoxAdapter(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SectionHeader(
@@ -408,6 +411,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
             // Travel resources
             SliverToBoxAdapter(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SectionHeader(
@@ -551,6 +555,7 @@ class _TouristHomeScreenState extends State<TouristHomeScreen> {
             // Featured businesses (using the existing component)
             SliverToBoxAdapter(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SectionHeader(
