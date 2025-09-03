@@ -1,4 +1,4 @@
-<img width="1152" height="2496" alt="ai recomondation screen" src="https://github.com/user-attachments/assets/55da708d-6d1a-4c8a-b192-454353587365" />☁️ Deployment
+☁️ Deployment
 CEYLON App
 
 Android/iOS builds via Flutter
