@@ -1,15 +1,86 @@
+🌴 CEYLON – Smart Tourism & Business Travel App
+
+A Flutter + Firebase project with AI recommendations, localization, and business tools.
+
+✨ Features
+🔐 Authentication & Onboarding
+
+Email/Password login & signup
+
+Google Sign-In
+
+Auto-login routing
+
+Role-based Home (Tourist / Business)
+
+Editable profile with Firestore sync
+
+🗺️ Travel Tools for Tourists
+
+Itinerary Builder (create, edit, save trips)
+
+Nearby Attractions (OpenStreetMap)
+
+Place details → Get directions via Google Maps
+
+Favorites / Bookmarks ❤️
+
+Share trips via device share sheet
+
+🛎️ Notifications & AI
+
+Push Notifications (Firebase Cloud Messaging)
+
+AI-powered attraction recommendations (Gemini API – free tier)
+
+💼 Business Features
+
+Dashboard to manage business info
+
+Publish & promote events
+
+Respond to reviews
+
+Analytics charts & feedback collection
+
+Trusted badges for verified tours / homestays
+
+🌐 Localization
+
+Multi-language toggle (English 🇺🇸🇬🇧🇦🇺, Hindi 🇮🇳, Dhivehi 🇲🇻, Russian 🇷🇺, German 🇩🇪, French 🇫🇷, Dutch 🇳🇱)
+
+Auto-detect language preference from Firestore after login
+
+📂 Project Structure
+apps/
+ ├── ceylon/                # Main tourism app (Flutter + Firebase)
+
+ceylon/ – full tourism platform with traveler + business modules
+
+🚀 Getting Started
+1. Clone the repo
+git clone https://github.com/<your-username>/<repo>.git
+cd <repo>
+
+2. Setup CEYLON App
+cd apps/ceylon
+flutter pub get
+flutter run
+
+
+Make sure your google-services.json and firebase_options.dart are configured.
+
+3. Setup Portfolio
+cd apps/pasindu_portfolio
+flutter pub get
+flutter run -d chrome
+
+Build for web:
+
+flutter build web
+
 ☁️ Deployment
 CEYLON App
-
-Android/iOS builds via Flutter
-
-Firebase Hosting for admin/web if needed
-
-Portfolio
-
-GitHub Pages: Deploy build/web → gh-pages branch
-
-Firebase Hosting: Multi-site hosting under same project
 
 📊 Tech Stack
 
