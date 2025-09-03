@@ -25,7 +25,9 @@ Hosting: Firebase Hosting / GitHub Pages
 
 📸 Screenshots
 
-<img width="288" height="587.25" alt="tourist home 1" src="https://github.com/user-attachments/assets/ce755563-da56-43a5-8131-104c53040f06" />
+<img width="250" height="500" alt="tourist home 1" src="https://github.com/user-attachments/assets/ce755563-da56-43a5-8131-104c53040f06" />
+
+<img width="250" height="500" alt="tourist  home 2" src="https://github.com/user-attachments/assets/d1cf4531-ed65-4ac1-a4c1-a4d2d0bae58e" />
 
 
 📅 Project Roadmap
