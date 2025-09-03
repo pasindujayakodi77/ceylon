@@ -3,6 +3,7 @@
 A Flutter + Firebase project with AI recommendations, localization, and business tools.
 
 ✨ Features
+
 🔐 Authentication & Onboarding
 
 Email/Password login & signup
