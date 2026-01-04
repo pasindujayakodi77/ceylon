@@ -69,7 +69,7 @@ class _AttractionsFilterScreenState extends State<AttractionsFilterScreen> {
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: _category,
+                        initialValue: _category,
                         decoration: const InputDecoration(
                           labelText: 'Category',
                           border: OutlineInputBorder(),

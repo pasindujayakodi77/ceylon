@@ -308,7 +308,7 @@ class _BusinessCreateScreenState extends State<BusinessCreateScreen> {
 
                   // Category
                   DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     decoration: const InputDecoration(
                       labelText: 'Category*',
                       border: OutlineInputBorder(),
