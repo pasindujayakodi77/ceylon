@@ -52,7 +52,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
     'Local Markets',
   ];
 
-  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue, void Function(Locale?)? onChanged) {
+  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue) {
     final bool isRtl = LanguageCodes.isRtlLanguage(locale);
     final bool isSelected =
         groupValue.languageCode == locale.languageCode &&
@@ -67,8 +67,6 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
         ),
       ),
       value: locale,
-      groupValue: groupValue,
-      onChanged: onChanged,
       secondary: isRtl
           ? const Icon(Icons.format_textdirection_r_to_l)
           : locale.countryCode != null
@@ -355,30 +353,35 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                                         ),
                                   ),
                                 ),
-                                ...locales.map(
-                                  (locale) => _buildLanguageOption(
-                                    locale,
-                                    LanguageCodes.getLanguageName(locale),
-                                    _selectedLocale,
-                                    (value) async {
-                                      if (value == null) return;
+                                RadioGroup<Locale>(
+                                  groupValue: _selectedLocale,
+                                  onChanged: (value) async {
+                                    if (value == null) return;
 
-                                      setState(() => _selectedLocale = value);
-                                      Navigator.pop(context);
+                                    setState(() => _selectedLocale = value);
+                                    Navigator.pop(context);
 
-                                      // Apply the language change immediately
-                                      final localeController = Provider.of<LocaleController>(
-                                        context,
-                                        listen: false,
-                                      );
-                                      await localeController.setLocale(value);
+                                    // Apply the language change immediately
+                                    final localeController = Provider.of<LocaleController>(
+                                      context,
+                                      listen: false,
+                                    );
+                                    await localeController.setLocale(value);
 
-                                      // Save language to Firestore if user is logged in
-                                      final user = FirebaseAuth.instance.currentUser;
-                                      if (user != null) {
-                                        await localeController.saveToFirestore(user.uid);
-                                      }
-                                    },
+                                    // Save language to Firestore if user is logged in
+                                    final user = FirebaseAuth.instance.currentUser;
+                                    if (user != null) {
+                                      await localeController.saveToFirestore(user.uid);
+                                    }
+                                  },
+                                  child: Column(
+                                    children: locales.map(
+                                      (locale) => _buildLanguageOption(
+                                        locale,
+                                        LanguageCodes.getLanguageName(locale),
+                                        _selectedLocale,
+                                      ),
+                                    ).toList(),
                                   ),
                                 ),
                               ],

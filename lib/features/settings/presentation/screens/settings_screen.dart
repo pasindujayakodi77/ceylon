@@ -555,40 +555,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         ),
                                   ),
                                 ),
-                                ...locales.map(
-                                  (locale) => _buildLanguageOption(
-                                    locale,
-                                    LanguageCodes.getLanguageName(locale),
-                                    _selectedLocale,
-                                    (value) async {
-                                      if (value == null) return;
-                                      setState(() => _selectedLocale = value);
-                                      Navigator.pop(context);
+                                RadioGroup<Locale>(
+                                  groupValue: _selectedLocale,
+                                  onChanged: (value) async {
+                                    if (value == null) return;
+                                    final savedContext = context;
+                                    setState(() => _selectedLocale = value);
+                                    Navigator.pop(context);
 
-                                      // Apply the language change immediately
-                                      final localeController = Provider.of<LocaleController>(
-                                        context,
-                                        listen: false,
-                                      );
-                                      await localeController.setLocale(value);
+                                    // Apply the language change immediately
+                                    final localeController = Provider.of<LocaleController>(
+                                      context,
+                                      listen: false,
+                                    );
+                                    await localeController.setLocale(value);
 
-                                      // Save language to Firestore if user is logged in
-                                      final user = FirebaseAuth.instance.currentUser;
-                                      if (user != null) {
-                                        await localeController.saveToFirestore(user.uid);
-                                      }
+                                    // Save language to Firestore if user is logged in
+                                    final user = FirebaseAuth.instance.currentUser;
+                                    if (user != null) {
+                                      await localeController.saveToFirestore(user.uid);
+                                    }
 
-                                      // Show a confirmation message
-                                      if (!mounted) return;
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
-                                          ),
-                                          behavior: SnackBarBehavior.floating,
+                                    // Show a confirmation message
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(savedContext).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          '${AppLocalizations.of(savedContext).language} ${AppLocalizations.of(savedContext).updated}',
                                         ),
-                                      );
-                                    },
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: locales.map(
+                                      (locale) => _buildLanguageOption(
+                                        locale,
+                                        LanguageCodes.getLanguageName(locale),
+                                        _selectedLocale,
+                                      ),
+                                    ).toList(),
                                   ),
                                 ),
                               ],
@@ -609,7 +615,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue, void Function(Locale?)? onChanged) {
+  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue) {
     final bool isRtl = LanguageCodes.isRtlLanguage(locale);
     final bool isSelected =
         groupValue.languageCode == locale.languageCode &&
@@ -624,8 +630,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
       value: locale,
-      groupValue: groupValue,
-      onChanged: onChanged,
       secondary: isRtl
           ? const Icon(Icons.format_textdirection_r_to_l)
           : locale.countryCode != null
@@ -641,39 +645,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return AlertDialog(
           title: const Text('Select Currency'),
           content: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildCurrencyOption('LKR', 'Sri Lankan Rupee (LKR)', _selectedCurrency, (value) {
-                  if (value != null) {
-                    setState(() => _selectedCurrency = value);
-                    Navigator.pop(context);
-                  }
-                }),
-                _buildCurrencyOption('USD', 'US Dollar (USD)', _selectedCurrency, (value) {
-                  if (value != null) {
-                    setState(() => _selectedCurrency = value);
-                    Navigator.pop(context);
-                  }
-                }),
-                _buildCurrencyOption('EUR', 'Euro (EUR)', _selectedCurrency, (value) {
-                  if (value != null) {
-                    setState(() => _selectedCurrency = value);
-                    Navigator.pop(context);
-                  }
-                }),
-                _buildCurrencyOption('GBP', 'British Pound (GBP)', _selectedCurrency, (value) {
-                  if (value != null) {
-                    setState(() => _selectedCurrency = value);
-                    Navigator.pop(context);
-                  }
-                }),
-                _buildCurrencyOption('INR', 'Indian Rupee (INR)', _selectedCurrency, (value) {
-                  if (value != null) {
-                    setState(() => _selectedCurrency = value);
-                    Navigator.pop(context);
-                  }
-                }),
-              ],
+            child: RadioGroup<String>(
+              groupValue: _selectedCurrency,
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedCurrency = value);
+                  Navigator.pop(context);
+                }
+              },
+              child: Column(
+                children: [
+                  _buildCurrencyOption('LKR', 'Sri Lankan Rupee (LKR)'),
+                  _buildCurrencyOption('USD', 'US Dollar (USD)'),
+                  _buildCurrencyOption('EUR', 'Euro (EUR)'),
+                  _buildCurrencyOption('GBP', 'British Pound (GBP)'),
+                  _buildCurrencyOption('INR', 'Indian Rupee (INR)'),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -687,12 +675,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildCurrencyOption(String code, String name, String groupValue, void Function(String?)? onChanged) {
+  Widget _buildCurrencyOption(String code, String name) {
     return RadioListTile<String>(
       title: Text(name),
       value: code,
-      groupValue: groupValue,
-      onChanged: onChanged,
     );
   }
 
@@ -702,32 +688,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Select Distance Unit'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RadioListTile<String>(
-                title: const Text('Kilometers (km)'),
-                value: 'km',
-                groupValue: _selectedDistanceUnit,
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _selectedDistanceUnit = value);
-                    Navigator.pop(context);
-                  }
-                },
-              ),
-              RadioListTile<String>(
-                title: const Text('Miles (mi)'),
-                value: 'mi',
-                groupValue: _selectedDistanceUnit,
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _selectedDistanceUnit = value);
-                    Navigator.pop(context);
-                  }
-                },
-              ),
-            ],
+          content: RadioGroup<String>(
+            groupValue: _selectedDistanceUnit,
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => _selectedDistanceUnit = value);
+                Navigator.pop(context);
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RadioListTile<String>(
+                  title: const Text('Kilometers (km)'),
+                  value: 'km',
+                ),
+                RadioListTile<String>(
+                  title: const Text('Miles (mi)'),
+                  value: 'mi',
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(

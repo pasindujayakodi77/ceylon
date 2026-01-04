@@ -27,45 +27,33 @@ class ThemeToggle extends StatelessWidget {
             ),
           ),
         ),
-        Column(
-          children: [
-            RadioListTile<ThemeMode>(
-              title: const Text('Light'),
-              value: ThemeMode.light,
-              groupValue: currentThemeMode,
-              onChanged: (ThemeMode? value) {
-                if (value != null) {
-                  themeManager.setThemeMode(value);
-                  _saveThemeMode(value);
-                }
-              },
-              secondary: const Icon(Icons.wb_sunny_outlined),
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('Dark'),
-              value: ThemeMode.dark,
-              groupValue: currentThemeMode,
-              onChanged: (ThemeMode? value) {
-                if (value != null) {
-                  themeManager.setThemeMode(value);
-                  _saveThemeMode(value);
-                }
-              },
-              secondary: const Icon(Icons.nightlight_outlined),
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('System'),
-              value: ThemeMode.system,
-              groupValue: currentThemeMode,
-              onChanged: (ThemeMode? value) {
-                if (value != null) {
-                  themeManager.setThemeMode(value);
-                  _saveThemeMode(value);
-                }
-              },
-              secondary: const Icon(Icons.settings_outlined),
-            ),
-          ],
+        RadioGroup<ThemeMode>(
+          groupValue: currentThemeMode,
+          onChanged: (ThemeMode? value) {
+            if (value != null) {
+              themeManager.setThemeMode(value);
+              _saveThemeMode(value);
+            }
+          },
+          child: Column(
+            children: [
+              RadioListTile<ThemeMode>(
+                title: const Text('Light'),
+                value: ThemeMode.light,
+                secondary: const Icon(Icons.wb_sunny_outlined),
+              ),
+              RadioListTile<ThemeMode>(
+                title: const Text('Dark'),
+                value: ThemeMode.dark,
+                secondary: const Icon(Icons.nightlight_outlined),
+              ),
+              RadioListTile<ThemeMode>(
+                title: const Text('System'),
+                value: ThemeMode.system,
+                secondary: const Icon(Icons.settings_outlined),
+              ),
+            ],
+          ),
         ),
       ],
     );
