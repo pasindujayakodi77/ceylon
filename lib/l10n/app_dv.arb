@@ -92,5 +92,25 @@
   "pushNotificationsSubtitle": "Manage push notification settings",
   "locationServices": "Location Services",
   "locationServicesSubtitle": "Allow app to access your location",
-  "traveler": "Traveler"
+  "traveler": "Traveler",
+  "admin": "Admin",
+  "@admin": {
+    "description": "Label for admin section in settings"
+  },
+  "enableAdminUiLocal": "Enable admin UI (local)",
+  "@enableAdminUiLocal": {
+    "description": "Debug toggle to enable admin UI locally"
+  },
+  "verificationInbox": "Verification Inbox",
+  "@verificationInbox": {
+    "description": "Title for the verification requests inbox"
+  },
+  "approve": "Approve",
+  "@approve": {
+    "description": "Approve action label"
+  },
+  "reject": "Reject",
+  "@reject": {
+    "description": "Reject action label"
+  }
 }
