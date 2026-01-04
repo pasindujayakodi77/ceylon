@@ -67,26 +67,6 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
         ),
       ),
       value: locale,
-      groupValue: _selectedLocale,
-      onChanged: (value) async {
-        if (value == null) return;
-
-        setState(() => _selectedLocale = value);
-        Navigator.pop(context);
-
-        // Apply the language change immediately
-        final localeController = Provider.of<LocaleController>(
-          context,
-          listen: false,
-        );
-        await localeController.setLocale(value);
-
-        // Save language to Firestore if user is logged in
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          await localeController.saveToFirestore(user.uid);
-        }
-      },
       secondary: isRtl
           ? const Icon(Icons.format_textdirection_r_to_l)
           : locale.countryCode != null
@@ -347,43 +327,66 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                 ),
                 const Divider(),
                 Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: LanguageCodes.getLanguageGroups().length,
-                    itemBuilder: (context, index) {
-                      final group = LanguageCodes.getLanguageGroups()[index];
-                      final String groupName = group['name'] as String;
-                      final List<Locale> locales =
-                          group['locales'] as List<Locale>;
+                  child: RadioGroup<Locale>(
+                    value: _selectedLocale,
+                    onChanged: (value) async {
+                      if (value == null) return;
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                            child: Text(
-                              groupName,
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                          ...locales.map(
-                            (locale) => _buildLanguageOption(
-                              locale,
-                              LanguageCodes.getLanguageName(locale),
-                            ),
-                          ),
-                          if (index <
-                              LanguageCodes.getLanguageGroups().length - 1)
-                            const Divider(height: 16),
-                        ],
+                      setState(() => _selectedLocale = value);
+                      Navigator.pop(context);
+
+                      // Apply the language change immediately
+                      final localeController = Provider.of<LocaleController>(
+                        context,
+                        listen: false,
                       );
+                      await localeController.setLocale(value);
+
+                      // Save language to Firestore if user is logged in
+                      final user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        await localeController.saveToFirestore(user.uid);
+                      }
                     },
+                    children: [
+                      for (var index = 0; index < LanguageCodes.getLanguageGroups().length; index++) ...[
+                        Builder(
+                          builder: (context) {
+                            final group = LanguageCodes.getLanguageGroups()[index];
+                            final String groupName = group['name'] as String;
+                            final List<Locale> locales =
+                                group['locales'] as List<Locale>;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                                  child: Text(
+                                    groupName,
+                                    style: Theme.of(context).textTheme.titleMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ),
+                                ...locales.map(
+                                  (locale) => _buildLanguageOption(
+                                    locale,
+                                    LanguageCodes.getLanguageName(locale),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        if (index < LanguageCodes.getLanguageGroups().length - 1)
+                          const Divider(height: 16),
+                      ],
+                    ],
                   ),
                 ),
               ],
@@ -923,7 +926,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                   // Role selector — lets users switch between tourist and business
                   DropdownButtonFormField<String>(
                     // Ensure legacy 'user' value doesn't cause Dropdown mismatch
-                    value: (_role == 'user')
+                    initialValue: (_role == 'user')
                         ? 'tourist'
                         : (_role.isNotEmpty ? _role : 'tourist'),
                     decoration: InputDecoration(

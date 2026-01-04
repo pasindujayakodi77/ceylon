@@ -262,7 +262,7 @@ class _ProfileCardState extends State<_ProfileCard> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
                 ),
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 onChanged: (String? newValue) {
                   if (newValue != null) {
                     setState(() {

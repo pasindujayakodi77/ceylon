@@ -369,7 +369,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     // Language dropdown
                     DropdownButtonFormField<String>(
-                      value: _selectedLang,
+                      initialValue: _selectedLang,
                       decoration: InputDecoration(
                         labelText: AppLocalizations.of(
                           context,
@@ -544,7 +544,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     // Role dropdown
                     DropdownButtonFormField<String>(
-                      value: _selectedRole,
+                      initialValue: _selectedRole,
                       decoration: InputDecoration(
                         labelText: AppLocalizations.of(context).selectRole,
                         prefixIcon: Icon(

@@ -529,43 +529,76 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const Divider(),
                 Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: LanguageCodes.getLanguageGroups().length,
-                    itemBuilder: (context, index) {
-                      final group = LanguageCodes.getLanguageGroups()[index];
-                      final String groupName = group['name'] as String;
-                      final List<Locale> locales =
-                          group['locales'] as List<Locale>;
+                  child: RadioGroup<Locale>(
+                    value: _selectedLocale,
+                    onChanged: (value) async {
+                      if (value == null) return;
+                      setState(() => _selectedLocale = value);
+                      Navigator.pop(context);
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                            child: Text(
-                              groupName,
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
+                      // Apply the language change immediately
+                      final localeController = Provider.of<LocaleController>(
+                        context,
+                        listen: false,
+                      );
+                      await localeController.setLocale(value);
+
+                      // Save language to Firestore if user is logged in
+                      final user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        await localeController.saveToFirestore(user.uid);
+                      }
+
+                      // Show a confirmation message
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
                           ),
-                          ...locales.map(
-                            (locale) => _buildLanguageOption(
-                              locale,
-                              LanguageCodes.getLanguageName(locale),
-                            ),
-                          ),
-                          if (index <
-                              LanguageCodes.getLanguageGroups().length - 1)
-                            const Divider(height: 16),
-                        ],
+                          behavior: SnackBarBehavior.floating,
+                        ),
                       );
                     },
+                    children: [
+                      for (var index = 0; index < LanguageCodes.getLanguageGroups().length; index++) ...[
+                        Builder(
+                          builder: (context) {
+                            final group = LanguageCodes.getLanguageGroups()[index];
+                            final String groupName = group['name'] as String;
+                            final List<Locale> locales =
+                                group['locales'] as List<Locale>;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                                  child: Text(
+                                    groupName,
+                                    style: Theme.of(context).textTheme.titleMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ),
+                                ...locales.map(
+                                  (locale) => _buildLanguageOption(
+                                    locale,
+                                    LanguageCodes.getLanguageName(locale),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        if (index < LanguageCodes.getLanguageGroups().length - 1)
+                          const Divider(height: 16),
+                      ],
+                    ],
                   ),
                 ),
               ],
@@ -591,35 +624,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
       value: locale,
-      groupValue: _selectedLocale,
-      onChanged: (value) async {
-        setState(() => _selectedLocale = value!);
-        Navigator.pop(context);
-
-        // Apply the language change immediately
-        final localeController = Provider.of<LocaleController>(
-          context,
-          listen: false,
-        );
-        await localeController.setLocale(value);
-
-        // Save language to Firestore if user is logged in
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          await localeController.saveToFirestore(user.uid);
-        }
-
-        // Show a confirmation message
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
-            ),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      },
       secondary: isRtl
           ? const Icon(Icons.format_textdirection_r_to_l)
           : locale.countryCode != null
@@ -635,8 +639,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return AlertDialog(
           title: const Text('Select Currency'),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: RadioGroup<String>(
+              value: _selectedCurrency,
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedCurrency = value);
+                  Navigator.pop(context);
+                }
+              },
               children: [
                 _buildCurrencyOption('LKR', 'Sri Lankan Rupee (LKR)'),
                 _buildCurrencyOption('USD', 'US Dollar (USD)'),
@@ -661,11 +671,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return RadioListTile<String>(
       title: Text(name),
       value: code,
-      groupValue: _selectedCurrency,
-      onChanged: (value) {
-        setState(() => _selectedCurrency = value!);
-        Navigator.pop(context);
-      },
     );
   }
 
@@ -675,26 +680,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Select Distance Unit'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+          content: RadioGroup<String>(
+            value: _selectedDistanceUnit,
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => _selectedDistanceUnit = value);
+                Navigator.pop(context);
+              }
+            },
             children: [
               RadioListTile<String>(
                 title: const Text('Kilometers (km)'),
                 value: 'km',
-                groupValue: _selectedDistanceUnit,
-                onChanged: (value) {
-                  setState(() => _selectedDistanceUnit = value!);
-                  Navigator.pop(context);
-                },
               ),
               RadioListTile<String>(
                 title: const Text('Miles (mi)'),
                 value: 'mi',
-                groupValue: _selectedDistanceUnit,
-                onChanged: (value) {
-                  setState(() => _selectedDistanceUnit = value!);
-                  Navigator.pop(context);
-                },
               ),
             ],
           ),
