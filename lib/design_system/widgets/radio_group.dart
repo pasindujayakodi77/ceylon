@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 /// A widget that manages a group of radio buttons.
-/// 
 /// RadioGroup provides a way to manage the selection state of a group of
 /// Radio or RadioListTile widgets. It uses InheritedWidget to make the
 /// group value and change handler available to descendant widgets.
