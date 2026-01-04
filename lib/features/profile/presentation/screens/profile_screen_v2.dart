@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ceylon/core/l10n/locale_controller.dart';
 import 'package:ceylon/features/settings/data/language_codes.dart';
 import 'package:provider/provider.dart';
+import 'package:ceylon/design_system/widgets/radio_group.dart';
 
 class ProfileScreenV2 extends StatefulWidget {
   const ProfileScreenV2({super.key});
@@ -52,28 +53,36 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
     'Local Markets',
   ];
 
-  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue, void Function(Locale?)? onChanged) {
+  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue) {
     final bool isRtl = LanguageCodes.isRtlLanguage(locale);
     final bool isSelected =
         groupValue.languageCode == locale.languageCode &&
         groupValue.countryCode == locale.countryCode;
 
-    return RadioListTile<Locale>(
-      title: Text(
-        name,
-        textAlign: isRtl ? TextAlign.right : TextAlign.left,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        ),
-      ),
-      value: locale,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      secondary: isRtl
-          ? const Icon(Icons.format_textdirection_r_to_l)
-          : locale.countryCode != null
-          ? const Icon(Icons.flag_outlined)
-          : null,
+    return Builder(
+      builder: (context) {
+        final group = RadioGroup.of<Locale>(context);
+        // ignore: deprecated_member_use
+        return RadioListTile<Locale>(
+          title: Text(
+            name,
+            textAlign: isRtl ? TextAlign.right : TextAlign.left,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          value: locale,
+          // ignore: deprecated_member_use
+          groupValue: group?.groupValue,
+          // ignore: deprecated_member_use
+          onChanged: group?.onChanged,
+          secondary: isRtl
+              ? const Icon(Icons.format_textdirection_r_to_l)
+              : locale.countryCode != null
+              ? const Icon(Icons.flag_outlined)
+              : null,
+        );
+      },
     );
   }
 
@@ -355,30 +364,35 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                                         ),
                                   ),
                                 ),
-                                ...locales.map(
-                                  (locale) => _buildLanguageOption(
-                                    locale,
-                                    LanguageCodes.getLanguageName(locale),
-                                    _selectedLocale,
-                                    (value) async {
-                                      if (value == null) return;
+                                RadioGroup<Locale>(
+                                  groupValue: _selectedLocale,
+                                  onChanged: (value) async {
+                                    if (value == null) return;
 
-                                      setState(() => _selectedLocale = value);
-                                      Navigator.pop(context);
+                                    setState(() => _selectedLocale = value);
+                                    Navigator.pop(context);
 
-                                      // Apply the language change immediately
-                                      final localeController = Provider.of<LocaleController>(
-                                        context,
-                                        listen: false,
-                                      );
-                                      await localeController.setLocale(value);
+                                    // Apply the language change immediately
+                                    final localeController = Provider.of<LocaleController>(
+                                      context,
+                                      listen: false,
+                                    );
+                                    await localeController.setLocale(value);
 
-                                      // Save language to Firestore if user is logged in
-                                      final user = FirebaseAuth.instance.currentUser;
-                                      if (user != null) {
-                                        await localeController.saveToFirestore(user.uid);
-                                      }
-                                    },
+                                    // Save language to Firestore if user is logged in
+                                    final user = FirebaseAuth.instance.currentUser;
+                                    if (user != null) {
+                                      await localeController.saveToFirestore(user.uid);
+                                    }
+                                  },
+                                  child: Column(
+                                    children: locales.map(
+                                      (locale) => _buildLanguageOption(
+                                        locale,
+                                        LanguageCodes.getLanguageName(locale),
+                                        _selectedLocale,
+                                      ),
+                                    ).toList(),
                                   ),
                                 ),
                               ],
