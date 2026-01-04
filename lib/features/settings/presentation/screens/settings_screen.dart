@@ -622,20 +622,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
         groupValue.languageCode == locale.languageCode &&
         groupValue.countryCode == locale.countryCode;
 
-    return RadioListTile<Locale>(
-      title: Text(
-        name,
-        textAlign: isRtl ? TextAlign.right : TextAlign.left,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        ),
-      ),
-      value: locale,
-      secondary: isRtl
-          ? const Icon(Icons.format_textdirection_r_to_l)
-          : locale.countryCode != null
-          ? const Icon(Icons.flag_outlined)
-          : null,
+    return Builder(
+      builder: (context) {
+        final group = RadioGroup.of<Locale>(context);
+        // ignore: deprecated_member_use
+        return RadioListTile<Locale>(
+          title: Text(
+            name,
+            textAlign: isRtl ? TextAlign.right : TextAlign.left,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          value: locale,
+          // ignore: deprecated_member_use
+          groupValue: group?.groupValue,
+          // ignore: deprecated_member_use
+          onChanged: group?.onChanged,
+          secondary: isRtl
+              ? const Icon(Icons.format_textdirection_r_to_l)
+              : locale.countryCode != null
+              ? const Icon(Icons.flag_outlined)
+              : null,
+        );
+      },
     );
   }
 
@@ -677,9 +687,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildCurrencyOption(String code, String name) {
-    return RadioListTile<String>(
-      title: Text(name),
-      value: code,
+    return Builder(
+      builder: (context) {
+        final group = RadioGroup.of<String>(context);
+        // ignore: deprecated_member_use
+        return RadioListTile<String>(
+          title: Text(name),
+          value: code,
+          // ignore: deprecated_member_use
+          groupValue: group?.groupValue,
+          // ignore: deprecated_member_use
+          onChanged: group?.onChanged,
+        );
+      },
     );
   }
 
@@ -697,18 +717,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Navigator.pop(context);
               }
             },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RadioListTile<String>(
-                  title: const Text('Kilometers (km)'),
-                  value: 'km',
-                ),
-                RadioListTile<String>(
-                  title: const Text('Miles (mi)'),
-                  value: 'mi',
-                ),
-              ],
+            child: Builder(
+              builder: (context) {
+                final group = RadioGroup.of<String>(context);
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // ignore: deprecated_member_use
+                    RadioListTile<String>(
+                      title: const Text('Kilometers (km)'),
+                      value: 'km',
+                      // ignore: deprecated_member_use
+                      groupValue: group?.groupValue,
+                      // ignore: deprecated_member_use
+                      onChanged: group?.onChanged,
+                    ),
+                    // ignore: deprecated_member_use
+                    RadioListTile<String>(
+                      title: const Text('Miles (mi)'),
+                      value: 'mi',
+                      // ignore: deprecated_member_use
+                      groupValue: group?.groupValue,
+                      // ignore: deprecated_member_use
+                      onChanged: group?.onChanged,
+                    ),
+                  ],
+                );
+              },
             ),
           ),
           actions: [

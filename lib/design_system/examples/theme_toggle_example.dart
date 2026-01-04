@@ -36,24 +36,44 @@ class ThemeToggle extends StatelessWidget {
               _saveThemeMode(value);
             }
           },
-          child: Column(
-            children: [
-              RadioListTile<ThemeMode>(
-                title: const Text('Light'),
-                value: ThemeMode.light,
-                secondary: const Icon(Icons.wb_sunny_outlined),
-              ),
-              RadioListTile<ThemeMode>(
-                title: const Text('Dark'),
-                value: ThemeMode.dark,
-                secondary: const Icon(Icons.nightlight_outlined),
-              ),
-              RadioListTile<ThemeMode>(
-                title: const Text('System'),
-                value: ThemeMode.system,
-                secondary: const Icon(Icons.settings_outlined),
-              ),
-            ],
+          child: Builder(
+            builder: (context) {
+              final group = RadioGroup.of<ThemeMode>(context);
+              return Column(
+                children: [
+                  // ignore: deprecated_member_use
+                  RadioListTile<ThemeMode>(
+                    title: const Text('Light'),
+                    value: ThemeMode.light,
+                    // ignore: deprecated_member_use
+                    groupValue: group?.groupValue,
+                    // ignore: deprecated_member_use
+                    onChanged: group?.onChanged,
+                    secondary: const Icon(Icons.wb_sunny_outlined),
+                  ),
+                  // ignore: deprecated_member_use
+                  RadioListTile<ThemeMode>(
+                    title: const Text('Dark'),
+                    value: ThemeMode.dark,
+                    // ignore: deprecated_member_use
+                    groupValue: group?.groupValue,
+                    // ignore: deprecated_member_use
+                    onChanged: group?.onChanged,
+                    secondary: const Icon(Icons.nightlight_outlined),
+                  ),
+                  // ignore: deprecated_member_use
+                  RadioListTile<ThemeMode>(
+                    title: const Text('System'),
+                    value: ThemeMode.system,
+                    // ignore: deprecated_member_use
+                    groupValue: group?.groupValue,
+                    // ignore: deprecated_member_use
+                    onChanged: group?.onChanged,
+                    secondary: const Icon(Icons.settings_outlined),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],
