@@ -52,11 +52,11 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
     'Local Markets',
   ];
 
-  Widget _buildLanguageOption(Locale locale, String name) {
+  Widget _buildLanguageOption(Locale locale, String name, Locale groupValue, void Function(Locale?)? onChanged) {
     final bool isRtl = LanguageCodes.isRtlLanguage(locale);
     final bool isSelected =
-        _selectedLocale.languageCode == locale.languageCode &&
-        _selectedLocale.countryCode == locale.countryCode;
+        groupValue.languageCode == locale.languageCode &&
+        groupValue.countryCode == locale.countryCode;
 
     return RadioListTile<Locale>(
       title: Text(
@@ -67,6 +67,8 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
         ),
       ),
       value: locale,
+      groupValue: groupValue,
+      onChanged: onChanged,
       secondary: isRtl
           ? const Icon(Icons.format_textdirection_r_to_l)
           : locale.countryCode != null
@@ -327,27 +329,7 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                 ),
                 const Divider(),
                 Expanded(
-                  child: RadioGroup<Locale>(
-                    value: _selectedLocale,
-                    onChanged: (value) async {
-                      if (value == null) return;
-
-                      setState(() => _selectedLocale = value);
-                      Navigator.pop(context);
-
-                      // Apply the language change immediately
-                      final localeController = Provider.of<LocaleController>(
-                        context,
-                        listen: false,
-                      );
-                      await localeController.setLocale(value);
-
-                      // Save language to Firestore if user is logged in
-                      final user = FirebaseAuth.instance.currentUser;
-                      if (user != null) {
-                        await localeController.saveToFirestore(user.uid);
-                      }
-                    },
+                  child: ListView(
                     children: [
                       for (var index = 0; index < LanguageCodes.getLanguageGroups().length; index++) ...[
                         Builder(
@@ -377,6 +359,26 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
                                   (locale) => _buildLanguageOption(
                                     locale,
                                     LanguageCodes.getLanguageName(locale),
+                                    _selectedLocale,
+                                    (value) async {
+                                      if (value == null) return;
+
+                                      setState(() => _selectedLocale = value);
+                                      Navigator.pop(context);
+
+                                      // Apply the language change immediately
+                                      final localeController = Provider.of<LocaleController>(
+                                        context,
+                                        listen: false,
+                                      );
+                                      await localeController.setLocale(value);
+
+                                      // Save language to Firestore if user is logged in
+                                      final user = FirebaseAuth.instance.currentUser;
+                                      if (user != null) {
+                                        await localeController.saveToFirestore(user.uid);
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
