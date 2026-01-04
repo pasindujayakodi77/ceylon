@@ -97,5 +97,25 @@
   "pushNotificationsSubtitle": "Ermöglicht es der App, Sie über Updates zu benachrichtigen",
   "locationServices": "Standortdienste",
   "locationServicesSubtitle": "Ermöglicht es der App, Ihren Standort für bessere Ergebnisse zu verwenden",
-  "traveler": "Reisender"
+  "traveler": "Reisender",
+  "admin": "Admin",
+  "@admin": {
+    "description": "Label for admin section in settings"
+  },
+  "enableAdminUiLocal": "Enable admin UI (local)",
+  "@enableAdminUiLocal": {
+    "description": "Debug toggle to enable admin UI locally"
+  },
+  "verificationInbox": "Verification Inbox",
+  "@verificationInbox": {
+    "description": "Title for the verification requests inbox"
+  },
+  "approve": "Approve",
+  "@approve": {
+    "description": "Approve action label"
+  },
+  "reject": "Reject",
+  "@reject": {
+    "description": "Reject action label"
+  }
 }

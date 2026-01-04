@@ -98,5 +98,25 @@
   "pushNotificationsSubtitle": "Получайте обновления и оповещения о поездках",
   "locationServices": "Службы определения местоположения",
   "locationServicesSubtitle": "Разрешить приложению доступ к вашему местоположению",
-  "traveler": "Путешественник"
+  "traveler": "Путешественник",
+  "admin": "Admin",
+  "@admin": {
+    "description": "Label for admin section in settings"
+  },
+  "enableAdminUiLocal": "Enable admin UI (local)",
+  "@enableAdminUiLocal": {
+    "description": "Debug toggle to enable admin UI locally"
+  },
+  "verificationInbox": "Verification Inbox",
+  "@verificationInbox": {
+    "description": "Title for the verification requests inbox"
+  },
+  "approve": "Approve",
+  "@approve": {
+    "description": "Approve action label"
+  },
+  "reject": "Reject",
+  "@reject": {
+    "description": "Reject action label"
+  }
 }
