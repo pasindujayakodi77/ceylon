@@ -48,9 +48,14 @@ class RadioGroup<T> extends StatelessWidget {
     );
   }
 
-  /// Get the nearest RadioGroup ancestor from the context
-  static _RadioGroupInherited<T>? of<T>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>();
+  /// Get the group value from the nearest RadioGroup ancestor
+  static T? groupValueOf<T>(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>()?.groupValue;
+  }
+
+  /// Get the onChanged callback from the nearest RadioGroup ancestor
+  static ValueChanged<T?>? onChangedOf<T>(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>()?.onChanged;
   }
 }
 
