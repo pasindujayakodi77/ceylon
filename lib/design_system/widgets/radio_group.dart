@@ -41,32 +41,31 @@ class CeylonRadioGroup<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _RadioGroupInherited<T>(
+    return RadioGroupInherited<T>(
       groupValue: groupValue,
       onChanged: onChanged,
       child: child,
     );
   }
 
- copilot/rename-radio-group-widget
   /// Get the nearest CeylonRadioGroup ancestor from the context
-  static _RadioGroupInherited<T>? of<T>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>();
-=======
+  static RadioGroupInherited<T>? of<T>(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>();
+  }
+
   /// Get the group value from the nearest RadioGroup ancestor
   static T? groupValueOf<T>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>()?.groupValue;
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>()?.groupValue;
   }
 
   /// Get the onChanged callback from the nearest RadioGroup ancestor
   static ValueChanged<T?>? onChangedOf<T>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>()?.onChanged;
-main
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>()?.onChanged;
   }
 }
 
-class _RadioGroupInherited<T> extends InheritedWidget {
-  const _RadioGroupInherited({
+class RadioGroupInherited<T> extends InheritedWidget {
+  const RadioGroupInherited({
     required this.groupValue,
     required this.onChanged,
     required super.child,
@@ -76,7 +75,7 @@ class _RadioGroupInherited<T> extends InheritedWidget {
   final ValueChanged<T?>? onChanged;
 
   @override
-  bool updateShouldNotify(_RadioGroupInherited<T> oldWidget) {
+  bool updateShouldNotify(RadioGroupInherited<T> oldWidget) {
     return groupValue != oldWidget.groupValue || onChanged != oldWidget.onChanged;
   }
 }

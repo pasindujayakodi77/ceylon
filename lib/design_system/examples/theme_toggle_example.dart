@@ -38,10 +38,6 @@ class ThemeToggle extends StatelessWidget {
           },
           child: Builder(
             builder: (context) {
-copilot/rename-radio-group-widget
-              final group = CeylonRadioGroup.of<ThemeMode>(context);
-=======
-main
               return Column(
                 children: [
                   // ignore: deprecated_member_use
