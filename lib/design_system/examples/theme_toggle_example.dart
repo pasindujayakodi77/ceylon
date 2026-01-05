@@ -1,5 +1,5 @@
 // FILE: lib/design_system/examples/theme_toggle_example.dart
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RadioGroup;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_theme.dart';
@@ -38,7 +38,10 @@ class ThemeToggle extends StatelessWidget {
           },
           child: Builder(
             builder: (context) {
+copilot/rename-radio-group-widget
               final group = CeylonRadioGroup.of<ThemeMode>(context);
+=======
+main
               return Column(
                 children: [
                   // ignore: deprecated_member_use
@@ -46,9 +49,9 @@ class ThemeToggle extends StatelessWidget {
                     title: const Text('Light'),
                     value: ThemeMode.light,
                     // ignore: deprecated_member_use
-                    groupValue: group?.groupValue,
+                    groupValue: RadioGroup.groupValueOf<ThemeMode>(context),
                     // ignore: deprecated_member_use
-                    onChanged: group?.onChanged,
+                    onChanged: RadioGroup.onChangedOf<ThemeMode>(context),
                     secondary: const Icon(Icons.wb_sunny_outlined),
                   ),
                   // ignore: deprecated_member_use
@@ -56,9 +59,9 @@ class ThemeToggle extends StatelessWidget {
                     title: const Text('Dark'),
                     value: ThemeMode.dark,
                     // ignore: deprecated_member_use
-                    groupValue: group?.groupValue,
+                    groupValue: RadioGroup.groupValueOf<ThemeMode>(context),
                     // ignore: deprecated_member_use
-                    onChanged: group?.onChanged,
+                    onChanged: RadioGroup.onChangedOf<ThemeMode>(context),
                     secondary: const Icon(Icons.nightlight_outlined),
                   ),
                   // ignore: deprecated_member_use
@@ -66,9 +69,9 @@ class ThemeToggle extends StatelessWidget {
                     title: const Text('System'),
                     value: ThemeMode.system,
                     // ignore: deprecated_member_use
-                    groupValue: group?.groupValue,
+                    groupValue: RadioGroup.groupValueOf<ThemeMode>(context),
                     // ignore: deprecated_member_use
-                    onChanged: group?.onChanged,
+                    onChanged: RadioGroup.onChangedOf<ThemeMode>(context),
                     secondary: const Icon(Icons.settings_outlined),
                   ),
                 ],

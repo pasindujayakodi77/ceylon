@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RadioGroup;
 import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ceylon/core/l10n/locale_controller.dart';
@@ -61,7 +61,10 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
 
     return Builder(
       builder: (context) {
+copilot/rename-radio-group-widget
         final group = CeylonRadioGroup.of<Locale>(context);
+=======
+main
         // ignore: deprecated_member_use
         return RadioListTile<Locale>(
           title: Text(
@@ -73,9 +76,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
           ),
           value: locale,
           // ignore: deprecated_member_use
-          groupValue: group?.groupValue,
+          groupValue: RadioGroup.groupValueOf<Locale>(context),
           // ignore: deprecated_member_use
-          onChanged: group?.onChanged,
+          onChanged: RadioGroup.onChangedOf<Locale>(context),
           secondary: isRtl
               ? const Icon(Icons.format_textdirection_r_to_l)
               : locale.countryCode != null
