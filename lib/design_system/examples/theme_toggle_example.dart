@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_theme.dart';
+import '../widgets/radio_group.dart';
 
 /// Example theme toggle widget that can be integrated into Settings
 class ThemeToggle extends StatelessWidget {
@@ -27,45 +28,53 @@ class ThemeToggle extends StatelessWidget {
             ),
           ),
         ),
-        Column(
-          children: [
-            RadioListTile<ThemeMode>(
-              title: const Text('Light'),
-              value: ThemeMode.light,
-              groupValue: currentThemeMode,
-              onChanged: (ThemeMode? value) {
-                if (value != null) {
-                  themeManager.setThemeMode(value);
-                  _saveThemeMode(value);
-                }
-              },
-              secondary: const Icon(Icons.wb_sunny_outlined),
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('Dark'),
-              value: ThemeMode.dark,
-              groupValue: currentThemeMode,
-              onChanged: (ThemeMode? value) {
-                if (value != null) {
-                  themeManager.setThemeMode(value);
-                  _saveThemeMode(value);
-                }
-              },
-              secondary: const Icon(Icons.nightlight_outlined),
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('System'),
-              value: ThemeMode.system,
-              groupValue: currentThemeMode,
-              onChanged: (ThemeMode? value) {
-                if (value != null) {
-                  themeManager.setThemeMode(value);
-                  _saveThemeMode(value);
-                }
-              },
-              secondary: const Icon(Icons.settings_outlined),
-            ),
-          ],
+        RadioGroup<ThemeMode>(
+          groupValue: currentThemeMode,
+          onChanged: (ThemeMode? value) {
+            if (value != null) {
+              themeManager.setThemeMode(value);
+              _saveThemeMode(value);
+            }
+          },
+          child: Builder(
+            builder: (context) {
+              final group = RadioGroup.of<ThemeMode>(context);
+              return Column(
+                children: [
+                  // ignore: deprecated_member_use
+                  RadioListTile<ThemeMode>(
+                    title: const Text('Light'),
+                    value: ThemeMode.light,
+                    // ignore: deprecated_member_use
+                    groupValue: group?.groupValue,
+                    // ignore: deprecated_member_use
+                    onChanged: group?.onChanged,
+                    secondary: const Icon(Icons.wb_sunny_outlined),
+                  ),
+                  // ignore: deprecated_member_use
+                  RadioListTile<ThemeMode>(
+                    title: const Text('Dark'),
+                    value: ThemeMode.dark,
+                    // ignore: deprecated_member_use
+                    groupValue: group?.groupValue,
+                    // ignore: deprecated_member_use
+                    onChanged: group?.onChanged,
+                    secondary: const Icon(Icons.nightlight_outlined),
+                  ),
+                  // ignore: deprecated_member_use
+                  RadioListTile<ThemeMode>(
+                    title: const Text('System'),
+                    value: ThemeMode.system,
+                    // ignore: deprecated_member_use
+                    groupValue: group?.groupValue,
+                    // ignore: deprecated_member_use
+                    onChanged: group?.onChanged,
+                    secondary: const Icon(Icons.settings_outlined),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ],
     );
