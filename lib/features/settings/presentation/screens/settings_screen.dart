@@ -560,16 +560,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   groupValue: _selectedLocale,
                                   onChanged: (value) async {
                                     if (value == null) return;
-                                    final savedContext = context;
-                                    setState(() => _selectedLocale = value);
-                                    Navigator.pop(savedContext);
-
-                                    // Apply the language change immediately
                                     final localeController = Provider.of<LocaleController>(
-                                      savedContext,
+                                      context,
                                       listen: false,
                                     );
+                                    if (!mounted) return;
+                                    setState(() => _selectedLocale = value);
+                                    Navigator.pop(context);
+
+                                    // Apply the language change immediately
                                     await localeController.setLocale(value);
+                                    if (!mounted) return;
 
                                     // Save language to Firestore if user is logged in
                                     final user = FirebaseAuth.instance.currentUser;
@@ -579,10 +580,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                                     // Show a confirmation message
                                     if (!mounted) return;
-                                    ScaffoldMessenger.of(savedContext).showSnackBar(
+                                    ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          '${AppLocalizations.of(savedContext).language} ${AppLocalizations.of(savedContext).updated}',
+                                          '${AppLocalizations.of(context).language} ${AppLocalizations.of(context).updated}',
                                         ),
                                         behavior: SnackBarBehavior.floating,
                                       ),

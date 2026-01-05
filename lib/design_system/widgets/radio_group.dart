@@ -41,7 +41,7 @@ class CeylonRadioGroup<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _RadioGroupInherited<T>(
+    return RadioGroupInherited<T>(
       groupValue: groupValue,
       onChanged: onChanged,
       child: child,
@@ -49,6 +49,7 @@ class CeylonRadioGroup<T> extends StatelessWidget {
   }
 
   /// Get the nearest CeylonRadioGroup ancestor from the context
+copilot/fix-undefined-identifier-errors
   static _RadioGroupInherited<T>? of<T>(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>();
   }
@@ -56,16 +57,28 @@ class CeylonRadioGroup<T> extends StatelessWidget {
   /// Get the group value from the nearest CeylonRadioGroup ancestor
   static T? groupValueOf<T>(BuildContext context) {
     return of<T>(context)?.groupValue;
+
+  static RadioGroupInherited<T>? of<T>(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>();
+  }
+
+  /// Get the group value from the nearest RadioGroup ancestor
+  static T? groupValueOf<T>(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>()?.groupValue;
+ main
   }
 
   /// Get the onChanged callback from the nearest CeylonRadioGroup ancestor
   static ValueChanged<T?>? onChangedOf<T>(BuildContext context) {
-    return of<T>(context)?.onChanged;
+ copilot/fix-undefined-identifier-errors
+
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>()?.onChanged;
+ main
   }
 }
 
-class _RadioGroupInherited<T> extends InheritedWidget {
-  const _RadioGroupInherited({
+class RadioGroupInherited<T> extends InheritedWidget {
+  const RadioGroupInherited({
     required this.groupValue,
     required this.onChanged,
     required super.child,
@@ -75,7 +88,7 @@ class _RadioGroupInherited<T> extends InheritedWidget {
   final ValueChanged<T?>? onChanged;
 
   @override
-  bool updateShouldNotify(_RadioGroupInherited<T> oldWidget) {
+  bool updateShouldNotify(RadioGroupInherited<T> oldWidget) {
     return groupValue != oldWidget.groupValue || onChanged != oldWidget.onChanged;
   }
 }
