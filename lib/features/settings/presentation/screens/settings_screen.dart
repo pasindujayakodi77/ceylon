@@ -562,11 +562,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     if (value == null) return;
                                     final savedContext = context;
                                     setState(() => _selectedLocale = value);
-                                    Navigator.pop(context);
+                                    Navigator.pop(savedContext);
 
                                     // Apply the language change immediately
                                     final localeController = Provider.of<LocaleController>(
-                                      context,
+                                      savedContext,
                                       listen: false,
                                     );
                                     await localeController.setLocale(value);
