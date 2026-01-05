@@ -38,10 +38,6 @@ class ThemeToggle extends StatelessWidget {
           },
           child: Builder(
             builder: (context) {
-copilot/rename-radio-group-widget
-              final group = CeylonRadioGroup.of<ThemeMode>(context);
-=======
-main
               return Column(
                 children: [
                   // ignore: deprecated_member_use
@@ -49,9 +45,9 @@ main
                     title: const Text('Light'),
                     value: ThemeMode.light,
                     // ignore: deprecated_member_use
-                    groupValue: RadioGroup.groupValueOf<ThemeMode>(context),
+                    groupValue: CeylonRadioGroup.groupValueOf<ThemeMode>(context),
                     // ignore: deprecated_member_use
-                    onChanged: RadioGroup.onChangedOf<ThemeMode>(context),
+                    onChanged: CeylonRadioGroup.onChangedOf<ThemeMode>(context),
                     secondary: const Icon(Icons.wb_sunny_outlined),
                   ),
                   // ignore: deprecated_member_use
@@ -59,9 +55,9 @@ main
                     title: const Text('Dark'),
                     value: ThemeMode.dark,
                     // ignore: deprecated_member_use
-                    groupValue: RadioGroup.groupValueOf<ThemeMode>(context),
+                    groupValue: CeylonRadioGroup.groupValueOf<ThemeMode>(context),
                     // ignore: deprecated_member_use
-                    onChanged: RadioGroup.onChangedOf<ThemeMode>(context),
+                    onChanged: CeylonRadioGroup.onChangedOf<ThemeMode>(context),
                     secondary: const Icon(Icons.nightlight_outlined),
                   ),
                   // ignore: deprecated_member_use
@@ -69,9 +65,9 @@ main
                     title: const Text('System'),
                     value: ThemeMode.system,
                     // ignore: deprecated_member_use
-                    groupValue: RadioGroup.groupValueOf<ThemeMode>(context),
+                    groupValue: CeylonRadioGroup.groupValueOf<ThemeMode>(context),
                     // ignore: deprecated_member_use
-                    onChanged: RadioGroup.onChangedOf<ThemeMode>(context),
+                    onChanged: CeylonRadioGroup.onChangedOf<ThemeMode>(context),
                     secondary: const Icon(Icons.settings_outlined),
                   ),
                 ],

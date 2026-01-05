@@ -61,10 +61,6 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
 
     return Builder(
       builder: (context) {
-copilot/rename-radio-group-widget
-        final group = CeylonRadioGroup.of<Locale>(context);
-=======
-main
         // ignore: deprecated_member_use
         return RadioListTile<Locale>(
           title: Text(
@@ -76,9 +72,9 @@ main
           ),
           value: locale,
           // ignore: deprecated_member_use
-          groupValue: RadioGroup.groupValueOf<Locale>(context),
+          groupValue: CeylonRadioGroup.groupValueOf<Locale>(context),
           // ignore: deprecated_member_use
-          onChanged: RadioGroup.onChangedOf<Locale>(context),
+          onChanged: CeylonRadioGroup.onChangedOf<Locale>(context),
           secondary: isRtl
               ? const Icon(Icons.format_textdirection_r_to_l)
               : locale.countryCode != null

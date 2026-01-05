@@ -624,10 +624,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Builder(
       builder: (context) {
-copilot/rename-radio-group-widget
-        final group = CeylonRadioGroup.of<Locale>(context);
-=======
-  main
         // ignore: deprecated_member_use
         return RadioListTile<Locale>(
           title: Text(
@@ -639,9 +635,9 @@ copilot/rename-radio-group-widget
           ),
           value: locale,
           // ignore: deprecated_member_use
-          groupValue: RadioGroup.groupValueOf<Locale>(context),
+          groupValue: CeylonRadioGroup.groupValueOf<Locale>(context),
           // ignore: deprecated_member_use
-          onChanged: RadioGroup.onChangedOf<Locale>(context),
+          onChanged: CeylonRadioGroup.onChangedOf<Locale>(context),
           secondary: isRtl
               ? const Icon(Icons.format_textdirection_r_to_l)
               : locale.countryCode != null
@@ -692,18 +688,14 @@ copilot/rename-radio-group-widget
   Widget _buildCurrencyOption(String code, String name) {
     return Builder(
       builder: (context) {
-copilot/rename-radio-group-widget
-        final group = CeylonRadioGroup.of<String>(context);
-=======
-main
         // ignore: deprecated_member_use
         return RadioListTile<String>(
           title: Text(name),
           value: code,
           // ignore: deprecated_member_use
-          groupValue: RadioGroup.groupValueOf<String>(context),
+          groupValue: CeylonRadioGroup.groupValueOf<String>(context),
           // ignore: deprecated_member_use
-          onChanged: RadioGroup.onChangedOf<String>(context),
+          onChanged: CeylonRadioGroup.onChangedOf<String>(context),
         );
       },
     );
@@ -725,10 +717,6 @@ main
             },
             child: Builder(
               builder: (context) {
-copilot/rename-radio-group-widget
-                final group = CeylonRadioGroup.of<String>(context);
-=======
-main
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -737,18 +725,18 @@ main
                       title: const Text('Kilometers (km)'),
                       value: 'km',
                       // ignore: deprecated_member_use
-                      groupValue: RadioGroup.groupValueOf<String>(context),
+                      groupValue: CeylonRadioGroup.groupValueOf<String>(context),
                       // ignore: deprecated_member_use
-                      onChanged: RadioGroup.onChangedOf<String>(context),
+                      onChanged: CeylonRadioGroup.onChangedOf<String>(context),
                     ),
                     // ignore: deprecated_member_use
                     RadioListTile<String>(
                       title: const Text('Miles (mi)'),
                       value: 'mi',
                       // ignore: deprecated_member_use
-                      groupValue: RadioGroup.groupValueOf<String>(context),
+                      groupValue: CeylonRadioGroup.groupValueOf<String>(context),
                       // ignore: deprecated_member_use
-                      onChanged: RadioGroup.onChangedOf<String>(context),
+                      onChanged: CeylonRadioGroup.onChangedOf<String>(context),
                     ),
                   ],
                 );
