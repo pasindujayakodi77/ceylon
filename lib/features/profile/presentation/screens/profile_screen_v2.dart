@@ -72,9 +72,9 @@ class _ProfileScreenV2State extends State<ProfileScreenV2> {
           ),
           value: locale,
           // ignore: deprecated_member_use
-          groupValue: RadioGroup.groupValueOf<Locale>(context),
+          groupValue: CeylonRadioGroup.groupValueOf<Locale>(context),
           // ignore: deprecated_member_use
-          onChanged: RadioGroup.onChangedOf<Locale>(context),
+          onChanged: CeylonRadioGroup.onChangedOf<Locale>(context),
           secondary: isRtl
               ? const Icon(Icons.format_textdirection_r_to_l)
               : locale.countryCode != null

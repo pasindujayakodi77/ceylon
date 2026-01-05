@@ -49,6 +49,15 @@ class CeylonRadioGroup<T> extends StatelessWidget {
   }
 
   /// Get the nearest CeylonRadioGroup ancestor from the context
+copilot/fix-undefined-identifier-errors
+  static _RadioGroupInherited<T>? of<T>(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>();
+  }
+
+  /// Get the group value from the nearest CeylonRadioGroup ancestor
+  static T? groupValueOf<T>(BuildContext context) {
+    return of<T>(context)?.groupValue;
+
   static RadioGroupInherited<T>? of<T>(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>();
   }
@@ -56,11 +65,15 @@ class CeylonRadioGroup<T> extends StatelessWidget {
   /// Get the group value from the nearest RadioGroup ancestor
   static T? groupValueOf<T>(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>()?.groupValue;
+ main
   }
 
-  /// Get the onChanged callback from the nearest RadioGroup ancestor
+  /// Get the onChanged callback from the nearest CeylonRadioGroup ancestor
   static ValueChanged<T?>? onChangedOf<T>(BuildContext context) {
+ copilot/fix-undefined-identifier-errors
+
     return context.dependOnInheritedWidgetOfExactType<RadioGroupInherited<T>>()?.onChanged;
+ main
   }
 }
 

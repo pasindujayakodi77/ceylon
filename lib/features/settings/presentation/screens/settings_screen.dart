@@ -636,9 +636,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           value: locale,
           // ignore: deprecated_member_use
-          groupValue: RadioGroup.groupValueOf<Locale>(context),
+          groupValue: CeylonRadioGroup.groupValueOf<Locale>(context),
           // ignore: deprecated_member_use
-          onChanged: RadioGroup.onChangedOf<Locale>(context),
+          onChanged: CeylonRadioGroup.onChangedOf<Locale>(context),
           secondary: isRtl
               ? const Icon(Icons.format_textdirection_r_to_l)
               : locale.countryCode != null
@@ -694,9 +694,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: Text(name),
           value: code,
           // ignore: deprecated_member_use
-          groupValue: RadioGroup.groupValueOf<String>(context),
+          groupValue: CeylonRadioGroup.groupValueOf<String>(context),
           // ignore: deprecated_member_use
-          onChanged: RadioGroup.onChangedOf<String>(context),
+          onChanged: CeylonRadioGroup.onChangedOf<String>(context),
         );
       },
     );
@@ -726,18 +726,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: const Text('Kilometers (km)'),
                       value: 'km',
                       // ignore: deprecated_member_use
-                      groupValue: RadioGroup.groupValueOf<String>(context),
+                      groupValue: CeylonRadioGroup.groupValueOf<String>(context),
                       // ignore: deprecated_member_use
-                      onChanged: RadioGroup.onChangedOf<String>(context),
+                      onChanged: CeylonRadioGroup.onChangedOf<String>(context),
                     ),
                     // ignore: deprecated_member_use
                     RadioListTile<String>(
                       title: const Text('Miles (mi)'),
                       value: 'mi',
                       // ignore: deprecated_member_use
-                      groupValue: RadioGroup.groupValueOf<String>(context),
+                      groupValue: CeylonRadioGroup.groupValueOf<String>(context),
                       // ignore: deprecated_member_use
-                      onChanged: RadioGroup.onChangedOf<String>(context),
+                      onChanged: CeylonRadioGroup.onChangedOf<String>(context),
                     ),
                   ],
                 );
