@@ -5,7 +5,7 @@ import 'package:ceylon/features/settings/data/language_codes.dart';
 import 'package:ceylon/l10n/app_localizations.dart';
 import 'package:ceylon/services/firebase_messaging_service.dart';
 import 'package:ceylon/services/location_service.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RadioGroup;
 import 'package:ceylon/features/common/helpers/image_provider_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -562,11 +562,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     if (value == null) return;
                                     final savedContext = context;
                                     setState(() => _selectedLocale = value);
-                                    Navigator.pop(context);
+                                    Navigator.pop(savedContext);
 
                                     // Apply the language change immediately
                                     final localeController = Provider.of<LocaleController>(
-                                      context,
+                                      savedContext,
                                       listen: false,
                                     );
                                     await localeController.setLocale(value);
@@ -624,7 +624,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Builder(
       builder: (context) {
-        final group = RadioGroup.of<Locale>(context);
         // ignore: deprecated_member_use
         return RadioListTile<Locale>(
           title: Text(
@@ -636,9 +635,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           value: locale,
           // ignore: deprecated_member_use
-          groupValue: group?.groupValue,
+          groupValue: RadioGroup.groupValueOf<Locale>(context),
           // ignore: deprecated_member_use
-          onChanged: group?.onChanged,
+          onChanged: RadioGroup.onChangedOf<Locale>(context),
           secondary: isRtl
               ? const Icon(Icons.format_textdirection_r_to_l)
               : locale.countryCode != null
@@ -689,15 +688,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildCurrencyOption(String code, String name) {
     return Builder(
       builder: (context) {
-        final group = RadioGroup.of<String>(context);
         // ignore: deprecated_member_use
         return RadioListTile<String>(
           title: Text(name),
           value: code,
           // ignore: deprecated_member_use
-          groupValue: group?.groupValue,
+          groupValue: RadioGroup.groupValueOf<String>(context),
           // ignore: deprecated_member_use
-          onChanged: group?.onChanged,
+          onChanged: RadioGroup.onChangedOf<String>(context),
         );
       },
     );
@@ -719,7 +717,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
             child: Builder(
               builder: (context) {
-                final group = RadioGroup.of<String>(context);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -728,18 +725,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: const Text('Kilometers (km)'),
                       value: 'km',
                       // ignore: deprecated_member_use
-                      groupValue: group?.groupValue,
+                      groupValue: RadioGroup.groupValueOf<String>(context),
                       // ignore: deprecated_member_use
-                      onChanged: group?.onChanged,
+                      onChanged: RadioGroup.onChangedOf<String>(context),
                     ),
                     // ignore: deprecated_member_use
                     RadioListTile<String>(
                       title: const Text('Miles (mi)'),
                       value: 'mi',
                       // ignore: deprecated_member_use
-                      groupValue: group?.groupValue,
+                      groupValue: RadioGroup.groupValueOf<String>(context),
                       // ignore: deprecated_member_use
-                      onChanged: group?.onChanged,
+                      onChanged: RadioGroup.onChangedOf<String>(context),
                     ),
                   ],
                 );
