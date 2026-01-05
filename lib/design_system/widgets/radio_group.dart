@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// A widget that manages a group of radio buttons.
-/// RadioGroup provides a way to manage the selection state of a group of
+/// CeylonRadioGroup provides a way to manage the selection state of a group of
 /// Radio or RadioListTile widgets. It uses InheritedWidget to make the
 /// group value and change handler available to descendant widgets.
 ///
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 ///
 /// Example:
 /// ```dart
-/// RadioGroup<ThemeMode>(
+/// CeylonRadioGroup<ThemeMode>(
 ///   groupValue: currentTheme,
 ///   onChanged: (value) => setState(() => currentTheme = value),
 ///   child: Column(
@@ -27,8 +27,8 @@ import 'package:flutter/material.dart';
 ///   ),
 /// )
 /// ```
-class RadioGroup<T> extends StatelessWidget {
-  const RadioGroup({
+class CeylonRadioGroup<T> extends StatelessWidget {
+  const CeylonRadioGroup({
     super.key,
     required this.groupValue,
     required this.onChanged,
@@ -48,7 +48,7 @@ class RadioGroup<T> extends StatelessWidget {
     );
   }
 
-  /// Get the nearest RadioGroup ancestor from the context
+  /// Get the nearest CeylonRadioGroup ancestor from the context
   static _RadioGroupInherited<T>? of<T>(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_RadioGroupInherited<T>>();
   }

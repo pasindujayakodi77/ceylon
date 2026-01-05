@@ -28,7 +28,7 @@ class ThemeToggle extends StatelessWidget {
             ),
           ),
         ),
-        RadioGroup<ThemeMode>(
+        CeylonRadioGroup<ThemeMode>(
           groupValue: currentThemeMode,
           onChanged: (ThemeMode? value) {
             if (value != null) {
@@ -38,7 +38,7 @@ class ThemeToggle extends StatelessWidget {
           },
           child: Builder(
             builder: (context) {
-              final group = RadioGroup.of<ThemeMode>(context);
+              final group = CeylonRadioGroup.of<ThemeMode>(context);
               return Column(
                 children: [
                   // ignore: deprecated_member_use

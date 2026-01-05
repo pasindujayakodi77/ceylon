@@ -556,7 +556,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         ),
                                   ),
                                 ),
-                                RadioGroup<Locale>(
+                                CeylonRadioGroup<Locale>(
                                   groupValue: _selectedLocale,
                                   onChanged: (value) async {
                                     if (value == null) return;
@@ -624,7 +624,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Builder(
       builder: (context) {
-        final group = RadioGroup.of<Locale>(context);
+        final group = CeylonRadioGroup.of<Locale>(context);
         // ignore: deprecated_member_use
         return RadioListTile<Locale>(
           title: Text(
@@ -656,7 +656,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return AlertDialog(
           title: const Text('Select Currency'),
           content: SingleChildScrollView(
-            child: RadioGroup<String>(
+            child: CeylonRadioGroup<String>(
               groupValue: _selectedCurrency,
               onChanged: (value) {
                 if (value != null) {
@@ -689,7 +689,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildCurrencyOption(String code, String name) {
     return Builder(
       builder: (context) {
-        final group = RadioGroup.of<String>(context);
+        final group = CeylonRadioGroup.of<String>(context);
         // ignore: deprecated_member_use
         return RadioListTile<String>(
           title: Text(name),
@@ -709,7 +709,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Select Distance Unit'),
-          content: RadioGroup<String>(
+          content: CeylonRadioGroup<String>(
             groupValue: _selectedDistanceUnit,
             onChanged: (value) {
               if (value != null) {
@@ -719,7 +719,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
             child: Builder(
               builder: (context) {
-                final group = RadioGroup.of<String>(context);
+                final group = CeylonRadioGroup.of<String>(context);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
